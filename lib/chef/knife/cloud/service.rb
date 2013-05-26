@@ -34,7 +34,7 @@ class Chef
         # factory method to create a command object
         def command_object(type)
           # derived classes must create a command object from concrete class.
-          raise Chef::Exceptions::Override, "You must override create_command_object in #{self.to_s}"
+          raise Chef::Exceptions::Override, "You must override command_object in #{self.to_s}"
           # example
           # case type
           # when 'server-create'
