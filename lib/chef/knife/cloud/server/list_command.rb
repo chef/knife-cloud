@@ -6,11 +6,11 @@ class Chef
     class Cloud
       class ServerListCommand < Command
 
-        def run
-          # exec the cmd
-          # wait for response
-          # handle the response
-        end
+        # def run
+        #   # exec the cmd
+        #   # wait for response
+        #   # handle the response
+        # end
 
       end # class ServerListCommand
     end

@@ -7,13 +7,9 @@ class Chef
     class Cloud
       class FogServerListCommand < ServerListCommand
 
-        def run
-          # validate
-          validate!
-
+        def exec_command
           # exec the cmd
           response = @service.connection.servers.all
-          # wait for response
 
           # handle the response
           handleResponse(response)
