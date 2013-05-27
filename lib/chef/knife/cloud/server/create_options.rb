@@ -34,8 +34,8 @@ class Chef
 
             option :bootstrap_protocol,
             :long => "--bootstrap-protocol protocol",
-            :description => "Protocol to bootstrap Windows servers. options: winrm",
-            :default => nil
+            :description => "Protocol to bootstrap servers. options: winrm/ssh. For windows defaults to winrm, other platforms to ssh.",
+            :default => if Chef::Platform.windows? then 'winrm' else 'ssh' end
 
             option :server_create_timeout,
               :long => "--server-create-timeout timeout",

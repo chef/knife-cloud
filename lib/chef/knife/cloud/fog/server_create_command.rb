@@ -47,10 +47,10 @@ class Chef
           # TODO -KD-
         end
 
-        # Bootstrap the server
-        def bootstrap
-          # TODO -KD-
-        end
+        # # Bootstrap the server
+        # def bootstrap
+        #   # TODO -KD-
+        # end
 
       end # class FogServerCreateCommand
     end
