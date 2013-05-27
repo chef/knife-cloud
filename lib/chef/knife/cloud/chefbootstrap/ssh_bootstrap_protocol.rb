@@ -26,7 +26,7 @@ class Chef
         end
 
         def wait_for_server_ready
-          print "\n#{ui.color("Waiting for sshd to host (@app.config[:bootstrap_ip_address])", :magenta)}"
+          print "\n#{ui.color("Waiting for sshd to host (#{@app.config[:bootstrap_ip_address]})", :magenta)}"
           print(".") until tcp_test_ssh(@app.config[:bootstrap_ip_address]) {
             sleep @initial_sleep_delay ||= 10
             puts("done")
