@@ -32,10 +32,10 @@ class Chef
             :description => "The flavor ID of server", # TODO -KD- cloud plugin can override to give examples?
             :proc => Proc.new { |f| Chef::Config[:knife][:flavor] = f }
 
-            option :bootstrap_protocol,
-            :long => "--bootstrap-protocol protocol",
-            :description => "Protocol to bootstrap servers. options: winrm/ssh. For windows defaults to winrm, other platforms to ssh.",
-            :default => if Chef::Platform.windows? then 'winrm' else 'ssh' end
+            option :windows_bootstrap_protocol,
+            :long => "--windows-bootstrap-protocol protocol",
+            :description => "Protocol to bootstrap windows servers. options: winrm/ssh. For linux servers always use ssh.",
+            :default => nil
 
             option :server_create_timeout,
               :long => "--server-create-timeout timeout",
