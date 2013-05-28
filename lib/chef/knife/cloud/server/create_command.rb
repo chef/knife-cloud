@@ -8,7 +8,7 @@ class Chef
       class ServerCreateCommand < Command
         attr_accessor :server
 
-        def exec_command
+        def exec_command(*params)
           create_dependencies
           # actually create the server
           @server = create
