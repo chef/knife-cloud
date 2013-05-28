@@ -18,7 +18,7 @@ class Chef
         # When column_list is nil display all
         # columns_with_info is array of hash with label, key and attribute formatting callback, ex [{'label' => "Label text", key => 'key', formatter_callback => callback_method}, ...]
         def handleResponse(servers, columns_with_info = [])
-          # display column wise only if numbers of columns is less than 8, else as a json for readable display.
+          # display column wise only if columns_with_info is specified, else as a json for readable display.
           begin
             server_list = columns_with_info.map { |col_info| ui.color(col_info[:label], :bold) } if columns_with_info.length > 0
             servers.sort_by(&:id).each do |server|
