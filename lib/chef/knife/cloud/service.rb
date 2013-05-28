@@ -58,10 +58,10 @@ class Chef
           @cmd.run()
         end
 
-        def server_delete
+        def server_delete(server_name)
           # creates a delete_command instance
           @cmd = command_object('server-delete')
-          @cmd.run()
+          @cmd.run(server_name)
         end
 
         def server_list
