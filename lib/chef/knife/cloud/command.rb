@@ -18,7 +18,7 @@ class Chef
 
         end
 
-        def run
+        def run(*params)
           # validate options required for server creation.
           validate!
 
@@ -26,10 +26,14 @@ class Chef
           before_handler
 
           # exec the actual cmd
-          exec_command
+          exec_command(*params)
 
           # Perform any steps after handling the command
           after_handler
+        end
+
+        def exec_command(*params)
+          raise Chef::Exceptions::Override, "You must override exec_command in #{self.to_s}"
         end
 
         # Derived classes can override before_handler and after_handler

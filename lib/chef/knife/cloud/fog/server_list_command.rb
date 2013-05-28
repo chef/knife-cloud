@@ -7,7 +7,7 @@ class Chef
     class Cloud
       class FogServerListCommand < ServerListCommand
 
-        def exec_command
+        def exec_command(*params)
           # exec the cmd
           response = @service.connection.servers.all
 
