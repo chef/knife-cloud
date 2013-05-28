@@ -1,6 +1,9 @@
 
 require 'chef/knife/cloud/service'
+require 'chef/knife/cloud/fog/server_create_command'
 require 'chef/knife/cloud/fog/server_list_command'
+require 'chef/knife/cloud/fog/server_delete_command'
+
 
 class Chef
   class Knife
