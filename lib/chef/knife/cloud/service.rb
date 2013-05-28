@@ -31,6 +31,7 @@ class Chef
           # Do nothing or override in cloud specific derived classes for pre-vm-creation setup steps
         end
 
+        # TODO - FIXME
         # factory method to create a command object
         def command_object(type)
           # derived classes must create a command object from concrete class.
@@ -70,10 +71,10 @@ class Chef
           @cmd.run()
         end
 
-        def image_list
+        def image_list(image_filters)
           # creates a image_list_command instance
           @cmd = command_object('image-list')
-          @cmd.run()
+          @cmd.run(image_filters)
         end
 
       end # class service
