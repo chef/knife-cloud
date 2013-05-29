@@ -1,16 +1,24 @@
 
 require 'chef/knife/core/ui'
+require 'chef/knife/cloud/command'
 
 class Chef
   class Knife
     class Cloud
       class Service
         attr_accessor :connection, :cmd, :ui
+        # Derived classes should set these as required to command classes.
+        attr_reader :create_server_class, :list_servers_class, :delete_server_class, :list_image_class
 
         def initialize(app) # here app is the main cli object.
           @app = app
           @connection = new_connection()
           @ui ||= Chef::Knife::UI.new(STDOUT, STDERR, STDIN, {})
+          declare_command_classes
+        end
+
+        def declare_command_classes
+          @create_server_class = @list_servers_class = @delete_server_class = @list_image_class = Command
         end
 
         def cloud_auth_params(options)
@@ -31,49 +39,29 @@ class Chef
           # Do nothing or override in cloud specific derived classes for pre-vm-creation setup steps
         end
 
-        # TODO - FIXME
-        # factory method to create a command object
-        def command_object(type)
-          # derived classes must create a command object from concrete class.
-          raise Chef::Exceptions::Override, "You must override command_object in #{self.to_s}"
-          # example
-          # case type
-          # when 'server-create'
-          #   ServerCreateCommand.new(@app)
-          # when 'server-delete'
-          #   ServerDeleteCommand.new(@app)
-          # when 'server-list'
-          #   ServerListCommand.new(@app)
-          # when 'image-list'
-          #   ImageListCommand.new(@app)
-          # else
-          #   raise "Unsupported command"
-          # end
-        end
-
         # cloud server commands
         def server_create
           create_dependencies
           # creates a create_command instance'
-          @cmd = command_object('server-create')
+          @cmd = create_server_class.new(@app, self)
           @cmd.run()
         end
 
         def server_delete(server_name)
           # creates a delete_command instance
-          @cmd = command_object('server-delete')
+          @cmd = delete_server_class.new(@app, self)
           @cmd.run(server_name)
         end
 
         def server_list
           # creates a server_list_command instance
-          @cmd = command_object('server-list')
+          @cmd = list_servers_class.new(@app, self)
           @cmd.run()
         end
 
         def image_list(image_filters)
           # creates a image_list_command instance
-          @cmd = command_object('image-list')
+          @cmd = list_image_class.new(@app, self)
           @cmd.run(image_filters)
         end
 

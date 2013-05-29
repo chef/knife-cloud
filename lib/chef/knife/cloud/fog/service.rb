@@ -11,6 +11,12 @@ class Chef
       class FogService < Service
         attr_accessor :fog_version
 
+        def declare_command_classes
+          super
+          # override the classes
+          @create_server_class, @list_servers_class, @delete_server_class, @list_image_class = Cloud::FogServerCreateCommand, Cloud::FogServerListCommand, Cloud::FogServerDeleteCommand, Cloud::FogImageListCommand
+        end
+
         def new_connection(auth_params={})
           @connection ||= begin
               connection = Fog::Compute.new(cloud_auth_params(@app.config))
@@ -21,22 +27,6 @@ class Chef
                             ui.fatal("Connection failure, please check your authentication URL.")
                             exit 1
                           end
-        end
-
-        # factory method to create a command object
-        def command_object(type)
-          case type
-          when 'server-create'
-            Cloud::FogServerCreateCommand.new(@app, self)
-          when 'server-delete'
-            Cloud::FogServerDeleteCommand.new(@app, self)
-          when 'server-list'
-            Cloud::FogServerListCommand.new(@app, self)
-          when 'image-list'
-            Cloud::FogImageListCommand.new(@app, self)
-          else
-            raise "Unsupported command"
-          end
         end
 
       end
