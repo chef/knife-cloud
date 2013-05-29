@@ -14,7 +14,10 @@ class Chef
         def declare_command_classes
           super
           # override the classes
-          @create_server_class, @list_servers_class, @delete_server_class, @list_image_class = Cloud::FogServerCreateCommand, Cloud::FogServerListCommand, Cloud::FogServerDeleteCommand, Cloud::FogImageListCommand
+          @create_server_class = Cloud::FogServerCreateCommand
+          @list_servers_class = Cloud::FogServerListCommand
+          @delete_server_class = Cloud::FogServerDeleteCommand
+          @list_image_class = Cloud::FogImageListCommand
         end
 
         def new_connection(auth_params={})
