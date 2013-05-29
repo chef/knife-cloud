@@ -24,8 +24,16 @@ class Chef
           require 'chef/knife/winrm'
         end
 
+        def init_bootstrap_options
+          bootstrap.config[:winrm_user] = @app.locate_config_value(:winrm_user) || 'Administrator'
+          bootstrap.config[:winrm_password] = @app.locate_config_value(:winrm_password)
+          bootstrap.config[:winrm_transport] = @app.locate_config_value(:winrm_transport)
+          bootstrap.config[:winrm_port] = @app.locate_config_value(:winrm_port)
+          super
+        end
+
         def wait_for_server_ready
-          print "\n#{ui.color("Waiting for winrm to host (@app.config[:bootstrap_ip_address])", :magenta)}"
+          print "\n#{ui.color("Waiting for winrm to host (#{@app.config[:bootstrap_ip_address]})", :magenta)}"
           print(".") until tcp_test_winrm(@app.config[:bootstrap_ip_address], @app.locate_config_value(:winrm_port))
         end
 

@@ -21,6 +21,7 @@ class Chef
 
         def init_bootstrap_options
           # set the command bootstrap options.
+          bootstrap.name_args = @app.config[:bootstrap_ip_address]
           bootstrap.config[:chef_node_name] = @app.config[:chef_node_name]
           bootstrap.config[:run_list] = @app.config[:run_list]
           bootstrap.config[:prerelease] = @app.config[:prerelease]

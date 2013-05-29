@@ -17,7 +17,6 @@ class Chef
         end
 
         def init_bootstrap_options
-          bootstrap.name_args = @app.config[:bootstrap_ip_address]
           bootstrap.config[:ssh_user] = @app.config[:ssh_user]
           bootstrap.config[:identity_file] = @app.config[:identity_file]
           bootstrap.config[:host_key_verify] = @app.config[:host_key_verify]
