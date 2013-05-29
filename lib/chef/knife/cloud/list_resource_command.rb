@@ -34,7 +34,7 @@ class Chef
         end
 
         # When columns_with_info is nil display all
-        # columns_with_info is array of hash with label, key and attribute formatting callback, ex [{'label' => "Label text", key => 'key', formatter_callback => callback_method}, ...]
+        # columns_with_info is array of hash with label, key and attribute extraction callback, ex [{'label' => "Label text", key => 'key', value_callback => callback_method to extract/format the required value}, ...]
         def list(resources, columns_with_info = [])
           # display column wise only if columns_with_info is specified, else as a json for readable display.
           begin
@@ -44,7 +44,7 @@ class Chef
               if columns_with_info.length > 0
                 list = []
                 columns_with_info.each do |col_info|
-                  value = (col_info[:formatter_callback].nil? ? resource.send(col_info[:key]).to_s : col_info[:formatter_callback].call(resource.send(col_info[:key])))
+                  value = (col_info[:value_callback].nil? ? resource.send(col_info[:key]).to_s : col_info[:value_callback].call(resource.send(col_info[:key])))
                   resource_filtered = true if is_resource_filtered?(col_info[:key], value)
                   list << value
                 end
