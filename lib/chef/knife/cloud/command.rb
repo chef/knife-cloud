@@ -1,5 +1,6 @@
 
 require 'chef/knife/core/ui'
+require 'chef/knife/cloud/exceptions'
 
 class Chef
   class Knife

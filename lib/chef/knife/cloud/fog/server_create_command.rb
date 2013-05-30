@@ -14,11 +14,12 @@ class Chef
             response = Chef::JSONCompat.from_json(e.response.body)
             if response['badRequest']['code'] == 400
               ui.fatal("Bad request (400): #{response['badRequest']['message']}")
-              exit 1
+              message = "Bad request (400): #{response['badRequest']['message']}"
             else
               ui.fatal("Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}")
-              raise e
+              message = "Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}"
             end
+            raise CloudExceptions::ServerCreateError, message
           end
 
           msg_pair("Instance Name", @server.name)
@@ -38,13 +39,15 @@ class Chef
           raise Chef::Exceptions::Override, "You must override create_server_def in #{self.to_s} to form server creation arguments." 
         end
 
-        def create_dependencies
-          # TODO -KD-
+        def create_server_dependencies
+          # This is cloud specific implementation, so let the cloud plugin override this.
+          # if this method fails, it should raise CloudExceptions::ServerCreateDependenciesError
+          # so as delete_server_dependencies is called.
         end
 
-        def cleanup_resources_on_failure
-          # cleanup resources created before server creation.
-          # TODO -KD-
+        def delete_server_dependencies
+          # cleanup resources created before server creation. Called by framework.
+          # This is cloud specific implementation, so let the cloud plugin override this.
         end
 
         # # Bootstrap the server
