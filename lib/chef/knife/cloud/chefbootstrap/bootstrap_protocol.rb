@@ -30,9 +30,9 @@ class Chef
           bootstrap.config[:template_file] = @app.locate_config_value(:template_file)
           bootstrap.config[:bootstrap_proxy] = @app.locate_config_value(:bootstrap_proxy)
           bootstrap.config[:environment] = @app.config[:environment]
-          # TODO -KD- Do we need these two? first seems deprecated as per chef/knife/bootstrap.
-          # bootstrap.config[:encrypted_data_bag_secret] = @app.config[:encrypted_data_bag_secret]
-          # bootstrap.config[:encrypted_data_bag_secret_file] = @app.config[:encrypted_data_bag_secret_file]
+          # see chef/knife/bootstrap.rb #warn_chef_config_secret_key.
+          bootstrap.config[:encrypted_data_bag_secret] = @app.config[:encrypted_data_bag_secret]
+          bootstrap.config[:encrypted_data_bag_secret_file] = @app.config[:encrypted_data_bag_secret_file]
         end
 
       end
