@@ -45,7 +45,9 @@ class Chef
                 list = []
                 columns_with_info.each do |col_info|
                   value = (col_info[:value_callback].nil? ? resource.send(col_info[:key]).to_s : col_info[:value_callback].call(resource.send(col_info[:key])))
-                  resource_filtered = true if is_resource_filtered?(col_info[:key], value)
+                  if !@app.config[:disable_filter]
+                    resource_filtered = true if is_resource_filtered?(col_info[:key], value)
+                  end
                   list << value
                 end
                 resource_list.concat(list) unless resource_filtered
