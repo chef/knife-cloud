@@ -50,11 +50,6 @@ class Chef
           # This is cloud specific implementation, so let the cloud plugin override this.
         end
 
-        # # Bootstrap the server
-        # def bootstrap
-        #   # TODO -KD-
-        # end
-
       end # class FogServerCreateCommand
     end
   end
