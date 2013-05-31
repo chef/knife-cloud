@@ -1,5 +1,4 @@
 
-require 'fog'
 require 'chef/knife/cloud/list_resource_command'
 
 class Chef

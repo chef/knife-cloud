@@ -11,6 +11,15 @@ class Chef
       class FogService < Service
         attr_accessor :fog_version
 
+        def initialize(app) # here app is the main cli object.
+          @fog_version = app.config[:fog_version]
+          # Load specific version of fog. Any other classes/modules using fog are loaded after this.
+          gem "fog", Chef::Config[:knife][:cloud_fog_version]
+          require 'fog'
+          Chef::Log.debug("Using fog version: #{Gem.loaded_specs["fog"].version}")
+          super
+        end
+
         def declare_command_classes
           super
           # override the classes

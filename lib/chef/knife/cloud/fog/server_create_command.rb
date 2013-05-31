@@ -1,5 +1,4 @@
 
-require 'fog'
 require 'chef/knife/cloud/server/create_command'
 
 class Chef
