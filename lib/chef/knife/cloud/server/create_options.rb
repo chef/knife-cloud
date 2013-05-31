@@ -13,7 +13,6 @@ class Chef
             include BootstrapOptions
 
             deps do
-              require 'fog'
               require 'readline'
               require 'chef/json_compat'
               require 'chef/knife/bootstrap'

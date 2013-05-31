@@ -1,4 +1,4 @@
-require 'fog'
+
 require 'chef/json_compat'
 require 'chef/knife/cloud/server/delete_command'
 
