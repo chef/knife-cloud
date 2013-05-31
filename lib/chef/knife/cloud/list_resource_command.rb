@@ -60,7 +60,7 @@ class Chef
             ui.fatal("Unknown resource error (#{response['badRequest']['code']}): #{response['badRequest']['message']}")
             raise e
           end
-          puts ui.list(resource_list, :uneven_columns_across, 8) if columns_with_info.length > 0
+          puts ui.list(resource_list, :uneven_columns_across, columns_with_info.length) if columns_with_info.length > 0
         end
 
       end # class ResourceListCommand
