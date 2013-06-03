@@ -5,7 +5,13 @@ class Chef
   class Knife
     class Cloud
       class ResourceListCommand < Command
+        attr_accessor :sort_by_field
         attr_accessor :resource_filters # array of filters in form {:attribute => attribute-name, :regex => 'filter regex value'}
+
+        def initialize(app, service)
+          super
+          @sort_by_field = "id" # default sort by id
+        end
 
         def exec_command(*params)
           @resource_filters = params[0] if !params.empty? # TODO - we can also take this from cli, for now let cloud-plugin set this.
@@ -38,7 +44,7 @@ class Chef
           # display column wise only if columns_with_info is specified, else as a json for readable display.
           begin
             resource_list = columns_with_info.map { |col_info| ui.color(col_info[:label], :bold) } if columns_with_info.length > 0
-            resources.sort_by(&:id).each do |resource|
+            resources.sort_by(&sort_by_field.to_sym).each do |resource|
               resource_filtered = false
               if columns_with_info.length > 0
                 list = []
