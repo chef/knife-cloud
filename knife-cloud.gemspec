@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Knife::Cloud::VERSION
   s.platform    = Gem::Platform::RUBY
   s.extra_rdoc_files = ["README.md", "LICENSE" ]
-  s.authors     = ["Kaustubh Deorukhkar"]
+  s.authors     = ["Kaustubh Deorukhkar", "Ameya Varade"]
   s.email       = ["kaustubh@clogeny.com"]
   s.homepage    = "https://github.com/opscode/knife-cloud"
   s.summary     = %q{knife-cloud plugin}
@@ -21,6 +21,8 @@ Gem::Specification.new do |s|
   s.add_dependency "fog", ">= 1.10.0"
   s.add_dependency "chef", ">= 0.10.10"
   s.add_dependency "knife-windows"
+  s.add_dependency 'mixlib-shellout'
+  s.add_dependency 'active_support'
 
   %w(rspec-core rspec-expectations rspec-mocks rspec_junit_formatter).each { |gem| s.add_development_dependency gem }
 end
