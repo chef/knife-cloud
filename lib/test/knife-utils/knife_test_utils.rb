@@ -15,6 +15,7 @@ module RSpec
       # inspection.
       def run(command_line)
         shell_out = Mixlib::ShellOut.new("#{command_line}")
+        shell_out.timeout = 3000
         @op = shell_out.tap(&:run_command).stdout        
         return shell_out
       end
