@@ -18,7 +18,7 @@ RSpec::Matchers.define :have_outcome do |outcome_spec|
   failure_message_for_should do |executed_shellout_command|
     "Executed command should have matched the outcome spec #{outcome_spec.inspect}, but it didn't!\n
 \tFailed Command: #{executed_shellout_command.command}\n
-\tCommand Setting: #{RSpec::KnifeUtils.command_setting(executed_shellout_command).inspect}\n
+\tCommand Setting: #{RSpec::KnifeTestUtils.command_setting(executed_shellout_command).inspect}\n
 \tExit Status: #{executed_shellout_command.exitstatus}\n
 \tStandard Output:\n
 #{executed_shellout_command.stdout}\n
