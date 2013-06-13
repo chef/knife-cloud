@@ -22,6 +22,10 @@ module KnifeTestHelper
     end
   end
 
+  def match_stdout(test_run_expect)
+    should have_outcome :stdout => test_run_expect
+  end
+
   def create_file(file_dir, file_name, data_to_write_file_path)
     puts "Creating: #{file_name}"
     begin
