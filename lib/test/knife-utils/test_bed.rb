@@ -35,22 +35,22 @@ module KnifeTestBed
 	end
 
 	def get_knife_rb_path
-		"#{temp_dir}" + "knife.rb"
+		"#{temp_dir}/" + "knife.rb"
 	end
 
 	def get_validation_pem_path
-		"#{temp_dir}" + "validation.pem"
+		"#{temp_dir}/" + "validation.pem"
 	end
 
 	def get_linux_template_file_path
-		"#{temp_dir}" + "chef-full-chef-zero.erb"
+		"#{temp_dir}/" + "chef-full-chef-zero.erb"
 	end
 
 	def get_windows_msi_template_file_path
-		"#{temp_dir}" + "windows-chef-client-msi.erb"
+		"#{temp_dir}/" + "windows-chef-client-msi.erb"
 	end
 
 	def get_windows_shell_template_file_path
-		"#{temp_dir}" + "windows-shell.erb"
+		"#{temp_dir}/" + "windows-shell.erb"
 	end
 end 
