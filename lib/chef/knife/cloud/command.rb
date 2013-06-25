@@ -55,6 +55,11 @@ class Chef
             puts "#{ui.color(label, color)}: #{value}"
           end
         end
+        # Helpers/utility method
+        def locate_config_value(key)
+          key = key.to_sym
+          Chef::Config[:knife][key] || config[key]
+        end
 
       end # class Command
     end
