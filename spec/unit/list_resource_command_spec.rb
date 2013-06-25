@@ -16,9 +16,7 @@ describe Chef::Knife::Cloud::ResourceListCommand do
   end
 
   context "Basic tests:" do
-    it "expects compulsory properties to be set" do
-      expect {Chef::Knife::Cloud::ResourceListCommand.new}.to raise_error
-    end
+    it {expect {Chef::Knife::Cloud::ResourceListCommand.new}.to raise_error(ArgumentError, "wrong number of arguments (0 for 2)")}
 
     it "raises exception to override #query_resource method" do
       @instance.stub(:list)
