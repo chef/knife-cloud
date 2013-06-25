@@ -61,6 +61,13 @@ class Chef
           Chef::Config[:knife][key] || config[key]
         end
 
+        #generate a random name if chef_node_name is empty
+        def get_node_name(chef_node_name)
+          return chef_node_name unless chef_node_name.nil?
+          #lazy uuids
+          chef_node_name = "os-"+rand.to_s.split('.')[1]
+        end
+
       end # class Command
     end
   end
