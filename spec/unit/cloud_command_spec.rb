@@ -5,15 +5,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'chef/knife/cloud/command'
 
 describe Chef::Knife::Cloud::Command do
-  before do
-    @app = App.new
-    @service = Object.new
-    @instance = Chef::Knife::Cloud::Command.new(@app, @service)
-  end
+  let (:instance) { Chef::Knife::Cloud::ServerCreateCommand.new(App.new, Object.new) }
 
-  it "asks for compulsory properties while creating command instance" do
-    expect {Chef::Knife::Cloud::Command.new}.to raise_error(ArgumentError)
-  end
+  it { expect {Chef::Knife::Cloud::Command.new}.to raise_error(ArgumentError, "wrong number of arguments (0 for 2)") }
 
   it "creates instance with correct params" do
     @instance.service.class.should == Object
@@ -30,8 +24,7 @@ describe Chef::Knife::Cloud::Command do
     @instance.run
   end
 
-  it "raises exception to override exec_command" do
-    expect {@instance.run}.to raise_error(Chef::Exceptions::Override, "You must override exec_command in #{@instance.to_s}")
+  it { expect {@instance.run}.to raise_error(Chef::Exceptions::Override, "You must override exec_command in #{@instance.to_s}") }
   end
 
 end
