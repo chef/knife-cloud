@@ -12,11 +12,11 @@ class Chef
           rescue Excon::Errors::BadRequest => e
             response = Chef::JSONCompat.from_json(e.response.body)
             if response['badRequest']['code'] == 400
-              ui.fatal("Bad request (400): #{response['badRequest']['message']}")
               message = "Bad request (400): #{response['badRequest']['message']}"
+              ui.fatal(message)
             else
-              ui.fatal("Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}")
               message = "Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}"
+              ui.fatal(message)
             end
             raise CloudExceptions::ServerCreateError, message
           end
@@ -35,7 +35,7 @@ class Chef
 
         def create_server_def()
           # Force derived classes to define server def
-          raise Chef::Exceptions::Override, "You must override create_server_def in #{self.to_s} to form server creation arguments." 
+          raise Chef::Exceptions::Override, "You must override create_server_def in #{self.to_s} to form server creation arguments."
         end
 
         def create_server_dependencies
