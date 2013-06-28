@@ -19,12 +19,11 @@ describe Chef::Knife::Cloud::FogServerListCommand do
     @instance.query_resource.should == @servers
   end
 
-  pending 'lists all the server instances.' do
+  it 'lists all the server instances.' do
+    @instance.stub(:puts)
     @servers = mock()
     @service.stub_chain(:connection, :servers, :all).and_return(@servers)
-    @servers.stub(:sort_by)
-    @servers.stub(:each).and_call_original
-
+    @servers.stub(:sort_by).and_return([:a, :b, :c])
     @instance.run
   end
 
