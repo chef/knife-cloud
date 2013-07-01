@@ -19,11 +19,12 @@ describe Chef::Knife::Cloud::FogImageListCommand do
     @instance.query_resource.should == @images
   end
 
+  # the actual image listing code is tested in the list_resource_command_spec
   it 'lists all the images.' do
     @instance.stub(:puts)
     @images = mock()
     @service.stub_chain(:connection, :images, :all).and_return(@images)
-    @images.stub(:sort_by).and_return([:a, :b, :c])
+    @images.stub(:sort_by).and_return([])
     @instance.run
   end
 

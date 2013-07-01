@@ -23,7 +23,7 @@ describe Chef::Knife::Cloud::FogServerListCommand do
     @instance.stub(:puts)
     @servers = mock()
     @service.stub_chain(:connection, :servers, :all).and_return(@servers)
-    @servers.stub(:sort_by).and_return([:a, :b, :c])
+    @servers.stub(:sort_by).and_return([])
     @instance.run
   end
 
