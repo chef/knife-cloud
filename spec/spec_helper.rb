@@ -1,7 +1,8 @@
 $:.unshift File.expand_path('../../lib', __FILE__)
 
 require 'json'
-
+require 'chef/knife/bootstrap'
+require 'chef/knife/bootstrap_windows_ssh'
 class App
   attr_accessor :config
   def initialize
