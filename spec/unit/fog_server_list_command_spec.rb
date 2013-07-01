@@ -19,6 +19,7 @@ describe Chef::Knife::Cloud::FogServerListCommand do
     @instance.query_resource.should == @servers
   end
 
+  # the actual server listing code is tested in the list_resource_command_spec
   it 'lists all the server instances.' do
     @instance.stub(:puts)
     @servers = mock()
