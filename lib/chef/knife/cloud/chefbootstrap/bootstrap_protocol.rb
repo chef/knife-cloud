@@ -13,6 +13,10 @@ class Chef
           @ui ||= Chef::Knife::UI.new(STDOUT, STDERR, STDIN, {}) # TODO - reuse app level.
         end
 
+        def wait_for_server_ready
+          raise Chef::Exceptions::Override, "You must override wait_for_server_ready in #{self.to_s}"
+        end
+
         def send_bootstrap_command
           wait_for_server_ready
           init_bootstrap_options
