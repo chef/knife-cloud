@@ -2,29 +2,19 @@
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require 'chef/knife/cloud/command'
+require 'support/shared_examples_for_command'
 
 describe Chef::Knife::Cloud::Command do
-  let (:instance) { Chef::Knife::Cloud::Command.new(App.new, Object.new) }
+  it_behaves_like Chef::Knife::Cloud::Command, Chef::Knife::Cloud::Command.new
 
-  it { expect {Chef::Knife::Cloud::Command.new}.to raise_error(ArgumentError, "wrong number of arguments (0 for 2)") }
+  let (:instance) { Chef::Knife::Cloud::Command.new }
 
-  it "creates instance with correct params" do
-    instance.service.class.should == Object
-    instance.ui.class.should == Chef::Knife::UI
+  it "overrides execute_command" do
+    instance.stub(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
+    expect {instance.run}.to raise_error(Chef::Exceptions::Override, "You must override execute_command in #{instance.to_s}")
   end
 
-  it "runs with correct method calls" do
-    instance.stub(:exec_command)
-    instance.should_receive(:validate!).ordered
-    instance.should_receive(:before_handler).ordered
-    instance.should_receive(:exec_command).ordered
-    instance.should_receive(:after_handler).ordered
-    #instance.should_receive(:custom_arguments).ordered
-    instance.run
-  end
-
-  it { expect {instance.run}.to raise_error(Chef::Exceptions::Override, "You must override exec_command in #{instance.to_s}") }
+  it { expect {instance.run}.to raise_error(Chef::Exceptions::Override, "You must override create_service_instance in #{instance.to_s} to create cloud specific service") }
 
 end
 
