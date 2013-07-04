@@ -1,47 +1,49 @@
+#
+# Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
+# Copyright:: Copyright (c) 2013 Opscode, Inc.
+#
 
-require 'chef/knife/core/ui'
-require 'chef/knife/cloud/exceptions'
+require 'chef/knife'
 
 class Chef
   class Knife
 
     class Cloud
-      class Command
-        attr_accessor :service, :ui
+      class Command < Chef::Knife
+        attr_accessor :service, :custom_arguments
 
-        def initialize(app, service) # here app is the main cli object.
-          @app = app
-          @service = service
-          @ui ||= Chef::Knife::UI.new(STDOUT, STDERR, STDIN, {})
-        end
-
-        def custom_arguments
-
-        end
-
-        def run(*params)
-          # validate options required for server creation.
+        def run
+          # validate command pre-requisites (cli options)
           validate!
 
+          # setup the service
+          @service = create_service_instance
+
+          service.ui = ui # for interactive user prompts/messages
+
           # Perform any steps before handling the command
-          before_handler
+          before_exec_command
 
           # exec the actual cmd
-          exec_command(*params)
+          execute_command
 
           # Perform any steps after handling the command
-          after_handler
+          after_exec_command
         end
 
-        def exec_command(*params)
-          raise Chef::Exceptions::Override, "You must override exec_command in #{self.to_s}"
+        def create_service_instance
+          raise Chef::Exceptions::Override, "You must override create_service_instance in #{self.to_s} to create cloud specific service"
         end
 
-        # Derived classes can override before_handler and after_handler
-        def before_handler
+        def execute_command
+          raise Chef::Exceptions::Override, "You must override execute_command in #{self.to_s}"
         end
 
-        def after_handler
+        # Derived classes can override before_exec_command and after_exec_command
+        def before_exec_command
+        end
+
+        def after_exec_command
         end
 
         def validate!
@@ -49,13 +51,6 @@ class Chef
           # subclasses to implement this.
         end
 
-        # Helpers/utility method
-        def msg_pair(label, value, color=:cyan)
-          if value && !value.to_s.empty?
-            puts "#{ui.color(label, color)}: #{value}"
-          end
-        end
-        # Helpers/utility method
         def locate_config_value(key)
           key = key.to_sym
           Chef::Config[:knife][key] || config[key]
