@@ -1,9 +1,12 @@
+#
+# Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
+# Copyright:: Copyright (c) 2013 Opscode, Inc.
+#
 
 class Chef
   class Knife
     class Cloud
       module ServerDeleteOptions
-
         def self.included(includer)
           includer.class_eval do
             option :purge,
@@ -19,7 +22,6 @@ class Chef
               :description => "The name of the node and client to delete, if it differs from the server name. Only has meaning when used with the '--purge' option."
           end
         end
-
       end
     end
   end

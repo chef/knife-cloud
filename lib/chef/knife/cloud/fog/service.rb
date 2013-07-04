@@ -1,9 +1,10 @@
+#
+# Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
+# Copyright:: Copyright (c) 2013 Opscode, Inc.
+#
 
 require 'chef/knife/cloud/service'
-require 'chef/knife/cloud/fog/server_create_command'
-require 'chef/knife/cloud/fog/server_list_command'
-require 'chef/knife/cloud/fog/server_delete_command'
-
+require 'chef/knife/cloud/exceptions'
 
 class Chef
   class Knife
@@ -11,8 +12,8 @@ class Chef
       class FogService < Service
         attr_accessor :fog_version
 
-        def initialize(app) # here app is the main cli object.
-          @fog_version = app.config[:fog_version]
+        def initialize(options = {})
+          @fog_version = Chef::Config[:knife][:cloud_fog_version]
           # Load specific version of fog. Any other classes/modules using fog are loaded after this.
           gem "fog", Chef::Config[:knife][:cloud_fog_version]
           require 'fog'
@@ -20,18 +21,9 @@ class Chef
           super
         end
 
-        def declare_command_classes
-          super
-          # override the classes
-          @create_server_class = Cloud::FogServerCreateCommand
-          @list_servers_class = Cloud::FogServerListCommand
-          @delete_server_class = Cloud::FogServerDeleteCommand
-          @list_image_class = Cloud::FogImageListCommand
-        end
-
-        def new_connection(auth_params={})
+        def connection
           @connection ||= begin
-              connection = Fog::Compute.new(cloud_auth_params(@app.config))
+              connection = Fog::Compute.new(@auth_params)
                           rescue Excon::Errors::Unauthorized => e
                             ui.fatal("Connection failure, please check your username and password.")
                             exit 1
@@ -39,6 +31,42 @@ class Chef
                             ui.fatal("Connection failure, please check your authentication URL.")
                             exit 1
                           end
+        end
+
+        # cloud server specific implementation methods for commands.
+        def create_server
+          raise Chef::Exceptions::Override, "You must override create_server in #{self.to_s}"
+        end
+
+        def delete_server(server_name)
+          begin
+            server = connection.servers.get(server_name)
+
+            msg_pair("Instance Name", server.name)
+            msg_pair("Instance ID", server.id)
+
+            puts "\n"
+            ui.confirm("Do you really want to delete this server")
+
+            # delete the server
+            server.destroy
+          rescue NoMethodError
+            error_message = "Could not locate server '#{server_name}'."
+            ui.error(error_message)
+            raise CloudExceptions::ServerDeleteError, error_message
+          rescue Excon::Errors::BadRequest => e
+            response = Chef::JSONCompat.from_json(e.response.body)
+            ui.fatal("Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}")
+            raise e
+          end
+        end
+
+        def list_servers
+          raise Chef::Exceptions::Override, "You must override list_servers in #{self.to_s}"
+        end
+
+        def list_images(image_filters)
+          raise Chef::Exceptions::Override, "You must override list_images in #{self.to_s}"
         end
 
       end
