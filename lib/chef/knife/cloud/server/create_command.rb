@@ -1,6 +1,7 @@
 
 require 'chef/knife/cloud/command'
 require 'chef/knife/cloud/exceptions'
+require 'chef/knife/cloud/chefbootstrap/bootstrapper'
 
 class Chef
   class Knife
@@ -42,7 +43,9 @@ class Chef
         # Bootstrap the server
         def bootstrap
           before_bootstrap
-          # Actual bootstrap code will go here
+          @bootstrapper = Bootstrapper.new(@app)
+          puts "Bootstrapping the server..."
+          @bootstrapper.bootstrap
           after_bootstrap
         end
 

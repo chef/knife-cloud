@@ -1,4 +1,5 @@
 $:.unshift File.expand_path('../../lib', __FILE__)
+require 'json'
 require 'chef/knife/cloud/exceptions'
 require 'json'
 require 'chef/exceptions'
