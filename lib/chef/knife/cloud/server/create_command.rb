@@ -1,55 +1,52 @@
 
 require 'chef/knife/cloud/command'
+require 'chef/knife/cloud/exceptions'
 
 class Chef
   class Knife
     class Cloud
       class ServerCreateCommand < Command
-        attr_accessor :server
+        attr_accessor :server, :create_options
 
-        def exec_command(*params)
+        def before_exec_command
           begin
-            create_server_dependencies
-            # actually create the server
-            @server = create
-
-            # bootstrap the server
-            bootstrap
+            service.create_server_dependencies
           rescue CloudExceptions::ServerCreateDependenciesError => e
             ui.fatal(e.message)
-            delete_server_dependencies # rollback any resources that were created.
+            service.delete_server_dependencies # rollback any resources that were created.
             raise e
+          end
+        end
+
+        def execute_command
+          begin
+            @server = service.create_server(create_options)
           rescue CloudExceptions::ServerCreateError => e
             ui.fatal(e.message)
             # server creation failed, so we need to rollback only dependencies.
-            delete_server_dependencies
+            service.delete_server_dependencies
             raise e
           end
-
-          #TODO -KD- Should we really rollback all (delete_server) on bootstrap failure? may be cli option for user to decide. default dont rollback?
         end
 
-        def create
-          raise Chef::Exceptions::Override, "You must override create in #{self.to_s} for server creation."
+        def after_exec_command
+          begin
+            # bootstrap the server
+            bootstrap
+          rescue CloudExceptions::BootstrapError => e
+            #TODO -KD- Should we really rollback all (delete_server) on bootstrap failure? may be cli option for user to decide. default dont rollback?
+          end
         end
 
-        def create_server_dependencies
-          raise Chef::Exceptions::Override, "You must override create_server_dependencies in #{self.to_s} to create dependencies required for server creation."
-        end
-
-        def delete_server_dependencies
-          # cleanup resources created before server creation.
-          raise Chef::Exceptions::Override, "You must override delete_server_dependencies in #{self.to_s} to remove dependencies created before server creation."
-        end
 
         # Bootstrap the server
         def bootstrap
           before_bootstrap
-          #Actual bootstrap code will go here
+          # Actual bootstrap code will go here
           after_bootstrap
         end
 
-        # any initializations/cleanup we want to do around bootstrap.
+        # any cloud specific initializations/cleanup we want to do around bootstrap.
         def before_bootstrap
         end
         def after_bootstrap
