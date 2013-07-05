@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'chef/knife/cloud/chefbootstrap/bootstrap_protocol'
+require 'chef/knife/bootstrap'
 
 describe Chef::Knife::Cloud::BootstrapProtocol do
   before do
