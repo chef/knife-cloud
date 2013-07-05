@@ -51,6 +51,13 @@ class Chef
           # subclasses to implement this.
         end
 
+        # Additional helpers
+        def msg_pair(label, value, color=:cyan)
+          if value && !value.to_s.empty?
+            puts "#{ui.color(label, color)}: #{value}"
+          end
+        end
+
         def locate_config_value(key)
           key = key.to_sym
           Chef::Config[:knife][key] || config[key]
