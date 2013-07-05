@@ -34,7 +34,7 @@ class Chef
         end
 
         # cloud server specific implementation methods for commands.
-        def create_server
+        def create_server(options = {})
           raise Chef::Exceptions::Override, "You must override create_server in #{self.to_s}"
         end
 

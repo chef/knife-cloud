@@ -18,6 +18,7 @@ class Chef
           gem "fog", Chef::Config[:knife][:cloud_fog_version]
           require 'fog'
           Chef::Log.debug("Using fog version: #{Gem.loaded_specs["fog"].version}")
+
           super
         end
 
@@ -34,8 +35,31 @@ class Chef
         end
 
         # cloud server specific implementation methods for commands.
-        def create_server
-          raise Chef::Exceptions::Override, "You must override create_server in #{self.to_s}"
+        def create_server(options = {})
+          begin
+            server = connection.servers.create(options[:server_def])
+          rescue Excon::Errors::BadRequest => e
+            response = Chef::JSONCompat.from_json(e.response.body)
+            if response['badRequest']['code'] == 400
+              message = "Bad request (400): #{response['badRequest']['message']}"
+              ui.fatal(message)
+            else
+              message = "Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}"
+              ui.fatal(message)
+            end
+            raise CloudExceptions::ServerCreateError, message
+          end
+
+          msg_pair("Instance Name", server.name)
+          msg_pair("Instance ID", server.id)
+
+          print "\n#{ui.color("Waiting for server [wait time = #{options[:server_create_timeout]}]", :magenta)}"
+
+          # wait for it to be ready to do stuff
+          server.wait_for(Integer(options[:server_create_timeout])) { print "."; ready? }
+
+          puts("\n")
+          server
         end
 
         def delete_server(server_name)

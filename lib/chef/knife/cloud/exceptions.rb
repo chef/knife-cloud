@@ -9,6 +9,7 @@ class Chef
         class ServerListingError < RuntimeError; end
         class ImageListingError < RuntimeError; end
         class ServerCreateDependenciesError < RuntimeError; end
+        class BootstrapError < RuntimeError; end
       end
     end
   end
