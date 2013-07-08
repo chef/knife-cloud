@@ -2,7 +2,6 @@
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 #
-
 require 'chef/knife'
 
 class Chef
@@ -46,9 +45,14 @@ class Chef
         def after_exec_command
         end
 
-        def validate!
+        def validate!(*keys)
           # validates necessary options/params to carry out the command.
           # subclasses to implement this.
+          errors = []
+          keys.each do |k|
+            errors << "You did not provided a valid '#{pretty_key(k)}' value." if config[k].nil?
+          end
+          exit 1 if errors.each{|e| ui.error(e)}.any?
         end
 
         # Additional helpers
@@ -60,7 +64,7 @@ class Chef
 
         def locate_config_value(key)
           key = key.to_sym
-          Chef::Config[:knife][key] || config[key]
+          config[key] || Chef::Config[:knife][key]
         end
 
         #generate a random name if chef_node_name is empty
@@ -68,6 +72,10 @@ class Chef
           return chef_node_name unless chef_node_name.nil?
           #lazy uuids
           chef_node_name = "os-"+rand.to_s.split('.')[1]
+        end
+
+        def pretty_key(key)
+          key.to_s.gsub(/_/, ' ').gsub(/\w+/){ |w| (w =~ /(ssh)|(aws)/i) ? w.upcase  : w.capitalize }
         end
 
       end # class Command

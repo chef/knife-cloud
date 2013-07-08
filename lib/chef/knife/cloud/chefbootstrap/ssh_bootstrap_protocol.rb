@@ -7,22 +7,22 @@ class Chef
       class SshBootstrapProtocol < BootstrapProtocol
         attr_accessor :initial_sleep_delay
 
-        def initialize(app)
-          @bootstrap = (app[:image_os_type] == 'other') ? Chef::Knife::Bootstrap.new : Chef::Knife::BootstrapWindowsSsh.new
+        def initialize(config)
+          @bootstrap = (config[:image_os_type] == 'other') ? Chef::Knife::Bootstrap.new : Chef::Knife::BootstrapWindowsSsh.new
           super
         end
 
         def init_bootstrap_options
-          bootstrap.config[:ssh_user] = @app[:ssh_user]
-          bootstrap.config[:identity_file] = @app[:identity_file]
-          bootstrap.config[:host_key_verify] = @app[:host_key_verify]
-          bootstrap.config[:use_sudo] = true unless @app[:ssh_user] == 'root'
+          bootstrap.config[:ssh_user] = @config[:ssh_user]
+          bootstrap.config[:identity_file] = @config[:identity_file]
+          bootstrap.config[:host_key_verify] = @config[:host_key_verify]
+          bootstrap.config[:use_sudo] = true unless @config[:ssh_user] == 'root'
           super
         end
 
         def wait_for_server_ready
-          print "\n#{ui.color("Waiting for sshd to host (#{@app[:bootstrap_ip_address]})", :magenta)}"
-          print(".") until tcp_test_ssh(@app[:bootstrap_ip_address]) {
+          print "\n#{ui.color("Waiting for sshd to host (#{@config[:bootstrap_ip_address]})", :magenta)}"
+          print(".") until tcp_test_ssh(@config[:bootstrap_ip_address]) {
             sleep @initial_sleep_delay ||= 10
             puts("done")
           }
