@@ -2,20 +2,17 @@
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'chef/knife/cloud/fog/service'
+require 'support/shared_examples_for_fog_service'
 
 describe Chef::Knife::Cloud::FogService do
+
+  it_behaves_like Chef::Knife::Cloud::FogService, Chef::Knife::Cloud::FogService.new
 
   let (:instance) { Chef::Knife::Cloud::FogService.new }
 
   it { expect {instance}.to_not raise_error }
 
   context "connection" do
-    it "creates a connection to fog service." do
-      @instance = Chef::Knife::Cloud::FogService.new
-      Fog::Compute.should_receive(:new)
-      @instance.connection
-    end
-
     it "creates a connection to fog service with the provided auth params." do
       @instance = Chef::Knife::Cloud::FogService.new({:auth_params => {:provider => 'Any Cloud Provider'}})
       Fog::Compute.should_receive(:new).with({:provider => 'Any Cloud Provider'})
@@ -38,53 +35,4 @@ describe Chef::Knife::Cloud::FogService do
       lambda { @instance.connection }.should raise_error(SystemExit)
     end
   end
-
-  context "delete" do
-    it "deletes the server." do
-      @server = mock()
-      instance.stub(:puts)
-      instance.stub_chain(:connection, :servers, :get).and_return(@server)
-      @server.should_receive(:name).ordered
-      @server.should_receive(:id).ordered
-      instance.stub_chain(:ui, :confirm).ordered
-      @server.should_receive(:destroy).ordered
-      instance.delete_server(:server_name)
-    end
-
-    it "throws error message when the server cannot be located." do
-      server_name = "invalid_server_name"
-      error_message = "Could not locate server '#{server_name}'."
-      instance.stub_chain(:connection, :servers, :get).and_return(nil)
-      instance.stub_chain(:ui, :error).with(error_message)
-      expect { instance.delete_server(server_name) }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServerDeleteError)
-    end
-
-    pending "throws error message when it returns an unknown server error." do
-      server_name = "invalid_server_name"
-      error_message = "Unknown server error (#{}): #{}"
-      instance.stub(:response)
-      instance.stub_chain(:connection, :servers, :get).and_raise(Excon::Errors::BadRequest.new(error_message))
-      # instance.stub_chain(:ui, :fatal).with(error_message)
-      expect { @instance.delete_server(server_name) }.to raise_error(Excon::Errors::BadRequest)
-    end
-  end
-
-  context "create" do
-
-    before do
-      instance.stub(:puts)
-      instance.stub(:print)
-    end
-
-    it "creates the server." do
-      @server = mock()
-      instance.stub_chain(:connection, :servers, :create).and_return(@server)
-      @server.should_receive(:name).ordered
-      @server.should_receive(:id).ordered
-      instance.stub_chain(:ui, :color)
-      @server.should_receive(:wait_for)
-      instance.create_server({:server_create_timeout => 600})
-    end
-  end
-
 end
