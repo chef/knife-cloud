@@ -34,7 +34,7 @@ shared_examples_for Chef::Knife::Cloud::ServerDeleteCommand do |instance|
   describe "#execute_command" do
     it "execute with correct method calls" do
       instance::name_args = ["testserver"]
-      instance.service = mock
+      instance.service = double
       instance.service.should_receive(:delete_server).ordered
       instance.should_receive(:delete_from_chef).ordered
       instance.execute_command
