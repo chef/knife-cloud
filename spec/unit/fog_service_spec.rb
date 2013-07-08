@@ -9,32 +9,34 @@ describe Chef::Knife::Cloud::FogService do
 
   it { expect {instance}.to_not raise_error }
 
-  it "creates a connection to fog service." do
-    @instance = Chef::Knife::Cloud::FogService.new
-    Fog::Compute.should_receive(:new)
-    @instance.connection
-  end
+  context "connection" do
+    it "creates a connection to fog service." do
+      @instance = Chef::Knife::Cloud::FogService.new
+      Fog::Compute.should_receive(:new)
+      @instance.connection
+    end
 
-  it "creates a connection to fog service with the provided auth params." do
-    @instance = Chef::Knife::Cloud::FogService.new({:auth_params => {:provider => 'Any Cloud Provider'}})
-    Fog::Compute.should_receive(:new).with({:provider => 'Any Cloud Provider'})
-    @instance.connection
-  end
+    it "creates a connection to fog service with the provided auth params." do
+      @instance = Chef::Knife::Cloud::FogService.new({:auth_params => {:provider => 'Any Cloud Provider'}})
+      Fog::Compute.should_receive(:new).with({:provider => 'Any Cloud Provider'})
+      @instance.connection
+    end
 
-  it "throws error message when incorrect auth params are provided." do
-    error_message = "Connection failure, please check your username and password."
-    @instance = Chef::Knife::Cloud::FogService.new({:auth_params => {:provider => 'Any Cloud Provider'}})
-    Fog::Compute.should_receive(:new).with({:provider => 'Any Cloud Provider'}).and_raise(Excon::Errors::Unauthorized.new(error_message))
-    @instance.stub_chain(:ui, :fatal).with(error_message)
-    lambda { @instance.connection }.should raise_error(SystemExit)
-  end
+    it "throws error message when incorrect auth params are provided." do
+      error_message = "Connection failure, please check your username and password."
+      @instance = Chef::Knife::Cloud::FogService.new({:auth_params => {:provider => 'Any Cloud Provider'}})
+      Fog::Compute.should_receive(:new).with({:provider => 'Any Cloud Provider'}).and_raise(Excon::Errors::Unauthorized.new(error_message))
+      @instance.stub_chain(:ui, :fatal).with(error_message)
+      lambda { @instance.connection }.should raise_error(SystemExit)
+    end
 
-  pending "throws error message when there is any socket error." do
-    error_message = "Connection failure, please check your authentication URL."
-    @instance = Chef::Knife::Cloud::FogService.new({:auth_params => {:provider => 'Any Cloud Provider', :connection_options => 'proxy_opts'}})
-    Fog::Compute.should_receive(:new).with({:provider => 'Any Cloud Provider', :connection_options => 'proxy_opts'}).and_raise(Excon::Errors::SocketError.new(error_message))
-    @instance.stub_chain(:ui, :fatal).with(error_message)
-    lambda { @instance.connection }.should raise_error(SystemExit)
+    pending "throws error message when there is any socket error." do
+      error_message = "Connection failure, please check your authentication URL."
+      @instance = Chef::Knife::Cloud::FogService.new({:auth_params => {:provider => 'Any Cloud Provider', :connection_options => 'proxy_opts'}})
+      Fog::Compute.should_receive(:new).with({:provider => 'Any Cloud Provider', :connection_options => 'proxy_opts'}).and_raise(Excon::Errors::SocketError)
+      @instance.stub_chain(:ui, :fatal).with(error_message)
+      lambda { @instance.connection }.should raise_error(SystemExit)
+    end
   end
 
   context "delete" do
@@ -68,8 +70,20 @@ describe Chef::Knife::Cloud::FogService do
   end
 
   context "create" do
-    pending "creates the server." do
 
+    before do
+      instance.stub(:puts)
+      instance.stub(:print)
+    end
+
+    it "creates the server." do
+      @server = mock()
+      instance.stub_chain(:connection, :servers, :create).and_return(@server)
+      @server.should_receive(:name).ordered
+      @server.should_receive(:id).ordered
+      instance.stub_chain(:ui, :color)
+      @server.should_receive(:wait_for)
+      instance.create_server({:server_create_timeout => 600})
     end
   end
 

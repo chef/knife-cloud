@@ -1,6 +1,5 @@
 
 require 'chef/knife/core/ui'
-
 class Chef
   class Knife
     class Cloud
@@ -25,18 +24,18 @@ class Chef
 
         def init_bootstrap_options
           # set the command bootstrap options.
-          bootstrap.name_args = @app.config[:bootstrap_ip_address]
-          bootstrap.config[:chef_node_name] = @app.config[:chef_node_name]
-          bootstrap.config[:run_list] = @app.config[:run_list]
-          bootstrap.config[:prerelease] = @app.config[:prerelease]
-          bootstrap.config[:bootstrap_version] = @app.locate_config_value(:bootstrap_version)
-          bootstrap.config[:distro] = @app.locate_config_value(:distro)
-          bootstrap.config[:template_file] = @app.locate_config_value(:template_file)
-          bootstrap.config[:bootstrap_proxy] = @app.locate_config_value(:bootstrap_proxy)
-          bootstrap.config[:environment] = @app.config[:environment]
+          bootstrap.name_args = @app[:bootstrap_ip_address]
+          bootstrap.config[:chef_node_name] = @app[:chef_node_name]
+          bootstrap.config[:run_list] = @app[:run_list]
+          bootstrap.config[:prerelease] = @app[:prerelease]
+          bootstrap.config[:bootstrap_version] = @app[:bootstrap_version]
+          bootstrap.config[:distro] = @app[:distro]
+          bootstrap.config[:template_file] = @app[:template_file]
+          bootstrap.config[:bootstrap_proxy] = @app[:bootstrap_proxy]
+          bootstrap.config[:environment] = @app[:environment]
           # see chef/knife/bootstrap.rb #warn_chef_config_secret_key.
-          bootstrap.config[:encrypted_data_bag_secret] = @app.config[:encrypted_data_bag_secret]
-          bootstrap.config[:encrypted_data_bag_secret_file] = @app.config[:encrypted_data_bag_secret_file]
+          bootstrap.config[:encrypted_data_bag_secret] = @app[:encrypted_data_bag_secret]
+          bootstrap.config[:encrypted_data_bag_secret_file] = @app[:encrypted_data_bag_secret_file]
         end
 
       end

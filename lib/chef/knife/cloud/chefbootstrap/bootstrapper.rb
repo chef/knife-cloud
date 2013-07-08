@@ -2,7 +2,6 @@
 require 'chef/knife/core/ui'
 require 'chef/knife/cloud/chefbootstrap/ssh_bootstrap_protocol'
 require 'chef/knife/cloud/chefbootstrap/winrm_bootstrap_protocol'
-
 class Chef
   class Knife
     class Cloud
@@ -17,16 +16,14 @@ class Chef
         def bootstrap
           # uses BootstrapDistribution and BootstrapProtocol to perform bootstrap
           @protocol = create_bootstrap_protocol
-
           @distribution = create_bootstrap_distribution
-
           @protocol.send_bootstrap_command
         end
 
         def create_bootstrap_protocol
-          if @app.config[:windows_bootstrap_protocol].nil? or @app.config[:windows_bootstrap_protocol] == 'ssh'
+          if @app[:bootstrap_protocol].nil? or @app[:bootstrap_protocol] == 'ssh'
             SshBootstrapProtocol.new(@app)
-          elsif @app.config[:windows_bootstrap_protocol] == 'winrm'
+          elsif @app[:bootstrap_protocol] == 'winrm'
             WinrmBootstrapProtocol.new(@app)
           else
             # raise an exception, invalid bootstrap protocol.

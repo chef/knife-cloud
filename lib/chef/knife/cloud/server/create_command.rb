@@ -43,7 +43,7 @@ class Chef
         # Bootstrap the server
         def bootstrap
           before_bootstrap
-          @bootstrapper = Bootstrapper.new(@app)
+          @bootstrapper = Bootstrapper.new(config)
           puts "Bootstrapping the server..."
           @bootstrapper.bootstrap
           after_bootstrap

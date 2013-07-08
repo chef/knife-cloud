@@ -1,5 +1,5 @@
 
-
+require 'chef/knife/cloud/chefbootstrap/bootstrap_options'
 require 'chef/knife/cloud/server/options'
 
 class Chef
@@ -10,7 +10,7 @@ class Chef
         def self.included(includer)
           includer.class_eval do
             include ServerOptions
-
+            include BootstrapOptions
             option :image,
               :short => "-I IMAGE_ID",
               :long => "--image IMAGE_ID",
@@ -21,6 +21,7 @@ class Chef
               :short => "-T IMAGE_OS_TYPE",
               :long => "--image-os IMAGE_OS_TYPE",
               :description => "The image os type. options [windows/other]. Only required when cloud does not provide a way to identify image os, default is non-windows",
+              :default => 'other',
               :proc => Proc.new { |i| Chef::Config[:knife][:image_os] = i }
 
             option :flavor,
@@ -28,6 +29,11 @@ class Chef
               :long => "--flavor FLAVOR_ID",
               :description => "The flavor ID of server", # TODO -KD- cloud plugin can override to give examples?
               :proc => Proc.new { |f| Chef::Config[:knife][:flavor] = f }
+
+            option :bootstrap_protocol,
+              :long => "--bootstrap-protocol protocol",
+              :description => "Protocol to bootstrap servers. options: winrm/ssh. For linux servers always use ssh.",
+              :default => 'ssh'
 
             option :server_create_timeout,
               :long => "--server-create-timeout timeout",
