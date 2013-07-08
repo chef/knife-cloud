@@ -6,6 +6,7 @@ require 'chef/knife/cloud/list_resource_command'
 
 describe Chef::Knife::Cloud::ResourceListCommand do
 
+  before {pending}
   before do
     # setup dummy app and service objects.
     @app = App.new

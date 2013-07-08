@@ -1,11 +1,11 @@
 require 'spec_helper'
 require 'chef/knife/cloud/chefbootstrap/bootstrapper'
+require 'chef/knife/bootstrap_windows_ssh'
 
 describe Chef::Knife::Cloud::Bootstrapper do
   before do
-    # setup dummy objects.
-    @app = App.new
-    @instance = Chef::Knife::Cloud::Bootstrapper.new(@app)
+    @config = {:bootstrap_protocol => 'ssh'}
+    @instance = Chef::Knife::Cloud::Bootstrapper.new(@config)
   end
 
   context "Bootstrapper initializer" do
@@ -14,15 +14,15 @@ describe Chef::Knife::Cloud::Bootstrapper do
     end
 
     it "creating instance" do
-      expect {Chef::Knife::Cloud::Bootstrapper.new(@app)}.to_not raise_error
-      expect(Chef::Knife::Cloud::Bootstrapper.new(@app).class).to eq(Chef::Knife::Cloud::Bootstrapper)
+      expect {Chef::Knife::Cloud::Bootstrapper.new(@config)}.to_not raise_error
+      expect(Chef::Knife::Cloud::Bootstrapper.new(@config).class).to eq(Chef::Knife::Cloud::Bootstrapper)
     end
   end
-  
+
   describe "#bootstrap" do
     it "execute with correct method calls" do
-      @app.stub(:is_image_windows?).and_return(false)
-      @ssh_bootstrap_protocol = Chef::Knife::Cloud::SshBootstrapProtocol.new(@app)
+      @config.stub(:is_image_windows?).and_return(false)
+      @ssh_bootstrap_protocol = Chef::Knife::Cloud::SshBootstrapProtocol.new(@config)
       @instance.stub(:create_bootstrap_protocol).and_return(@ssh_bootstrap_protocol)
       @ssh_bootstrap_protocol.stub(:send_bootstrap_command).and_return(true)
       @instance.should_receive(:create_bootstrap_protocol).ordered
@@ -33,38 +33,36 @@ describe Chef::Knife::Cloud::Bootstrapper do
   end
 
   describe "#create_bootstrap_protocol" do
-    context "when windows_bootstrap_protocol set to ssh" do
+    context "when bootstrap_protocol set to ssh" do
       before do
-        @app.config[:windows_bootstrap_protocol] = "ssh"
+        @config[:bootstrap_protocol] = "ssh"
       end
 
       it "create SshBootstrapProtocol for linux image" do
-        @app.stub(:is_image_windows?).and_return(false)
         expect(@instance.create_bootstrap_protocol).to be_an_instance_of(Chef::Knife::Cloud::SshBootstrapProtocol)
       end
     end
-    
-    context "when windows_bootstrap_protocol set to winrm" do
+
+    context "when bootstrap_protocol set to winrm" do
       before do
-        @app.config[:windows_bootstrap_protocol] = "winrm"
+        @config[:bootstrap_protocol] = "winrm"
+        @config[:image_os_type] = "windows"
       end
 
-      it "create windows_bootstrap_protocol for windows image" do
-        @app.stub(:is_image_windows?).and_return(true)
+      it "create bootstrap_protocol for windows image" do
         expect(@instance.create_bootstrap_protocol).to be_an_instance_of(Chef::Knife::Cloud::WinrmBootstrapProtocol)
       end
     end
 
-    context "when windows_bootstrap_protocol set to invalid" do
+    context "when bootstrap_protocol set to invalid" do
       before do
-        @app.config[:windows_bootstrap_protocol] = "invalid"
+        @config[:bootstrap_protocol] = "invalid"
       end
 
       it "raise an exception, invalid bootstrap protocol" do
-        @app.stub(:is_image_windows?).and_return(true)
         @instance.ui.should_receive(:fatal)
         expect{@instance.create_bootstrap_protocol}.to raise_error(RuntimeError)
       end
     end
-  end  
+  end
 end
