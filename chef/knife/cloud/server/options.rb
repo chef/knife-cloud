@@ -1,4 +1,5 @@
 #
+# Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 # License:: Apache License, Version 2.0
 #
@@ -18,19 +19,15 @@
 class Chef
   class Knife
     class Cloud
-      module ResourceListOptions
-
+      module ServerOptions
         def self.included(includer)
           includer.class_eval do
-
-            option :disable_filter,
-            :long => "--disable-filter",
-            :description => "Disable filtering of the current resource listing.",
-            :boolean => true,
-            :default => false
+            option :chef_node_name,
+              :short => "-N NAME",
+              :long => "--node-name NAME",
+              :description => "The name of the node and client to delete, if it differs from the server name. Only has meaning when used with the '--purge' option."
           end
         end
-
       end
     end
   end
