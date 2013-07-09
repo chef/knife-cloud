@@ -44,7 +44,7 @@ class Chef
         def bootstrap
           before_bootstrap
           @bootstrapper = Bootstrapper.new(config)
-          puts "Bootstrapping the server..."
+          Chef::Log.debug("Bootstrapping the server...")
           @bootstrapper.bootstrap
           after_bootstrap
         end

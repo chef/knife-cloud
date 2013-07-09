@@ -3,12 +3,14 @@
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 #
 require 'chef/knife'
+require "chef/knife/cloud/helpers"
 
 class Chef
   class Knife
 
     class Cloud
       class Command < Chef::Knife
+        include Cloud::Helpers
         attr_accessor :service, :custom_arguments
 
         def run
@@ -53,18 +55,6 @@ class Chef
             errors << "You did not provided a valid '#{pretty_key(k)}' value." if config[k].nil?
           end
           exit 1 if errors.each{|e| ui.error(e)}.any?
-        end
-
-        # Additional helpers
-        def msg_pair(label, value, color=:cyan)
-          if value && !value.to_s.empty?
-            puts "#{ui.color(label, color)}: #{value}"
-          end
-        end
-
-        def locate_config_value(key)
-          key = key.to_sym
-          config[key] || Chef::Config[:knife][key]
         end
 
         #generate a random name if chef_node_name is empty
