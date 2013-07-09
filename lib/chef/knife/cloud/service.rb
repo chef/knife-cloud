@@ -4,12 +4,13 @@
 #
 
 require 'chef/knife/cloud/exceptions'
-
+require "chef/knife/cloud/helpers"
 
 class Chef
   class Knife
     class Cloud
       class Service
+        include Cloud::Helpers
         attr_accessor :ui
 
         def initialize(options = {})
@@ -48,13 +49,6 @@ class Chef
 
         def list_images(image_filters)
           raise Chef::Exceptions::Override, "You must override list_images in #{self.to_s}"
-        end
-
-        # Additional helpers
-        def msg_pair(label, value, color=:cyan)
-          if value && !value.to_s.empty?
-            puts "#{ui.color(label, color)}: #{value}"
-          end
         end
 
       end # class service
