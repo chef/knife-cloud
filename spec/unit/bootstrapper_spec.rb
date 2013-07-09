@@ -26,7 +26,7 @@ describe Chef::Knife::Cloud::Bootstrapper do
       @instance.stub(:create_bootstrap_protocol).and_return(@ssh_bootstrap_protocol)
       @ssh_bootstrap_protocol.stub(:send_bootstrap_command).and_return(true)
       @instance.should_receive(:create_bootstrap_protocol).ordered
-      @instance.should_receive(:create_bootstrap_distribution).ordered
+      #@instance.should_receive(:create_bootstrap_distribution).ordered
       @ssh_bootstrap_protocol.should_receive(:send_bootstrap_command).ordered
       @instance.bootstrap
     end
