@@ -52,7 +52,7 @@ class Chef
           # subclasses to implement this.
           errors = []
           keys.each do |k|
-            errors << "You did not provided a valid '#{pretty_key(k)}' value." if config[k].nil?
+            errors << "You did not provide a valid '#{pretty_key(k)}' value." if locate_config_value(k).nil?
           end
           exit 1 if errors.each{|e| ui.error(e)}.any?
         end
