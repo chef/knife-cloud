@@ -8,7 +8,7 @@ class Chef
         include Chef::Knife::Cloud::Helpers
 
         attr_accessor :bootstrap, :ui
-        attr_accessor :config
+        attr_reader :config
 
         def initialize(config)
           @config = config
