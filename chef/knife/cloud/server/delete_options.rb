@@ -1,4 +1,5 @@
 #
+# Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 # License:: Apache License, Version 2.0
 #
@@ -15,22 +16,25 @@
 # limitations under the License.
 #
 
+require 'chef/knife/cloud/server/options'
+
 class Chef
   class Knife
     class Cloud
-      module ResourceListOptions
-
+      module ServerDeleteOptions
         def self.included(includer)
           includer.class_eval do
+            include ServerOptions
 
-            option :disable_filter,
-            :long => "--disable-filter",
-            :description => "Disable filtering of the current resource listing.",
-            :boolean => true,
-            :default => false
+            option :purge,
+              :short => "-P",
+              :long => "--purge",
+              :boolean => true,
+              :default => false,
+              :description => "Destroy corresponding node and client on the Chef Server, in addition to destroying the Cloud node itself. Assumes node and client have the same name as the server (if not, add the '--node-name' option)."
+
           end
         end
-
       end
     end
   end

@@ -15,23 +15,18 @@
 # limitations under the License.
 #
 
+require 'chef/knife/cloud/list_resource_command'
+
 class Chef
   class Knife
     class Cloud
-      module ResourceListOptions
+      class FogImageListCommand < ResourceListCommand
 
-        def self.included(includer)
-          includer.class_eval do
-
-            option :disable_filter,
-            :long => "--disable-filter",
-            :description => "Disable filtering of the current resource listing.",
-            :boolean => true,
-            :default => false
-          end
+        def query_resource
+          @service.connection.images.all
         end
 
-      end
+      end # class FogImageListCommand
     end
   end
 end

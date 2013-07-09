@@ -18,19 +18,13 @@
 class Chef
   class Knife
     class Cloud
-      module ResourceListOptions
-
-        def self.included(includer)
-          includer.class_eval do
-
-            option :disable_filter,
-            :long => "--disable-filter",
-            :description => "Disable filtering of the current resource listing.",
-            :boolean => true,
-            :default => false
-          end
-        end
-
+      class CloudExceptions
+        class ServerCreateError < RuntimeError; end
+        class ServerDeleteError < RuntimeError; end
+        class ServerListingError < RuntimeError; end
+        class ImageListingError < RuntimeError; end
+        class ServerCreateDependenciesError < RuntimeError; end
+        class BootstrapError < RuntimeError; end
       end
     end
   end
