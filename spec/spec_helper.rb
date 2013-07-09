@@ -1,6 +1,9 @@
 $:.unshift File.expand_path('../../lib', __FILE__)
-require 'chef/exceptions'
 require 'json'
+require 'chef/knife/cloud/exceptions'
+require 'json'
+require 'chef/exceptions'
+require 'chef/config'
 
 class App
   attr_accessor :config

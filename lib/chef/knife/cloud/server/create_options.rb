@@ -1,6 +1,6 @@
 
-require 'chef/knife/winrm_base' # pulls in winrm options
-require 'chef/knife/cloud/server/bootstrap_options'
+require 'chef/knife/cloud/chefbootstrap/bootstrap_options'
+require 'chef/knife/cloud/server/options'
 
 class Chef
   class Knife
@@ -9,38 +9,37 @@ class Chef
 
         def self.included(includer)
           includer.class_eval do
-            include Chef::Knife::WinrmBase
+            include ServerOptions
             include BootstrapOptions
-
-            deps do
-              require 'readline'
-              require 'chef/json_compat'
-              require 'chef/knife/bootstrap'
-              Chef::Knife::Bootstrap.load_deps
-            end
-
             option :image,
-            :short => "-I IMAGE_ID",
-            :long => "--image IMAGE_ID",
-            :description => "The image ID for the server",
-            :proc => Proc.new { |i| Chef::Config[:knife][:image] = i }
+              :short => "-I IMAGE_ID",
+              :long => "--image IMAGE_ID",
+              :description => "The image ID for the server",
+              :proc => Proc.new { |i| Chef::Config[:knife][:image] = i }
+
+            option :image_os_type,
+              :short => "-T IMAGE_OS_TYPE",
+              :long => "--image-os IMAGE_OS_TYPE",
+              :description => "The image os type. options [windows/other]. Only required when cloud does not provide a way to identify image os, default is non-windows",
+              :default => 'other',
+              :proc => Proc.new { |i| Chef::Config[:knife][:image_os] = i }
 
             option :flavor,
-            :short => "-f FLAVOR_ID",
-            :long => "--flavor FLAVOR_ID",
-            :description => "The flavor ID of server", # TODO -KD- cloud plugin can override to give examples?
-            :proc => Proc.new { |f| Chef::Config[:knife][:flavor] = f }
+              :short => "-f FLAVOR_ID",
+              :long => "--flavor FLAVOR_ID",
+              :description => "The flavor ID of server", # TODO -KD- cloud plugin can override to give examples?
+              :proc => Proc.new { |f| Chef::Config[:knife][:flavor] = f }
 
-            option :windows_bootstrap_protocol,
-            :long => "--windows-bootstrap-protocol protocol",
-            :description => "Protocol to bootstrap windows servers. options: winrm/ssh. For linux servers always use ssh.",
-            :default => nil
+            option :bootstrap_protocol,
+              :long => "--bootstrap-protocol protocol",
+              :description => "Protocol to bootstrap servers. options: winrm/ssh. For linux servers always use ssh.",
+              :default => 'ssh'
 
             option :server_create_timeout,
               :long => "--server-create-timeout timeout",
               :description => "How long to wait until the server is ready; default is 600 seconds",
               :default => 600,
-              :proc => Proc.new { |v| Chef::Config[:knife][:server_create_timeouts] = v}
+              :proc => Proc.new { |v| Chef::Config[:knife][:server_create_timeout] = v}
 
           end
         end

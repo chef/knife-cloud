@@ -1,3 +1,7 @@
+#
+# Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
+# Copyright:: Copyright (c) 2013 Opscode, Inc.
+#
 
 require 'chef/knife/cloud/command'
 # These two are needed for the '--purge' deletion case
@@ -8,17 +12,18 @@ class Chef
   class Knife
     class Cloud
       class ServerDeleteCommand < Command
-        attr_accessor :server_name, :server
 
-        def exec_command(*params)
-          # actual deletion in subclass, specific to implementation.
-          raise Chef::Exceptions::Override, "You must override exec_command in #{self.to_s} for server deletion."
+        def execute_command
+          @name_args.each do |server_name|
+            service.delete_server(server_name)
+            delete_from_chef(server_name)
+          end
         end
 
-        def after_handler
+        def delete_from_chef(server_name)
           # delete the node from Chef if purge requested.
-          if @app.config[:purge]
-            thing_to_delete = @app.config[:chef_node_name] || server_name
+          if config[:purge]
+            thing_to_delete = config[:chef_node_name] || server_name
             destroy_item(Chef::Node, thing_to_delete, "node")
             destroy_item(Chef::ApiClient, thing_to_delete, "client")
           else

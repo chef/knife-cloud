@@ -6,8 +6,8 @@ class Chef
     class Cloud
       class WinrmBootstrapProtocol < BootstrapProtocol
 
-        def initialize(app)
-          @bootstrap = if app.is_image_windows?
+        def initialize(config)
+          @bootstrap = if config[:image_os_type] == 'windows'
             load_winrm_deps
             Chef::Knife::BootstrapWindowsWinrm.new
           else
@@ -25,16 +25,16 @@ class Chef
         end
 
         def init_bootstrap_options
-          bootstrap.config[:winrm_user] = @app.locate_config_value(:winrm_user) || 'Administrator'
-          bootstrap.config[:winrm_password] = @app.locate_config_value(:winrm_password)
-          bootstrap.config[:winrm_transport] = @app.locate_config_value(:winrm_transport)
-          bootstrap.config[:winrm_port] = @app.locate_config_value(:winrm_port)
+          bootstrap.config[:winrm_user] = @config[:winrm_user] || 'Administrator'
+          bootstrap.config[:winrm_password] = @config[:winrm_password]
+          bootstrap.config[:winrm_transport] = @config[:winrm_transport]
+          bootstrap.config[:winrm_port] = @config[:winrm_port]
           super
         end
 
         def wait_for_server_ready
-          print "\n#{ui.color("Waiting for winrm to host (#{@app.config[:bootstrap_ip_address]})", :magenta)}"
-          print(".") until tcp_test_winrm(@app.config[:bootstrap_ip_address], @app.locate_config_value(:winrm_port))
+          print "\n#{ui.color("Waiting for winrm to host (#{@config[:bootstrap_ip_address]})", :magenta)}"
+          print(".") until tcp_test_winrm(@config[:bootstrap_ip_address], @config[:winrm_port])
         end
 
         def tcp_test_winrm(hostname, port)
