@@ -28,8 +28,11 @@ class Chef
         attr_accessor :service, :custom_arguments
 
         def run
-          # validate command pre-requisites (cli options)
+          # validate compulsory params
           validate!
+
+          # validate command pre-requisites (cli options)
+          validate_params!
 
           # setup the service
           @service = create_service_instance
@@ -69,6 +72,9 @@ class Chef
             errors << "You did not provide a valid '#{pretty_key(k)}' value." if locate_config_value(k).nil?
           end
           exit 1 if errors.each{|e| ui.error(e)}.any?
+        end
+
+        def validate_params!
         end
 
         #generate a random name if chef_node_name is empty

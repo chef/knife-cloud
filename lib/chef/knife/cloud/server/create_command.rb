@@ -25,6 +25,17 @@ class Chef
       class ServerCreateCommand < Command
         attr_accessor :server, :create_options
 
+        def validate_params!
+          # validate ssh_user, ssh_password, identity_file for ssh bootstrap protocol for non-windows image
+          errors = []
+          if (config[:image_os_type] == 'other') || (Chef::Config[:knife][:image_os]== 'other')
+            if locate_config_value(:identity_file).nil? && locate_config_value(:ssh_password).nil?
+              errors << "You must provide either Identity file or SSH Password."
+            end
+          end
+          exit 1 if errors.each{|e| ui.error(e)}.any?
+        end
+
         def before_exec_command
           begin
             service.create_server_dependencies
