@@ -86,11 +86,15 @@ class Chef
         end
 
         def list_servers
-          raise Chef::Exceptions::Override, "You must override list_servers in #{self.to_s}"
+          begin
+            servers = connection.servers.all
+          end
         end
 
         def list_images(image_filters)
-          raise Chef::Exceptions::Override, "You must override list_images in #{self.to_s}"
+          begin
+            images = connection.images.all
+          end
         end
 
       end

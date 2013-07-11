@@ -24,7 +24,7 @@ class Chef
         attr_accessor :sort_by_field
         attr_accessor :resource_filters # array of filters in form {:attribute => attribute-name, :regex => 'filter regex value'}
 
-        def initialize(app, service)
+        def initialize(service)
           super
           @sort_by_field = "id" # default sort by id
         end
@@ -66,7 +66,7 @@ class Chef
                 list = []
                 columns_with_info.each do |col_info|
                   value = (col_info[:value_callback].nil? ? resource.send(col_info[:key]).to_s : col_info[:value_callback].call(resource.send(col_info[:key])))
-                  if !@app.config[:disable_filter]
+                  if !config[:disable_filter]
                     resource_filtered = true if is_resource_filtered?(col_info[:key], value)
                   end
                   list << value

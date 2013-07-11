@@ -4,7 +4,7 @@ require 'chef/knife/cloud/list_resource_command'
 class Chef
   class Knife
     class Cloud
-      class FogServerListCommand < ResourceListCommand
+      class ServerListCommand < ResourceListCommand
 
         def query_resource
           @service.connection.servers.all
@@ -22,7 +22,7 @@ class Chef
            end
         end
 
-      end # class FogServerListCommand
+      end # class ServerListCommand
     end
   end
 end
