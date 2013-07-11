@@ -7,7 +7,7 @@ class Chef
       class ServerListCommand < ResourceListCommand
 
         def query_resource
-          @service.connection.servers.all
+          @service.list_servers
         end
 
         def format_server_state(state)

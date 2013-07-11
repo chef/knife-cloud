@@ -91,7 +91,7 @@ class Chef
           end
         end
 
-        def list_images(image_filters)
+        def list_images
           begin
             images = connection.images.all
           end

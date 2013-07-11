@@ -23,15 +23,15 @@ class Chef
       class ResourceListCommand < Command
         attr_accessor :sort_by_field
         attr_accessor :resource_filters # array of filters in form {:attribute => attribute-name, :regex => 'filter regex value'}
+        attr_accessor :columns_with_info # columns_with_info is array of hash with label, key and attribute extraction callback, ex [{:label => "Label text", :key => 'key', value_callback => callback_method to extract/format the required value}, ...]
 
         def initialize(service)
           super
+          @columns_with_info = []
           @sort_by_field = "id" # default sort by id
         end
 
-        def exec_command(*params)
-          @resource_filters = params[0] if !params.empty? # TODO - we can also take this from cli, for now let cloud-plugin set this.
-
+        def execute_command
           # exec the cmd
           resources = query_resource
 
@@ -45,8 +45,8 @@ class Chef
         end
 
         def is_resource_filtered?(attribute, value)
-          return false if resource_filters.nil?
-          resource_filters.each do |filter|
+          return false if @resource_filters.nil?
+          @resource_filters.each do |filter|
             if attribute == filter[:attribute] and value =~ filter[:regex]
               return true
             end
@@ -54,17 +54,16 @@ class Chef
           false
         end
 
-        # When columns_with_info is nil display all
-        # columns_with_info is array of hash with label, key and attribute extraction callback, ex [{'label' => "Label text", key => 'key', value_callback => callback_method to extract/format the required value}, ...]
-        def list(resources, columns_with_info = [])
-          # display column wise only if columns_with_info is specified, else as a json for readable display.
+        # When @columns_with_info is nil display all
+        def list(resources)
+          # display column wise only if @columns_with_info is specified, else as a json for readable display.
           begin
-            resource_list = columns_with_info.map { |col_info| ui.color(col_info[:label], :bold) } if columns_with_info.length > 0
+            resource_list = @columns_with_info.map { |col_info| ui.color(col_info[:label], :bold) } if @columns_with_info.length > 0
             resources.sort_by(&sort_by_field.to_sym).each do |resource|
               resource_filtered = false
-              if columns_with_info.length > 0
+              if @columns_with_info.length > 0
                 list = []
-                columns_with_info.each do |col_info|
+                @columns_with_info.each do |col_info|
                   value = (col_info[:value_callback].nil? ? resource.send(col_info[:key]).to_s : col_info[:value_callback].call(resource.send(col_info[:key])))
                   if !config[:disable_filter]
                     resource_filtered = true if is_resource_filtered?(col_info[:key], value)
@@ -82,7 +81,7 @@ class Chef
             ui.fatal("Unknown resource error (#{response['badRequest']['code']}): #{response['badRequest']['message']}")
             raise e
           end
-          puts ui.list(resource_list, :uneven_columns_across, columns_with_info.length) if columns_with_info.length > 0
+          puts ui.list(resource_list, :uneven_columns_across, @columns_with_info.length) if @columns_with_info.length > 0
         end
 
       end # class ResourceListCommand
