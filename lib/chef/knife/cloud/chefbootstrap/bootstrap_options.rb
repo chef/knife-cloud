@@ -1,5 +1,6 @@
-
-
+require 'chef/knife/winrm_base'
+require 'chef/knife/core/bootstrap_context'
+require 'net/ssh/multi'
 class Chef
   class Knife
     class Cloud
@@ -10,15 +11,15 @@ class Chef
           includer.class_eval do
 
             deps do
-              require 'chef/knife/core/bootstrap_context'
               require 'chef/json_compat'
               require 'tempfile'
               require 'highline'
               require 'net/ssh'
-              require 'net/ssh/multi'
               require 'chef/knife/ssh'
               Chef::Knife::Ssh.load_deps
             end
+
+            include Chef::Knife::WinrmBase
 
             option :ssh_user,
               :short => "-x USERNAME",
