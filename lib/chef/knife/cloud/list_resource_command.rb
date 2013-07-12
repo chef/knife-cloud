@@ -21,12 +21,10 @@ class Chef
   class Knife
     class Cloud
       class ResourceListCommand < Command
-        attr_accessor :sort_by_field
-        attr_accessor :resource_filters # array of filters in form {:attribute => attribute-name, :regex => 'filter regex value'}
-        attr_accessor :columns_with_info # columns_with_info is array of hash with label, key and attribute extraction callback, ex [{:label => "Label text", :key => 'key', value_callback => callback_method to extract/format the required value}, ...]
 
-        def initialize(service)
-          super
+        def initialize(argv=[])
+          super argv
+          # columns_with_info is array of hash with label, key and attribute extraction callback, ex [{:label => "Label text", :key => 'key', value_callback => callback_method to extract/format the required value}, ...]
           @columns_with_info = []
           @sort_by_field = "id" # default sort by id
         end
@@ -45,6 +43,7 @@ class Chef
         end
 
         def is_resource_filtered?(attribute, value)
+          # resource_filters is array of filters in form {:attribute => attribute-name, :regex => 'filter regex value'}
           return false if @resource_filters.nil?
           @resource_filters.each do |filter|
             if attribute == filter[:attribute] and value =~ filter[:regex]
@@ -59,7 +58,7 @@ class Chef
           # display column wise only if @columns_with_info is specified, else as a json for readable display.
           begin
             resource_list = @columns_with_info.map { |col_info| ui.color(col_info[:label], :bold) } if @columns_with_info.length > 0
-            resources.sort_by(&sort_by_field.to_sym).each do |resource|
+            resources.sort_by(&@sort_by_field.to_sym).each do |resource|
               resource_filtered = false
               if @columns_with_info.length > 0
                 list = []

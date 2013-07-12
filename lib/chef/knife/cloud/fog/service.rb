@@ -18,7 +18,6 @@ class Chef
           gem "fog", Chef::Config[:knife][:cloud_fog_version]
           require 'fog'
           Chef::Log.debug("Using fog version: #{Gem.loaded_specs["fog"].version}")
-
           super
         end
 
