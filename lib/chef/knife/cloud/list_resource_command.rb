@@ -32,7 +32,7 @@ class Chef
         def execute_command
           # exec the cmd
           resources = query_resource
-puts "resource - #{resources}"
+
           # handle the response
           list(resources)
         end
@@ -57,7 +57,6 @@ puts "resource - #{resources}"
         def list(resources)
           # display column wise only if @columns_with_info is specified, else as a json for readable display.
           begin
-            puts "Cols - #{@columns_with_info}"
             resource_list = @columns_with_info.map { |col_info| ui.color(col_info[:label], :bold) } if @columns_with_info.length > 0
             resources.sort_by(&@sort_by_field.to_sym).each do |resource|
               resource_filtered = false

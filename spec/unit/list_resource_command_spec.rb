@@ -52,7 +52,7 @@ describe Chef::Knife::Cloud::ResourceListCommand do
 
         @derived_instance = Derived.new
         @derived_instance.stub(:query_resource).and_return(resources)
-        #@derived_instance.stub(:puts)
+        @derived_instance.stub(:puts)
         @derived_instance.stub(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
       end
 
