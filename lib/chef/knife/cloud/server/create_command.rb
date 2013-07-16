@@ -62,7 +62,7 @@ class Chef
             # bootstrap the server
             bootstrap
           rescue CloudExceptions::BootstrapError => e
-            #TODO -KD- Should we really rollback all (delete_server) on bootstrap failure? may be cli option for user to decide. default dont rollback?
+            # rollback
           end
         end
 

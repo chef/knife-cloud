@@ -5,7 +5,6 @@ require 'json'
 require 'chef/exceptions'
 require 'chef/config'
 
-# TODO - we should use factory girl or fixtures for this as part of test utils.
 # Creates a resource class that can dynamically add attributes to
 # instances and set the values
 module JSONModule
