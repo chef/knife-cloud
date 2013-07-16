@@ -14,7 +14,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-require 'chef/knife/cloud/chefbootstrap/unix_distribution'
 require 'chef/knife/cloud/chefbootstrap/bootstrap_protocol'
 require 'chef/knife/bootstrap'
 
@@ -34,7 +33,7 @@ class Chef
           bootstrap.config[:identity_file] = @config[:identity_file]
           bootstrap.config[:host_key_verify] = @config[:host_key_verify]
           bootstrap.config[:use_sudo] = true unless @config[:ssh_user] == 'root'
-          bootstrap.config[:template_file] =  Chef::Knife::Cloud::UnixDistribution.new(config).template
+          bootstrap.config[:template_file] =  @config[:template_file]
           super
         end
 

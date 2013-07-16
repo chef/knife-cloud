@@ -45,7 +45,7 @@ class Chef
           bootstrap.config[:winrm_password] = @config[:winrm_password]
           bootstrap.config[:winrm_transport] = @config[:winrm_transport]
           bootstrap.config[:winrm_port] = @config[:winrm_port]
-          bootstrap.config[:template_file] = locate_config_value(:template_file) || Chef::Knife::Cloud::WindowsDistribution.new(config).template
+          bootstrap.config[:template_file] = @config[:template_file]
           super
         end
 
