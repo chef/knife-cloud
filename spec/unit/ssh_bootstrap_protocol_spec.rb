@@ -54,7 +54,7 @@ describe Chef::Knife::Cloud::SshBootstrapProtocol do
 
   describe "#tcp_test_ssh" do
     it "return true" do
-      tcpSocket = mock()
+      tcpSocket = double()
       tcpSocket.stub(:close).and_return(true)
       tcpSocket.stub(:gets).and_return(true)
       TCPSocket.stub(:new).and_return(tcpSocket)

@@ -41,6 +41,7 @@ class Chef
             @config[:template_file] = Chef::Knife::Cloud::UnixDistribution.new(@config).template
             SshBootstrapProtocol.new(@config)
           elsif @config[:bootstrap_protocol] == 'winrm'
+            @config[:image_os_type] = 'windows'
             @config[:template_file] = Chef::Knife::Cloud::WindowsDistribution.new(@config).template
             WinrmBootstrapProtocol.new(@config)
           else
