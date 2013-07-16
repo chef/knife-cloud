@@ -14,17 +14,18 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-require 'chef/knife/bootstrap_windows_base'
-require 'chef/knife/cloud/chefbootstrap/bootstrap_distribution'
+
 require 'chef/knife/cloud/helpers'
+
 class Chef
   class Knife
     class Cloud
       class BootstrapDistribution
-        include Chef::Knife::TemplateFinder # This is included to expose get_template method from windows distribution.
-        include Chef::Knife::Cloud::Helpers
+
         attr_accessor :template
-        attr_reader :config
+
+        include Chef::Knife::Cloud::Helpers
+
         def initialize(config)
         end
       end

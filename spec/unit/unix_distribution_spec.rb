@@ -14,19 +14,23 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-require 'chef/knife/cloud/chefbootstrap/bootstrap_distribution'
-require 'chef/knife/bootstrap_windows_base'
-class Chef
-  class Knife
-    class Cloud
-      class WindowsDistribution < BootstrapDistribution
-        include Chef::Knife::TemplateFinder # This is included to expose get_template method from windows distribution.
-        def initialize(config)
-          config[:distro] = config[:bootstrap_protocol] == 'winrm' ? "windows-chef-client-msi" : "chef-full"
-          @template = get_template(config)
-        end
-      end
+require 'spec_helper'
+require 'chef/knife/cloud/chefbootstrap/unix_distribution'
+
+describe Chef::Knife::Cloud::UnixDistribution do
+
+  before do
+    @config = {:bootstrap_protocol => 'ssh'}
+  end
+
+  context "Unix Distribution initializer" do
+    it "asks for compulsory properties while creating instance" do
+      expect {Chef::Knife::Cloud::UnixDistribution.new}.to raise_error(ArgumentError)
+    end
+
+    it "creates instance" do
+      expect {Chef::Knife::Cloud::UnixDistribution.new(@config)}.to_not raise_error
+      expect(Chef::Knife::Cloud::UnixDistribution.new(@config).class).to eq(Chef::Knife::Cloud::UnixDistribution)
     end
   end
 end
