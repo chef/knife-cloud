@@ -1,6 +1,22 @@
-
+# Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
+# Author:: Prabhu Das (<prabhu.das@clogeny.com>)
+# Copyright:: Copyright (c) 2013 Opscode, Inc.
+# License:: Apache License, Version 2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 require 'chef/knife/core/ui'
 require 'chef/knife/cloud/helpers'
+
 class Chef
   class Knife
     class Cloud
@@ -33,7 +49,6 @@ class Chef
           bootstrap.config[:prerelease] = locate_config_value(:prerelease)
           bootstrap.config[:bootstrap_version] = locate_config_value(:bootstrap_version)
           bootstrap.config[:distro] = locate_config_value(:distro)
-          bootstrap.config[:template_file] = locate_config_value(:template_file)
           bootstrap.config[:bootstrap_proxy] = locate_config_value(:bootstrap_proxy)
           bootstrap.config[:environment] = locate_config_value(:environment)
           # see chef/knife/bootstrap.rb #warn_chef_config_secret_key.
