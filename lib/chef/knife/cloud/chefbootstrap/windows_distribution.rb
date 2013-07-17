@@ -17,14 +17,16 @@
 #
 require 'chef/knife/cloud/chefbootstrap/bootstrap_distribution'
 require 'chef/knife/bootstrap_windows_base'
+
 class Chef
   class Knife
     class Cloud
       class WindowsDistribution < BootstrapDistribution
         include Chef::Knife::TemplateFinder # This is included to expose get_template method from windows distribution.
-        def initialize(config)
-          config[:distro] = config[:bootstrap_protocol] == 'winrm' ? "windows-chef-client-msi" : "chef-full"
-          @template = get_template(config)
+        def initialize(config, protocol)
+          super
+          config[:distro] = @protocol.instance_of?(Chef::Knife::Cloud::WinrmBootstrapProtocol) ? "windows-chef-client-msi" : "chef-full"
+          config[:template_file] = get_template(config)
         end
       end
     end

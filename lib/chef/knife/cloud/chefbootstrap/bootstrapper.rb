@@ -23,32 +23,39 @@ class Chef
   class Knife
     class Cloud
       class Bootstrapper
-        attr_accessor :distribution, :protocol, :ui
+        attr_accessor :protocol, :ui
 
         def initialize(config)
           @config = config
-          @ui ||= Chef::Knife::UI.new(STDOUT, STDERR, STDIN, {}) # TODO - reuse app level.
+          @ui ||= Chef::Knife::UI.new(STDOUT, STDERR, STDIN, {})
         end
 
         def bootstrap
           # uses BootstrapDistribution and BootstrapProtocol to perform bootstrap
           @protocol = create_bootstrap_protocol
+          create_bootstrap_distribution
           @protocol.send_bootstrap_command
         end
 
         def create_bootstrap_protocol
           if @config[:bootstrap_protocol].nil? or @config[:bootstrap_protocol] == 'ssh'
-            @config[:template_file] = Chef::Knife::Cloud::UnixDistribution.new(@config).template
             SshBootstrapProtocol.new(@config)
           elsif @config[:bootstrap_protocol] == 'winrm'
             @config[:image_os_type] = 'windows'
-            @config[:template_file] = Chef::Knife::Cloud::WindowsDistribution.new(@config).template
             WinrmBootstrapProtocol.new(@config)
           else
             # raise an exception, invalid bootstrap protocol.
             error_message = "Invalid bootstrap protocol."
             ui.fatal(error_message)
             raise error_message
+          end
+        end
+
+        def create_bootstrap_distribution
+          if @config[:image_os_type] == 'windows'
+            Chef::Knife::Cloud::WindowsDistribution.new(@config,@protocol)
+          elsif @config[:image_os_type] == 'other'
+            Chef::Knife::Cloud::UnixDistribution.new(@config, @protocol)
           end
         end
       end
