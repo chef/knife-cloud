@@ -22,12 +22,12 @@ class Chef
     class Cloud
       class BootstrapDistribution
 
-        attr_accessor :protocol
+        attr_accessor :template
 
         include Chef::Knife::Cloud::Helpers
 
-        def initialize(config, protocol)
-          @protocol = protocol
+        def initialize(config)
+          @config = config
         end
       end
     end

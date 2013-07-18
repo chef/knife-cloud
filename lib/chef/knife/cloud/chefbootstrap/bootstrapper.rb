@@ -19,21 +19,21 @@ require 'chef/knife/cloud/chefbootstrap/ssh_bootstrap_protocol'
 require 'chef/knife/cloud/chefbootstrap/winrm_bootstrap_protocol'
 require 'chef/knife/cloud/chefbootstrap/windows_distribution'
 require 'chef/knife/cloud/chefbootstrap/unix_distribution'
+
 class Chef
   class Knife
     class Cloud
       class Bootstrapper
-        attr_accessor :protocol, :ui
 
         def initialize(config)
           @config = config
-          @ui ||= Chef::Knife::UI.new(STDOUT, STDERR, STDIN, {})
         end
 
         def bootstrap
           # uses BootstrapDistribution and BootstrapProtocol to perform bootstrap
           @protocol = create_bootstrap_protocol
-          create_bootstrap_distribution
+          @distribution = create_bootstrap_distribution
+          @config[:template_file] = @distribution.template
           @protocol.send_bootstrap_command
         end
 
@@ -53,9 +53,9 @@ class Chef
 
         def create_bootstrap_distribution
           if @config[:image_os_type] == 'windows'
-            Chef::Knife::Cloud::WindowsDistribution.new(@config,@protocol)
+            Chef::Knife::Cloud::WindowsDistribution.new(@config)
           elsif @config[:image_os_type] == 'other'
-            Chef::Knife::Cloud::UnixDistribution.new(@config, @protocol)
+            Chef::Knife::Cloud::UnixDistribution.new(@config)
           end
         end
       end

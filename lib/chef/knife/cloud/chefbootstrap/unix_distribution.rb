@@ -21,7 +21,7 @@ class Chef
     class Cloud
       class UnixDistribution < BootstrapDistribution
 
-        def initialize(config, protocol)
+        def initialize(config)
           super
           config[:distro] =  config[:distro] || "chef-full"
         end
