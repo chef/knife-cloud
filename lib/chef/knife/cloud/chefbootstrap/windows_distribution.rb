@@ -27,7 +27,7 @@ class Chef
 
         def initialize(config)
           super
-          config[:distro] = "windows-chef-client-msi"
+          config[:distro] ||= "windows-chef-client-msi"
           @template = get_template(config)
         end
       end
