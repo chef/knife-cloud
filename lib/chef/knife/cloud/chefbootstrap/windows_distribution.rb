@@ -27,7 +27,7 @@ class Chef
 
         def initialize(config)
           super
-          config[:distro] = @config[:bootstrap_protocol] == 'winrm' ? "windows-chef-client-msi" : "chef-full"
+          config[:distro] = @config[:bootstrap_protocol] == 'winrm' ? "windows-chef-client-msi" : "windows-shell"
           @template = get_template(config)
         end
       end
