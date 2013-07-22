@@ -43,7 +43,7 @@ class Chef
             option :flavor,
               :short => "-f FLAVOR_ID",
               :long => "--flavor FLAVOR_ID",
-              :description => "The flavor ID of server", # TODO -KD- cloud plugin can override to give examples?
+              :description => "The flavor ID of server",
               :proc => Proc.new { |f| Chef::Config[:knife][:flavor] = f }
 
             option :bootstrap_protocol,

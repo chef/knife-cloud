@@ -4,10 +4,10 @@ require 'chef/knife/cloud/list_resource_command'
 class Chef
   class Knife
     class Cloud
-      class FogServerListCommand < ResourceListCommand
+      class ServerListCommand < ResourceListCommand
 
         def query_resource
-          @service.connection.servers.all
+          @service.list_servers
         end
 
         def format_server_state(state)
@@ -22,7 +22,7 @@ class Chef
            end
         end
 
-      end # class FogServerListCommand
+      end # class ServerListCommand
     end
   end
 end
