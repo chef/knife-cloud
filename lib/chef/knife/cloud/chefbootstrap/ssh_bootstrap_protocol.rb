@@ -1,5 +1,6 @@
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
 # Author:: Prabhu Das (<prabhu.das@clogeny.com>)
+#
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 # License:: Apache License, Version 2.0
 #
@@ -14,6 +15,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+
 require 'chef/knife/cloud/chefbootstrap/bootstrap_protocol'
 require 'chef/knife/bootstrap'
 

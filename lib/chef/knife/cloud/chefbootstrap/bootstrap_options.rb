@@ -1,5 +1,6 @@
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
 # Author:: Prabhu Das (<prabhu.das@clogeny.com>)
+#
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 # License:: Apache License, Version 2.0
 #
@@ -17,6 +18,7 @@
 require 'chef/knife/winrm_base'
 require 'chef/knife/core/bootstrap_context'
 require 'net/ssh/multi'
+
 class Chef
   class Knife
     class Cloud

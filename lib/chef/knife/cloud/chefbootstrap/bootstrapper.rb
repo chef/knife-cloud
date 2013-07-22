@@ -1,5 +1,6 @@
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
 # Author:: Prabhu Das (<prabhu.das@clogeny.com>)
+#
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 # License:: Apache License, Version 2.0
 #
@@ -14,6 +15,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+
 require 'chef/knife/core/ui'
 require 'chef/knife/cloud/chefbootstrap/ssh_bootstrap_protocol'
 require 'chef/knife/cloud/chefbootstrap/winrm_bootstrap_protocol'
@@ -27,6 +30,7 @@ class Chef
 
         def initialize(config)
           @config = config
+          @ui ||= Chef::Knife::UI.new(STDOUT, STDERR, STDIN, {})
         end
 
         def bootstrap
@@ -62,3 +66,4 @@ class Chef
     end
   end
 end
+
