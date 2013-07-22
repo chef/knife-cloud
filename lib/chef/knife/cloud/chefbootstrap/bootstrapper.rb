@@ -26,7 +26,7 @@ class Chef
 
         def initialize(config)
           @config = config
-          @ui ||= Chef::Knife::UI.new(STDOUT, STDERR, STDIN, {}) # TODO - reuse app level.
+          @ui ||= Chef::Knife::UI.new(STDOUT, STDERR, STDIN, {})
         end
 
         def bootstrap

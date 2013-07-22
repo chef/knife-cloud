@@ -18,7 +18,6 @@ class Chef
           gem "fog", Chef::Config[:knife][:cloud_fog_version]
           require 'fog'
           Chef::Log.debug("Using fog version: #{Gem.loaded_specs["fog"].version}")
-
           super
         end
 
@@ -86,11 +85,23 @@ class Chef
         end
 
         def list_servers
-          raise Chef::Exceptions::Override, "You must override list_servers in #{self.to_s}"
+          begin
+            servers = connection.servers.all
+          rescue Excon::Errors::BadRequest => e
+            response = Chef::JSONCompat.from_json(e.response.body)
+            ui.fatal("Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}")
+            raise e
+          end
         end
 
-        def list_images(image_filters)
-          raise Chef::Exceptions::Override, "You must override list_images in #{self.to_s}"
+        def list_images
+          begin
+            images = connection.images.all
+          rescue Excon::Errors::BadRequest => e
+            response = Chef::JSONCompat.from_json(e.response.body)
+            ui.fatal("Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}")
+            raise e
+          end
         end
 
       end

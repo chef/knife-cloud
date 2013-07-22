@@ -9,6 +9,7 @@ shared_examples_for Chef::Knife::Cloud::Command do |instance|
     instance.stub(:execute_command)
     instance.stub(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
     instance.should_receive(:validate!).ordered
+    instance.should_receive(:validate_params!).ordered
     instance.should_receive(:create_service_instance).ordered
     instance.should_receive(:before_exec_command).ordered
     instance.should_receive(:execute_command).ordered

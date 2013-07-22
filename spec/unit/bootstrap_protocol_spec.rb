@@ -21,7 +21,7 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
 
   describe "#send_bootstrap_command" do
     it "execute with correct method calls" do
-      @instance.bootstrap = mock()
+      @instance.bootstrap = double()
       @instance.should_receive(:wait_for_server_ready).ordered
       @instance.should_receive(:init_bootstrap_options).ordered
       @instance.bootstrap.should_receive(:run)
