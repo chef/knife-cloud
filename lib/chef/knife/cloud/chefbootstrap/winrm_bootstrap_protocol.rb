@@ -1,3 +1,5 @@
+# Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
+# Author:: Prabhu Das (<prabhu.das@clogeny.com>)
 #
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 # License:: Apache License, Version 2.0
@@ -23,12 +25,8 @@ class Chef
       class WinrmBootstrapProtocol < BootstrapProtocol
 
         def initialize(config)
-          @bootstrap = if config[:image_os_type] == 'windows'
-            load_winrm_deps
-            Chef::Knife::BootstrapWindowsWinrm.new
-          else
-            raise "Invalid protocol specified for image. Use ssh as bootstrap protocol."
-          end
+          load_winrm_deps
+          @bootstrap = Chef::Knife::BootstrapWindowsWinrm.new
           super
         end
 
@@ -45,6 +43,7 @@ class Chef
           bootstrap.config[:winrm_password] = @config[:winrm_password]
           bootstrap.config[:winrm_transport] = @config[:winrm_transport]
           bootstrap.config[:winrm_port] = @config[:winrm_port]
+          bootstrap.config[:template_file] = @config[:template_file]
           super
         end
 
