@@ -4,5 +4,5 @@ source "https://rubygems.org"
 gemspec
 
 group :development do
- gem 'knife-windows', :git => 'https://github.com/ClogenyTechnologies/knife-windows', :branch => 'prabhu-OC-8572-windows-bootstrap'
+  gem 'knife-windows', :git => 'https://github.com/opscode/knife-windows', :branch => 'knife-cloud'
 end
