@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "fog", ">= 1.10.0"
   s.add_dependency "chef", ">= 0.10.10"
+  s.add_dependency "knife-windows"  # TODO use the revision of refactored knife-windows once its released
   s.add_dependency 'mixlib-shellout'
   s.add_dependency 'active_support'
 
