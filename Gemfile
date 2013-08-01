@@ -4,6 +4,7 @@ source "https://rubygems.org"
 gemspec
 
 group :development do
+  gem 'rake'
   gem 'knife-windows', :git => 'https://github.com/opscode/knife-windows.git', :branch => 'knife-cloud'
 end
 
