@@ -56,7 +56,12 @@ class Chef
               :description => "How long to wait until the server is ready; default is 600 seconds",
               :default => 600,
               :proc => Proc.new { |v| Chef::Config[:knife][:server_create_timeout] = v}
-
+            
+            option :delete_server_on_bootstrap_fail,
+              :long => "--delete-server-on-bootstrap-fail",
+              :boolean => true,
+              :default => false,
+              :description => "Destroy corresponding server if bootstrap fails"
           end
         end
 
