@@ -63,6 +63,7 @@ class Chef
               :boolean => true,
               :default => false,
               :description => "Destroy corresponding server in case of failure"
+
           end
         end
 
