@@ -47,6 +47,10 @@ class Chef
         def delete_server_dependencies
         end
 
+        # Do nothing or override in cloud specific derived classes 
+        def delete_server_on_failure
+        end
+
         # cloud server specific implementation methods for commands.
         def create_server(options = {})
           raise Chef::Exceptions::Override, "You must override create_server in #{self.to_s}"
