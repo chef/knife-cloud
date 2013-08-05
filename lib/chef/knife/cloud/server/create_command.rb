@@ -41,8 +41,7 @@ class Chef
             service.create_server_dependencies
           rescue CloudExceptions::ServerCreateDependenciesError => e
             ui.fatal(e.message)
-            service.delete_server_dependencies # rollback any resources that were created.
-            raise e
+            raise CloudExceptions
           end
         end
 
@@ -52,8 +51,7 @@ class Chef
           rescue CloudExceptions::ServerCreateError => e
             ui.fatal(e.message)
             # server creation failed, so we need to rollback only dependencies.
-            service.delete_server_dependencies
-            raise e
+            raise CloudExceptions
           end
         end
 
@@ -62,10 +60,20 @@ class Chef
             # bootstrap the server
             bootstrap
           rescue CloudExceptions::BootstrapError => e
-            # rollback
+            ui.fatal(e.message)
+            raise CloudExceptions
+          rescue Net::SSH::AuthenticationFailed => e
+            ui.fatal(e.message)
+            raise CloudExceptions
           end
         end
 
+        def cleanup_on_failure
+          if config[:delete_server_on_failure]
+            service.delete_server_dependencies
+            service.delete_server_on_failure(@server)
+          end
+        end
 
         # Bootstrap the server
         def bootstrap
