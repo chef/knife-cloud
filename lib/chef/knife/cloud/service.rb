@@ -47,13 +47,7 @@ class Chef
         def delete_server_dependencies
         end
 
-<<<<<<< HEAD
         def delete_server_on_failure(server = nil)
-          raise Chef::Exceptions::Override, "You must override delete_server_on_failure in #{self.to_s} to delete server"
-=======
-        # Do nothing or override in cloud specific derived classes 
-        def delete_server_on_failure
->>>>>>> Implemented code to handle delete-server-on-failure option
         end
 
         # cloud server specific implementation methods for commands.
