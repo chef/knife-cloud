@@ -58,11 +58,11 @@ class Chef
               :default => 600,
               :proc => Proc.new { |v| Chef::Config[:knife][:server_create_timeout] = v}
             
-            option :delete_server_on_bootstrap_fail,
-              :long => "--delete-server-on-bootstrap-fail",
+            option :delete_server_on_failure,
+              :long => "--delete-server-on-failure",
               :boolean => true,
               :default => false,
-              :description => "Destroy corresponding server if bootstrap fails"
+              :description => "Destroy corresponding server in case of failure"
           end
         end
 
