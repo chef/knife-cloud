@@ -48,7 +48,7 @@ class Chef
         end
 
         # Do nothing or override in cloud specific derived classes 
-        def delete_server_on_failure
+        def delete_server_on_failure(server = nil)
         end
 
         # cloud server specific implementation methods for commands.
