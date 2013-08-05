@@ -18,7 +18,7 @@
 class Chef
   class Knife
     class Cloud
-      class CloudExceptions
+      class CloudExceptions < Exception
         class ServerCreateError < RuntimeError; end
         class ServerDeleteError < RuntimeError; end
         class ServerListingError < RuntimeError; end
