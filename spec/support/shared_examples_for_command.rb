@@ -16,4 +16,14 @@ shared_examples_for Chef::Knife::Cloud::Command do |instance|
     instance.should_receive(:after_exec_command).ordered
     instance.run
   end
+
+
+  it "cleanup on any error" do
+    instance.stub(:execute_command).and_raise(Chef::Knife::Cloud::CloudExceptions)
+    instance.stub(:after_exec_command)
+    instance.ui.stub(:fatal)
+    instance.stub(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
+    instance.should_receive(:cleanup_on_failure)
+    instance.run
+  end     
 end
