@@ -3,6 +3,7 @@
 
 require 'support/shared_examples_for_command'
 require 'support/shared_examples_for_servercreatecommand'
+require 'net/ssh'
 
 describe Chef::Knife::Cloud::ServerCreateCommand do
   it_behaves_like Chef::Knife::Cloud::Command, Chef::Knife::Cloud::ServerCreateCommand.new
