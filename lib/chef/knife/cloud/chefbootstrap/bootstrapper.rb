@@ -1,3 +1,5 @@
+# Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
+# Author:: Prabhu Das (<prabhu.das@clogeny.com>)
 #
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 # License:: Apache License, Version 2.0
@@ -18,11 +20,13 @@
 require 'chef/knife/core/ui'
 require 'chef/knife/cloud/chefbootstrap/ssh_bootstrap_protocol'
 require 'chef/knife/cloud/chefbootstrap/winrm_bootstrap_protocol'
+require 'chef/knife/cloud/chefbootstrap/windows_distribution'
+require 'chef/knife/cloud/chefbootstrap/unix_distribution'
+
 class Chef
   class Knife
     class Cloud
       class Bootstrapper
-        attr_accessor :distribution, :protocol, :ui
 
         def initialize(config)
           @config = config
@@ -32,6 +36,8 @@ class Chef
         def bootstrap
           # uses BootstrapDistribution and BootstrapProtocol to perform bootstrap
           @protocol = create_bootstrap_protocol
+          @distribution = create_bootstrap_distribution
+          @config[:template_file] = @distribution.template
           @protocol.send_bootstrap_command
         end
 
@@ -39,12 +45,21 @@ class Chef
           if @config[:bootstrap_protocol].nil? or @config[:bootstrap_protocol] == 'ssh'
             SshBootstrapProtocol.new(@config)
           elsif @config[:bootstrap_protocol] == 'winrm'
+            @config[:image_os_type] = 'windows'
             WinrmBootstrapProtocol.new(@config)
           else
             # raise an exception, invalid bootstrap protocol.
             error_message = "Invalid bootstrap protocol."
             ui.fatal(error_message)
             raise error_message
+          end
+        end
+
+        def create_bootstrap_distribution
+          if @config[:image_os_type] == 'windows'
+            Chef::Knife::Cloud::WindowsDistribution.new(@config)
+          elsif @config[:image_os_type] == 'other'
+            Chef::Knife::Cloud::UnixDistribution.new(@config)
           end
         end
       end
