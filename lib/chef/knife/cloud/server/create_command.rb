@@ -70,8 +70,8 @@ class Chef
         end
 
         def cleanup_on_failure
-          service.delete_server_dependencies
           if config[:delete_server_on_failure]
+            service.delete_server_dependencies
             service.delete_server_on_failure(@server)
           end
         end
