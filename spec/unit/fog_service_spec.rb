@@ -2,6 +2,8 @@
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'chef/knife/cloud/fog/service'
+
+=begin
 require 'support/shared_examples_for_fog_service'
 
 describe Chef::Knife::Cloud::FogService do
@@ -34,3 +36,4 @@ describe Chef::Knife::Cloud::FogService do
     end
   end
 end
+=end
