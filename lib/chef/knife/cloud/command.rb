@@ -40,24 +40,14 @@ class Chef
 
           service.ui = ui # for interactive user prompts/messages
 
-          begin
-            # Perform any steps before handling the command
-            before_exec_command
+          # Perform any steps before handling the command
+          before_exec_command
 
-            # exec the actual cmd
-            execute_command
+          # exec the actual cmd
+          execute_command
 
-            # Perform any steps after handling the command
-            after_exec_command
-
-          rescue CloudExceptions => e
-            ui.fatal(e.message)
-            cleanup_on_failure
-          end
-        end
-        
-        # Derived classes can override
-        def cleanup_on_failure
+          # Perform any steps after handling the command
+          after_exec_command
         end
 
         def create_service_instance
