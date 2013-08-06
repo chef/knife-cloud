@@ -20,11 +20,6 @@ describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
       winrm_bootstrap_protocol = Chef::Knife::Cloud::WinrmBootstrapProtocol.new(@config)
       expect(winrm_bootstrap_protocol.bootstrap.class).to eq(Chef::Knife::BootstrapWindowsWinrm)
     end
-
-    it "non windows image" do
-      @config[:image_os_type] = 'other'
-      expect{Chef::Knife::Cloud::WinrmBootstrapProtocol.new(@config)}.to raise_error(RuntimeError)
-    end
   end
 
   describe "#wait_for_server_ready" do

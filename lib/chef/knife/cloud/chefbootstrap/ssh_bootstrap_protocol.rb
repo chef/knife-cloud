@@ -1,3 +1,5 @@
+# Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
+# Author:: Prabhu Das (<prabhu.das@clogeny.com>)
 #
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 # License:: Apache License, Version 2.0
@@ -17,6 +19,7 @@
 
 require 'chef/knife/cloud/chefbootstrap/bootstrap_protocol'
 require 'chef/knife/bootstrap'
+
 class Chef
   class Knife
     class Cloud
@@ -30,9 +33,12 @@ class Chef
 
         def init_bootstrap_options
           bootstrap.config[:ssh_user] = @config[:ssh_user]
+          bootstrap.config[:ssh_password] = @config[:ssh_password]
+          bootstrap.config[:ssh_port] = @config[:ssh_port]
           bootstrap.config[:identity_file] = @config[:identity_file]
           bootstrap.config[:host_key_verify] = @config[:host_key_verify]
           bootstrap.config[:use_sudo] = true unless @config[:ssh_user] == 'root'
+          bootstrap.config[:template_file] =  @config[:template_file]
           super
         end
 
@@ -75,4 +81,3 @@ class Chef
     end
   end
 end
-

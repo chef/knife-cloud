@@ -49,14 +49,20 @@ class Chef
             option :bootstrap_protocol,
               :long => "--bootstrap-protocol protocol",
               :description => "Protocol to bootstrap servers. options: winrm/ssh. For linux servers always use ssh.",
-              :default => 'ssh'
+              :default => 'ssh',
+              :proc => Proc.new { |b| Chef::Config[:knife][:bootstrap_protocol] = b}
 
             option :server_create_timeout,
               :long => "--server-create-timeout timeout",
               :description => "How long to wait until the server is ready; default is 600 seconds",
               :default => 600,
               :proc => Proc.new { |v| Chef::Config[:knife][:server_create_timeout] = v}
-
+            
+            option :delete_server_on_failure,
+              :long => "--delete-server-on-failure",
+              :boolean => true,
+              :default => false,
+              :description => "Destroy corresponding server in case of failure"
           end
         end
 
