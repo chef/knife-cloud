@@ -35,10 +35,9 @@ class Chef
 
             option :image_os_type,
               :short => "-T IMAGE_OS_TYPE",
-              :long => "--image-os IMAGE_OS_TYPE",
-              :description => "The image os type. options [windows/other]. Only required when cloud does not provide a way to identify image os, default is non-windows",
-              :default => 'other',
-              :proc => Proc.new { |i| Chef::Config[:knife][:image_os] = i }
+              :long => "--image-os-type IMAGE_OS_TYPE",
+              :description => "The image os type. options [windows/linux]. Only required when cloud does not provide a way to identify image os",
+              :proc => Proc.new { |i| Chef::Config[:knife][:image_os_type] = i }
 
             option :flavor,
               :short => "-f FLAVOR_ID",

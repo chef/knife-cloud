@@ -28,7 +28,7 @@ class Chef
         def validate_params!
           # validate ssh_user, ssh_password, identity_file for ssh bootstrap protocol for non-windows image
           errors = []
-          if (config[:image_os_type] == 'other') || (Chef::Config[:knife][:image_os]== 'other')
+          if locate_config_value(:image_os_type) == 'linux'
             if locate_config_value(:identity_file).nil? && locate_config_value(:ssh_password).nil?
               errors << "You must provide either Identity file or SSH Password."
             end
