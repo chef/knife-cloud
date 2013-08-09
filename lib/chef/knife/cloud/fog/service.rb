@@ -13,12 +13,17 @@ class Chef
         attr_accessor :fog_version
 
         def initialize(options = {})
-          @fog_version = Chef::Config[:knife][:cloud_fog_version]
-          # Load specific version of fog. Any other classes/modules using fog are loaded after this.
-          gem "fog", Chef::Config[:knife][:cloud_fog_version]
-          require 'fog'
-          Chef::Log.debug("Using fog version: #{Gem.loaded_specs["fog"].version}")
-          super
+          begin
+            @fog_version = Chef::Config[:knife][:cloud_fog_version]
+            # Load specific version of fog. Any other classes/modules using fog are loaded after this.
+            gem "fog", Chef::Config[:knife][:cloud_fog_version]
+            require 'fog'
+            Chef::Log.debug("Using fog version: #{Gem.loaded_specs["fog"].version}")
+            super
+          rescue Exception => e
+            Chef::Log.error "Error loading fog gem."
+            exit 1
+          end
         end
 
         def connection
