@@ -12,12 +12,16 @@ class Chef
       class FogService < Service
 
         def initialize(options = {})
+          load_fog_gem
+          super
+        end
+
+        def load_fog_gem
           begin
             # Load specific version of fog. Any other classes/modules using fog are loaded after this.
             gem "fog", Chef::Config[:knife][:cloud_fog_version]
             require 'fog'
             Chef::Log.debug("Using fog version: #{Gem.loaded_specs["fog"].version}")
-            super
           rescue Exception => e
             Chef::Log.error "Error loading fog gem."
             exit 1
