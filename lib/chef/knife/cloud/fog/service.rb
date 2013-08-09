@@ -10,11 +10,9 @@ class Chef
   class Knife
     class Cloud
       class FogService < Service
-        attr_accessor :fog_version
 
         def initialize(options = {})
           begin
-            @fog_version = Chef::Config[:knife][:cloud_fog_version]
             # Load specific version of fog. Any other classes/modules using fog are loaded after this.
             gem "fog", Chef::Config[:knife][:cloud_fog_version]
             require 'fog'
