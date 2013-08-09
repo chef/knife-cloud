@@ -1,6 +1,6 @@
-require 'chef/knife/cloud/fog/service'
+require 'chef/knife/cloud/service'
 
-shared_examples_for Chef::Knife::Cloud::FogService do |instance|
+shared_examples_for Chef::Knife::Cloud::Service do |instance|
 
   describe "#connection" do
     it "creates a connection to fog service." do
