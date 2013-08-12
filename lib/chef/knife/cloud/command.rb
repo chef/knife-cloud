@@ -18,6 +18,7 @@
 
 require 'chef/knife'
 require "chef/knife/cloud/helpers"
+require 'chef/knife/cloud/exceptions'
 
 class Chef
   class Knife

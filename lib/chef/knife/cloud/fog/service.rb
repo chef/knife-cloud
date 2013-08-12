@@ -103,7 +103,10 @@ class Chef
             raise e
           end
         end
-
+        
+        def delete_server_on_failure(server = nil)
+          server.destroy if ! server.nil?
+        end
       end
     end
   end
