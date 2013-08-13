@@ -62,7 +62,7 @@ class Chef
             Chef::Knife::Cloud::UnixDistribution.new(@config)
           else
             # raise an exception, invalid bootstrap distribution.
-            error_message = "Invalid bootstrap distribution.Image_os_type should be either windows or linux."
+            error_message = "Invalid bootstrap distribution. image_os_type should be either windows or linux."
             ui.fatal(error_message)
             raise error_message
           end          
