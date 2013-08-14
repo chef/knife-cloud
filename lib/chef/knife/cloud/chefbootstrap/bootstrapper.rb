@@ -22,6 +22,7 @@ require 'chef/knife/cloud/chefbootstrap/ssh_bootstrap_protocol'
 require 'chef/knife/cloud/chefbootstrap/winrm_bootstrap_protocol'
 require 'chef/knife/cloud/chefbootstrap/windows_distribution'
 require 'chef/knife/cloud/chefbootstrap/unix_distribution'
+require 'chef/knife/cloud/exceptions'
 
 class Chef
   class Knife
@@ -51,7 +52,7 @@ class Chef
             # raise an exception, invalid bootstrap protocol.
             error_message = "Invalid bootstrap protocol."
             ui.fatal(error_message)
-            raise error_message
+            raise CloudExceptions::BootstrapError
           end
         end
 
@@ -64,7 +65,7 @@ class Chef
             # raise an exception, invalid bootstrap distribution.
             error_message = "Invalid bootstrap distribution. image_os_type should be either windows or linux."
             ui.fatal(error_message)
-            raise error_message
+            raise CloudExceptions::BootstrapError
           end          
         end
       end
