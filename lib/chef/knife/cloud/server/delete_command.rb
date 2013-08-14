@@ -56,6 +56,7 @@ class Chef
             ui.warn("Deleted #{type_name} #{name}")
           rescue Net::HTTPServerException
             ui.warn("Could not find a #{type_name} named #{name} to delete!")
+            raise
           end
         end
 

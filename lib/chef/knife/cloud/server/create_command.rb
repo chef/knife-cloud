@@ -42,7 +42,7 @@ class Chef
             errors << "You must provide a valid bootstrap protocol. options [ssh/winrm]. For linux type images, options [ssh]"
           end
 
-          exit 1 if errors.each{|e| ui.error(e)}.any?
+          raise CloudExceptions::ValidationError if errors.each{|e| ui.error(e)}.any?
         end
         
         def before_exec_command
@@ -51,6 +51,7 @@ class Chef
           rescue CloudExceptions::ServerCreateDependenciesError => e
             ui.fatal(e.message)
             service.delete_server_dependencies
+            raise e
           end
         end
 
@@ -61,6 +62,7 @@ class Chef
             ui.fatal(e.message)
             # server creation failed, so we need to rollback only dependencies.
             service.delete_server_dependencies
+            raise e
           end
         end
 
@@ -72,9 +74,11 @@ class Chef
           rescue CloudExceptions::BootstrapError => e
             ui.fatal(e.message)
             cleanup_on_failure
+            raise e
           rescue Net::SSH::AuthenticationFailed => e
             ui.fatal(e.message)
             cleanup_on_failure
+            raise e
           end
         end
 
