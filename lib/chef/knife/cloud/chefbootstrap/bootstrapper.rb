@@ -58,9 +58,14 @@ class Chef
         def create_bootstrap_distribution
           if @config[:image_os_type] == 'windows'
             Chef::Knife::Cloud::WindowsDistribution.new(@config)
-          elsif @config[:image_os_type] == 'other'
+          elsif @config[:image_os_type] == 'linux'
             Chef::Knife::Cloud::UnixDistribution.new(@config)
-          end
+          else
+            # raise an exception, invalid bootstrap distribution.
+            error_message = "Invalid bootstrap distribution. image_os_type should be either windows or linux."
+            ui.fatal(error_message)
+            raise error_message
+          end          
         end
       end
     end

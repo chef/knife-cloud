@@ -27,7 +27,7 @@ class Chef
         attr_accessor :initial_sleep_delay
 
         def initialize(config)
-          @bootstrap = (config[:image_os_type] == 'other') ? Chef::Knife::Bootstrap.new : Chef::Knife::BootstrapWindowsSsh.new
+          @bootstrap = (config[:image_os_type] == 'linux') ? Chef::Knife::Bootstrap.new : Chef::Knife::BootstrapWindowsSsh.new
           super
         end
 

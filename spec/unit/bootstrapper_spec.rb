@@ -77,9 +77,9 @@ describe Chef::Knife::Cloud::Bootstrapper do
 
       end
 
-      context "when image_os_type set to other" do
+      context "when image_os_type set to linux" do
         before(:each) do
-          @config[:image_os_type] = "other"
+          @config[:image_os_type] = "linux"
         end
 
         it "instantiates Unix Distribution class." do

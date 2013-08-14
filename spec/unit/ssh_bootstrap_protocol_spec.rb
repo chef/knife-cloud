@@ -16,7 +16,7 @@ describe Chef::Knife::Cloud::SshBootstrapProtocol do
     end
 
     it "non windows image" do
-      @config[:image_os_type] = 'other'
+      @config[:image_os_type] = 'linux'
       ssh_bootstrap_protocol = Chef::Knife::Cloud::SshBootstrapProtocol.new(@config)
       expect(ssh_bootstrap_protocol.bootstrap.class).to eq(Chef::Knife::Bootstrap)
     end
