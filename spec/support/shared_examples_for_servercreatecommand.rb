@@ -26,6 +26,7 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
       instance.service.stub(:create_server_dependencies).and_raise(Chef::Knife::Cloud::CloudExceptions::ServerCreateDependenciesError)
       instance.service.should_receive(:delete_server_dependencies)
       instance.service.should_not_receive(:delete_server_on_failure)
+      instance.should_receive(:exit)
       instance.run
     end
   end
@@ -46,6 +47,7 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
       instance.service.stub(:create_server).and_raise(Chef::Knife::Cloud::CloudExceptions::ServerCreateError)
       instance.service.should_receive(:delete_server_dependencies)
       instance.service.should_not_receive(:delete_server_on_failure)
+      instance.should_receive(:exit)
       instance.run
     end
   end
