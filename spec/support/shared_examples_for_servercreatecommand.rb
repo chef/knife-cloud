@@ -19,6 +19,8 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
     it "delete_server_dependencies on any error" do
       instance.stub(:execute_command)
       instance.stub(:after_exec_command)
+      instance.stub(:validate!)
+      instance.stub(:validate_params!)
       instance.service = Chef::Knife::Cloud::Service.new
       instance.stub(:create_service_instance).and_return(instance.service)
       instance.service.stub(:create_server_dependencies).and_raise(Chef::Knife::Cloud::CloudExceptions::ServerCreateDependenciesError)
@@ -37,6 +39,8 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
     it "delete_server_dependencies on any error" do
       instance.stub(:before_exec_command)
       instance.stub(:after_exec_command)
+      instance.stub(:validate!)
+      instance.stub(:validate_params!)
       instance.service = Chef::Knife::Cloud::Service.new
       instance.stub(:create_service_instance).and_return(instance.service)
       instance.service.stub(:create_server).and_raise(Chef::Knife::Cloud::CloudExceptions::ServerCreateError)
@@ -54,17 +58,6 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
       instance.should_receive(:before_bootstrap).ordered
       instance.should_receive(:after_bootstrap).ordered      
       instance.bootstrap
-    end
-
-    it "delete server on bootstrap failure" do
-      instance.config[:delete_server_on_failure] = true
-      instance.stub(:execute_command)
-      instance.stub(:bootstrap).and_raise(Chef::Knife::Cloud::CloudExceptions::BootstrapError)
-      instance.service = Chef::Knife::Cloud::Service.new
-      instance.stub(:create_service_instance).and_return(instance.service)
-      instance.service.should_receive(:delete_server_dependencies)
-      instance.service.should_receive(:delete_server_on_failure)
-      instance.run
     end
   end  
 end

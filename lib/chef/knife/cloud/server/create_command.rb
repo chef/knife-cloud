@@ -26,13 +26,22 @@ class Chef
         attr_accessor :server, :create_options
 
         def validate_params!
-          # validate ssh_user, ssh_password, identity_file for ssh bootstrap protocol for non-windows image
+          set_image_os_type
+          # validate ssh_user, ssh_password, identity_file for ssh bootstrap protocol and winrm_password for winrm bootstrap protocol
           errors = []
-          if (config[:image_os_type] == 'other') || (Chef::Config[:knife][:image_os]== 'other')
+
+          if locate_config_value(:bootstrap_protocol) == 'ssh'
             if locate_config_value(:identity_file).nil? && locate_config_value(:ssh_password).nil?
               errors << "You must provide either Identity file or SSH Password."
             end
+          elsif locate_config_value(:bootstrap_protocol) == 'winrm'
+            if locate_config_value(:winrm_password).nil?
+              errors << "You must provide Winrm Password."
+            end
+          else
+            errors << "You must provide a valid bootstrap protocol. options [ssh/winrm]. For linux type images, options [ssh]"
           end
+
           exit 1 if errors.each{|e| ui.error(e)}.any?
         end
         
@@ -91,6 +100,9 @@ class Chef
         def after_bootstrap
         end
 
+        def set_image_os_type
+          raise Chef::Exceptions::Override, "You must override set_image_os_type in #{self.to_s} to set image_os_type"
+        end
       end # class ServerCreateCommand
     end
   end
