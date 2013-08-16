@@ -25,11 +25,13 @@ class Chef
           @connection ||= begin
               connection = Fog::Compute.new(@auth_params)
                           rescue Excon::Errors::Unauthorized => e
-                            ui.fatal("Connection failure, please check your username and password.")
-                            raise CloudExceptions::ServiceConnectionError
+                            error_message = "Connection failure, please check your username and password."
+                            ui.fatal(error_message)
+                            raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
                           rescue Excon::Errors::SocketError => e
-                            ui.fatal("Connection failure, please check your authentication URL.")
-                            raise CloudExceptions::ServiceConnectionError
+                            error_message = "Connection failure, please check your authentication URL."
+                            ui.fatal(error_message)
+                            raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
                           end
         end
 
