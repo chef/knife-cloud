@@ -49,7 +49,8 @@ class Chef
 
             # Perform any steps after handling the command
             after_exec_command
-          rescue CloudExceptions::KnifeCloudError
+          rescue CloudExceptions::KnifeCloudError => e
+            Chef::Log.debug(e.message)
             exit 1
           end
         end
@@ -76,7 +77,8 @@ class Chef
           keys.each do |k|
             errors << "You did not provide a valid '#{pretty_key(k)}' value." if locate_config_value(k).nil?
           end
-          raise CloudExceptions::ValidationError if errors.each{|e| ui.error(e)}.any?
+          error_message = ""
+          raise CloudExceptions::ValidationError, error_message if errors.each{|e| ui.error(e); error_message = "#{error_message} #{e}."}.any?
         end
 
         def validate_params!

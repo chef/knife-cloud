@@ -26,6 +26,7 @@ class Chef
         attr_accessor :server, :create_options
 
         def validate_params!
+          # Some cloud provider like openstack does not provide way to identify image-os-type, So in such cases take image-os-type from user otherwise set it in code using set_image_os_type method.
           set_image_os_type
           # validate ssh_user, ssh_password, identity_file for ssh bootstrap protocol and winrm_password for winrm bootstrap protocol
           errors = []
@@ -41,8 +42,8 @@ class Chef
           else
             errors << "You must provide a valid bootstrap protocol. options [ssh/winrm]. For linux type images, options [ssh]"
           end
-
-          raise CloudExceptions::ValidationError if errors.each{|e| ui.error(e)}.any?
+          error_message = ""
+          raise CloudExceptions::ValidationError, error_message if errors.each{|e| ui.error(e); error_message = "#{error_message} #{e}."}.any?
         end
         
         def before_exec_command

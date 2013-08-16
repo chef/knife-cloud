@@ -52,7 +52,7 @@ class Chef
             # raise an exception, invalid bootstrap protocol.
             error_message = "Invalid bootstrap protocol."
             ui.fatal(error_message)
-            raise CloudExceptions::BootstrapError
+            raise CloudExceptions::BootstrapError, error_message
           end
         end
 
@@ -65,7 +65,7 @@ class Chef
             # raise an exception, invalid bootstrap distribution.
             error_message = "Invalid bootstrap distribution. image_os_type should be either windows or linux."
             ui.fatal(error_message)
-            raise CloudExceptions::BootstrapError
+            raise CloudExceptions::BootstrapError, error_message
           end          
         end
       end
