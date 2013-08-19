@@ -78,13 +78,6 @@ class Chef
         def validate_params!
         end
 
-        #generate a random name if chef_node_name is empty
-        def get_node_name(chef_node_name)
-          return chef_node_name unless chef_node_name.nil?
-          #lazy uuids
-          chef_node_name = "os-"+rand.to_s.split('.')[1]
-        end
-
         def pretty_key(key)
           key.to_s.gsub(/_/, ' ').gsub(/\w+/){ |w| (w =~ /(ssh)|(aws)/i) ? w.upcase  : w.capitalize }
         end

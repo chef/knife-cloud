@@ -59,5 +59,16 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
       instance.should_receive(:after_bootstrap).ordered      
       instance.bootstrap
     end
-  end  
+  end
+
+  describe "#get_node_name" do
+    it "auto generates chef_node_name" do
+      instance.config[:bootstrap_protocol] = 'ssh'
+      instance.config[:ssh_password] = 'password'
+      instance.stub(:set_image_os_type)
+      instance.should_receive(:get_node_name).and_call_original
+      instance.validate_params!
+      instance.config[:chef_node_name].should =~ /os-*/
+    end
+  end
 end
