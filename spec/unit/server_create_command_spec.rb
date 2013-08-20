@@ -19,6 +19,7 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
     it "delete server on bootstrap failure" do
       instance = Chef::Knife::Cloud::ServerCreateCommand.new
       instance.service = Chef::Knife::Cloud::Service.new
+      instance.stub(:raise)
       instance.ui.stub(:fatal)
       instance.config[:delete_server_on_failure] = true
       instance.stub(:bootstrap).and_raise(Chef::Knife::Cloud::CloudExceptions::BootstrapError)

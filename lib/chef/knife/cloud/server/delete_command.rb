@@ -54,8 +54,10 @@ class Chef
             object = klass.load(name)
             object.destroy
             ui.warn("Deleted #{type_name} #{name}")
-          rescue Net::HTTPServerException
-            ui.warn("Could not find a #{type_name} named #{name} to delete!")
+          rescue Net::HTTPServerException => e
+            error_message = "#{e.message}. Could not find a #{type_name} named #{name} to delete!"
+            ui.warn(error_message)
+            raise e, error_message
           end
         end
 
