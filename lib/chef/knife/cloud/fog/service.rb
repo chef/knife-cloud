@@ -10,26 +10,35 @@ class Chef
   class Knife
     class Cloud
       class FogService < Service
-        attr_accessor :fog_version
 
         def initialize(options = {})
-          @fog_version = Chef::Config[:knife][:cloud_fog_version]
-          # Load specific version of fog. Any other classes/modules using fog are loaded after this.
-          gem "fog", Chef::Config[:knife][:cloud_fog_version]
-          require 'fog'
-          Chef::Log.debug("Using fog version: #{Gem.loaded_specs["fog"].version}")
+          load_fog_gem
           super
+        end
+
+        def load_fog_gem
+          begin
+            # Load specific version of fog. Any other classes/modules using fog are loaded after this.
+            gem "fog", Chef::Config[:knife][:cloud_fog_version]
+            require 'fog'
+            Chef::Log.debug("Using fog version: #{Gem.loaded_specs["fog"].version}")
+          rescue Exception => e
+            Chef::Log.error "Error loading fog gem."
+            exit 1
+          end
         end
 
         def connection
           @connection ||= begin
               connection = Fog::Compute.new(@auth_params)
                           rescue Excon::Errors::Unauthorized => e
-                            ui.fatal("Connection failure, please check your username and password.")
-                            exit 1
+                            error_message = "Connection failure, please check your username and password."
+                            ui.fatal(error_message)
+                            raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
                           rescue Excon::Errors::SocketError => e
-                            ui.fatal("Connection failure, please check your authentication URL.")
-                            exit 1
+                            error_message = "Connection failure, please check your authentication URL."
+                            ui.fatal(error_message)
+                            raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
                           end
         end
 
