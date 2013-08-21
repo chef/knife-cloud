@@ -56,6 +56,7 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
     it "execute with correct method calls" do
       @bootstrap = Object.new
       @bootstrap.stub(:bootstrap)
+      instance.ui.stub(:info)
       Chef::Knife::Cloud::Bootstrapper.stub(:new).and_return(@bootstrap)
       instance.should_receive(:before_bootstrap).ordered
       instance.should_receive(:after_bootstrap).ordered      
