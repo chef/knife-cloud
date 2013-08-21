@@ -46,7 +46,6 @@ class Chef
           if @config[:bootstrap_protocol].nil? or @config[:bootstrap_protocol] == 'ssh'
             SshBootstrapProtocol.new(@config)
           elsif @config[:bootstrap_protocol] == 'winrm'
-            @config[:image_os_type] = 'windows'
             WinrmBootstrapProtocol.new(@config)
           else
             # raise an exception, invalid bootstrap protocol.

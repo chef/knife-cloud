@@ -75,14 +75,15 @@ class Chef
           begin
             # bootstrap the server
             bootstrap
-          rescue CloudExceptions::BootstrapError => e
+          rescue CloudExceptions::BootstrapError, Net::SSH::AuthenticationFailed => e
             ui.fatal(e.message)
             cleanup_on_failure
             raise e
-          rescue Net::SSH::AuthenticationFailed => e
-            ui.fatal(e.message)
+          rescue => e
+            error_message = "Check if --bootstrap-protocol and --image-os-type is correct. #{e.message}"
+            ui.fatal(error_message) 
             cleanup_on_failure
-            raise e
+            raise e, error_message
           end
         end
 
@@ -98,6 +99,7 @@ class Chef
           before_bootstrap
           @bootstrapper = Bootstrapper.new(config)
           Chef::Log.debug("Bootstrapping the server...")
+          ui.info("Bootstrapping the server by using #{ui.color("bootstrap_protocol", :cyan)}: #{config[:bootstrap_protocol]} and #{ui.color("image_os_type", :cyan)}: #{config[:image_os_type]}")
           @bootstrapper.bootstrap
           after_bootstrap
         end
@@ -108,8 +110,9 @@ class Chef
         def after_bootstrap
         end
 
+        # knife-plugin can override set_image_os_type to set image_os_type by using their own meachanism.
         def set_image_os_type
-          raise Chef::Exceptions::Override, "You must override set_image_os_type in #{self.to_s} to set image_os_type"
+          config[:image_os_type] = 'windows' if config[:bootstrap_protocol] == 'winrm'
         end
 
         #generate a random name if chef_node_name is empty
