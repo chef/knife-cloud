@@ -29,25 +29,30 @@ class Chef
         attr_accessor :service, :custom_arguments
 
         def run
-          # validate compulsory params
-          validate!
+          begin
+            # validate compulsory params
+            validate!
 
-          # validate command pre-requisites (cli options)
-          validate_params!
+            # validate command pre-requisites (cli options)
+            validate_params!
 
-          # setup the service
-          @service = create_service_instance
+            # setup the service
+            @service = create_service_instance
 
-          service.ui = ui # for interactive user prompts/messages
+            service.ui = ui # for interactive user prompts/messages
 
-          # Perform any steps before handling the command
-          before_exec_command
+            # Perform any steps before handling the command
+            before_exec_command
 
-          # exec the actual cmd
-          execute_command
+            # exec the actual cmd
+            execute_command
 
-          # Perform any steps after handling the command
-          after_exec_command
+            # Perform any steps after handling the command
+            after_exec_command
+          rescue CloudExceptions::KnifeCloudError => e
+            Chef::Log.debug(e.message)
+            exit 1
+          end
         end
 
         def create_service_instance
@@ -72,7 +77,8 @@ class Chef
           keys.each do |k|
             errors << "You did not provide a valid '#{pretty_key(k)}' value." if locate_config_value(k).nil?
           end
-          exit 1 if errors.each{|e| ui.error(e)}.any?
+          error_message = ""
+          raise CloudExceptions::ValidationError, error_message if errors.each{|e| ui.error(e); error_message = "#{error_message} #{e}."}.any?
         end
 
         def validate_params!
