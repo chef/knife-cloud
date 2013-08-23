@@ -72,7 +72,7 @@ class Chef
           begin
             # bootstrap the server
             bootstrap
-          rescue CloudExceptions::BootstrapError, Net::SSH::AuthenticationFailed => e
+          rescue CloudExceptions::BootstrapError => e
             ui.fatal(e.message)
             cleanup_on_failure
             raise e

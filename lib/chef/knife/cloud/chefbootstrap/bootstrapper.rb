@@ -39,7 +39,12 @@ class Chef
           @protocol = create_bootstrap_protocol
           @distribution = create_bootstrap_distribution
           @config[:template_file] = @distribution.template
-          @protocol.send_bootstrap_command
+          begin
+            @protocol.send_bootstrap_command
+          rescue Net::SSH::AuthenticationFailed => e
+            error_message = "Authentication Failed during bootstrapping. #{e.message}."
+            raise CloudExceptions::BootstrapError, error_message
+          end
         end
 
         def create_bootstrap_protocol
@@ -65,7 +70,7 @@ class Chef
             error_message = "Invalid bootstrap distribution. image_os_type should be either windows or linux."
             ui.fatal(error_message)
             raise CloudExceptions::BootstrapError, error_message
-          end          
+          end
         end
       end
     end
