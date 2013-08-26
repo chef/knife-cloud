@@ -67,6 +67,8 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
     it "auto generates chef_node_name" do
       instance.config[:bootstrap_protocol] = 'ssh'
       instance.config[:ssh_password] = 'password'
+      instance.config[:image_os_type] = 'linux'
+      instance.config[:chef_node_name_prefix] = 'os'
       instance.stub(:set_image_os_type)
       instance.should_receive(:get_node_name).and_call_original
       instance.validate_params!

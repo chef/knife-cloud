@@ -63,6 +63,12 @@ class Chef
               :default => false,
               :description => "Destroy corresponding server in case of failure"
 
+            option :chef_node_name_prefix,
+              :long => "--chef-node-name-prefix PREFIX_FOR_NODE_NAME",
+              :description => "The prefix for chef node name",
+              :default => includer.snake_case_name.split('_').first,
+              :proc => Proc.new { |key| Chef::Config[:knife][:chef_node_name_prefix] = key }
+
           end
         end
 
