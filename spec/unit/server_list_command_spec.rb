@@ -41,9 +41,9 @@ describe Chef::Knife::Cloud::ServerListCommand do
   end
 
   describe "#get_resource_col_val" do
-    let (:resources) {[ TestResource.new({:id => "server-1", :name => "server-1", :os => "ubuntu"}), TestResource.new({:id => "server-2", :name => "server-2", :os => "windows"})]}
-    before(:each) do
-      class Derived < Chef::Knife::Cloud::ServerListCommand
+    let (:resources) {[ TestResource.new({:id => "server-1", :name => "server-1", :os => "ubuntu"})]}
+    before do
+      class DerivedServerList < Chef::Knife::Cloud::ServerListCommand
         attr_accessor :node
         def before_exec_command
           @columns_with_info = [ { :key => 'id', :label => 'Instance ID' }, {:label => 'Environment', :key => 'chef_environment'}, {:label => 'platform_family', :key => 'platform_family'} ]
@@ -55,7 +55,7 @@ describe Chef::Knife::Cloud::ServerListCommand do
           @node_list = {"server-1" => @node}
         end
       end
-      @derived_instance = Derived.new
+      @derived_instance = DerivedServerList.new
       @derived_instance.config[:chef_data] = true
       @derived_instance.config[:chef_node_attribute] = "platform_family"
       @derived_instance.before_exec_command
