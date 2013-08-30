@@ -52,6 +52,20 @@ class Chef
           end
           false
         end
+        
+        # Derived class can override this to add more functionality.
+        def get_resource_col_val(resource)
+          resource_filtered = false
+          list = []
+          @columns_with_info.each do |col_info|
+            value = (col_info[:value_callback].nil? ? resource.send(col_info[:key]).to_s : col_info[:value_callback].call(resource.send(col_info[:key])))
+            if !config[:disable_filter]
+              resource_filtered = true if is_resource_filtered?(col_info[:key], value)
+            end
+            list << value
+          end
+          return list unless resource_filtered
+        end
 
         # When @columns_with_info is nil display all
         def list(resources)
@@ -59,17 +73,9 @@ class Chef
           begin
             resource_list = @columns_with_info.map { |col_info| ui.color(col_info[:label], :bold) } if @columns_with_info.length > 0
             resources.sort_by(&@sort_by_field.to_sym).each do |resource|
-              resource_filtered = false
               if @columns_with_info.length > 0
-                list = []
-                @columns_with_info.each do |col_info|
-                  value = (col_info[:value_callback].nil? ? resource.send(col_info[:key]).to_s : col_info[:value_callback].call(resource.send(col_info[:key])))
-                  if !config[:disable_filter]
-                    resource_filtered = true if is_resource_filtered?(col_info[:key], value)
-                  end
-                  list << value
-                end
-                resource_list.concat(list) unless resource_filtered
+                list = get_resource_col_val(resource)
+                resource_list.concat(list) unless list.nil?
               else
                 puts resource.to_json
                 puts "\n"
