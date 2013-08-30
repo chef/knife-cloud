@@ -28,6 +28,9 @@ class Chef
         def validate_params!
           # Some cloud provider like openstack does not provide way to identify image-os-type, So in such cases take image-os-type from user otherwise set it in code using set_image_os_type method.
           set_image_os_type
+          # set param vm_name to a random value if the name is not set by the user (plugin)
+          config[:chef_node_name] = get_node_name(locate_config_value(:chef_node_name), locate_config_value(:chef_node_name_prefix))
+
           # validate ssh_user, ssh_password, identity_file for ssh bootstrap protocol and winrm_password for winrm bootstrap protocol
           errors = []
 
@@ -108,6 +111,14 @@ class Chef
         def set_image_os_type
           raise Chef::Exceptions::Override, "You must override set_image_os_type in #{self.to_s} to set image_os_type"
         end
+
+        #generate a random name if chef_node_name is empty
+        def get_node_name(chef_node_name, prefix)
+          return chef_node_name unless chef_node_name.nil?
+          #lazy uuids
+          chef_node_name = "#{prefix}-"+rand.to_s.split('.')[1]
+        end
+
       end # class ServerCreateCommand
     end
   end
