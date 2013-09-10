@@ -89,6 +89,24 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
         node_names.should_not include(instance.config[:chef_node_name])
         node_names.push(instance.config[:chef_node_name])
       end
-    end    
+    end
+  end
+
+  describe "#cleanup_on_failure" do
+    it "delete server dependencies on delete_server_on_failure set" do
+      instance.config[:delete_server_on_failure] = true
+      instance.service = Chef::Knife::Cloud::Service.new
+      instance.service.should_receive(:delete_server_dependencies)
+      instance.service.should_receive(:delete_server_on_failure)
+      instance.cleanup_on_failure
+    end
+
+    it "don't delete server dependencies on delete_server_on_failure option is missing" do
+      instance.config[:delete_server_on_failure] = false
+      Chef::Config[:knife].delete(:delete_server_on_failure)
+      instance.service.should_not_receive(:delete_server_dependencies)
+      instance.service.should_not_receive(:delete_server_on_failure)
+      instance.cleanup_on_failure
+    end
   end
 end
