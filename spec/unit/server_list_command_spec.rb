@@ -72,4 +72,31 @@ describe Chef::Knife::Cloud::ServerListCommand do
       expect { @derived_instance.get_resource_col_val(resources.first) }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServerListingError, "The Node does not have a platform_family attribute.")
     end    
   end
+
+  describe "#format_server_state" do
+    before(:each) do
+      @instance = Chef::Knife::Cloud::ServerListCommand.new 
+    end
+
+    %w{ shutting-down terminated stopping stopped error shutoff }.each do |state|
+      it "set state color red on server state is in #{state}" do
+        @instance.ui.should_receive(:color).with(state, :red)
+        @instance.format_server_state(state)
+      end
+    end
+
+    %w{ pending build paused suspended hard_reboot }.each do |state|
+      it "set state color yellow on server state is in #{state}" do
+        @instance.ui.should_receive(:color).with(state, :yellow)
+        @instance.format_server_state(state)
+      end
+    end
+
+    %w{ running }.each do |state|
+      it "set state color green on server state is #{state}" do
+        @instance.ui.should_receive(:color).with(state, :green)
+        @instance.format_server_state(state)
+      end
+    end
+  end
 end
