@@ -9,6 +9,47 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
   it_behaves_like Chef::Knife::Cloud::Command, Chef::Knife::Cloud::ServerCreateCommand.new
   it_behaves_like Chef::Knife::Cloud::ServerCreateCommand, Chef::Knife::Cloud::ServerCreateCommand.new
 
+  describe "#validate_params!" do
+    before(:each) do
+      @instance = Chef::Knife::Cloud::ServerCreateCommand.new
+      @instance.ui.stub(:error)
+      Chef::Config[:knife][:bootstrap_protocol] = "ssh"
+      Chef::Config[:knife][:identity_file] = "identity_file"
+      Chef::Config[:knife][:ssh_password] = "ssh_password"
+      Chef::Config[:knife][:chef_node_name] = "chef_node_name"
+      Chef::Config[:knife][:winrm_password] = "winrm_password"
+    end
+    after(:all) do
+      Chef::Config[:knife].delete(:bootstrap_protocol)
+      Chef::Config[:knife].delete(:identity_file)
+      Chef::Config[:knife].delete(:chef_node_name)
+      Chef::Config[:knife].delete(:ssh_password)
+      Chef::Config[:knife].delete(:winrm_password)
+    end
+
+    it "run sucessfully on all params exist" do
+      @instance.should_receive(:set_image_os_type)
+      expect { @instance.validate_params! }.to_not raise_error
+      expect(@instance.config[:chef_node_name]).to eq(Chef::Config[:knife][:chef_node_name])
+    end
+
+    context "when bootstrap_protocol ssh" do
+      it "raise error on ssh_password and identity_file are missing" do
+        Chef::Config[:knife].delete(:identity_file)
+        Chef::Config[:knife].delete(:ssh_password)
+        expect { @instance.validate_params! }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ValidationError, " You must provide either Identity file or SSH Password..")
+      end
+    end
+
+    context "when bootstrap_protocol winrm" do
+      it "raise error on winrm_password is missing" do
+        Chef::Config[:knife][:bootstrap_protocol] = "winrm"
+        Chef::Config[:knife].delete(:winrm_password)
+        expect { @instance.validate_params! }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ValidationError, " You must provide Winrm Password..")
+      end
+    end
+  end
+
   describe "#after_exec_command" do
     it "calls bootstrap" do
       instance = Chef::Knife::Cloud::ServerCreateCommand.new
