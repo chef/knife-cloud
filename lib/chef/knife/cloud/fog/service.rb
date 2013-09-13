@@ -29,6 +29,7 @@ class Chef
         end
 
         def connection
+          add_api_endpoint
           @connection ||= begin
               connection = Fog::Compute.new(@auth_params)
                           rescue Excon::Errors::Unauthorized => e
@@ -115,6 +116,10 @@ class Chef
         
         def delete_server_on_failure(server = nil)
           server.destroy if ! server.nil?
+        end
+
+        def add_api_endpoint
+          raise Chef::Exceptions::Override, "You must override set_api_endpont to set api endpoint in #{self.to_s}"
         end
       end
     end
