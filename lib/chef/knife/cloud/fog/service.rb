@@ -119,7 +119,7 @@ class Chef
         end
 
         def add_api_endpoint
-          raise Chef::Exceptions::Override, "You must override set_api_endpont to set api endpoint in #{self.to_s}"
+          raise Chef::Exceptions::Override, "You must override add_api_endpoint in #{self.to_s} to add endpoint in auth_params for connection"
         end
       end
     end
