@@ -32,9 +32,5 @@ describe Chef::Knife::Cloud::WindowsDistribution do
       expect {Chef::Knife::Cloud::WindowsDistribution.new(@config)}.to_not raise_error
       expect(Chef::Knife::Cloud::WindowsDistribution.new(@config).class).to eq(Chef::Knife::Cloud::WindowsDistribution)
     end
-
-    it "returns the windows template when bootstrap protocol is winrm." do
-      Chef::Knife::Cloud::WindowsDistribution.new(@config).template.should match "windows-chef-client-msi.erb"
-    end
   end
 end
