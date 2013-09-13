@@ -17,6 +17,7 @@ describe Chef::Knife::Cloud::FogService do
     end
 
     it "creates a connection to fog service with the provided auth params." do
+      instance.should_receive(:add_api_endpoint)
       Fog::Compute.should_receive(:new).with({:provider => 'Any Cloud Provider'})
       instance.connection
     end
