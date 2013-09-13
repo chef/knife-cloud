@@ -22,13 +22,9 @@ class Chef
   class Knife
     class Cloud
       class WindowsDistribution < BootstrapDistribution
-
-        include Chef::Knife::TemplateFinder # This is included to expose get_template method from windows distribution.
-
         def initialize(config)
           super
           config[:distro] ||= "windows-chef-client-msi"
-          @template = get_template(config)
         end
       end
     end
