@@ -22,10 +22,6 @@ class Chef
     class Cloud
       class BootstrapDistribution
 
-        attr_accessor :template
-
-        include Chef::Knife::Cloud::Helpers
-
         def initialize(config)
           @config = config
         end

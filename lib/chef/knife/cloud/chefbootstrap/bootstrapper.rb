@@ -38,7 +38,6 @@ class Chef
           # uses BootstrapDistribution and BootstrapProtocol to perform bootstrap
           @protocol = create_bootstrap_protocol
           @distribution = create_bootstrap_distribution
-          @config[:template_file] = @distribution.template
           begin
             @protocol.send_bootstrap_command
           rescue Net::SSH::AuthenticationFailed => e
