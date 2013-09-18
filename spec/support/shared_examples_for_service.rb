@@ -4,6 +4,7 @@ shared_examples_for Chef::Knife::Cloud::Service do |instance|
 
   describe "#connection" do
     it "creates a connection to fog service." do
+      instance.should_receive(:add_api_endpoint)
       Fog::Compute.should_receive(:new)
       instance.connection
     end
