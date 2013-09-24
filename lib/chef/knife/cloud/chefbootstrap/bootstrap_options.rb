@@ -62,6 +62,12 @@ class Chef
               :description => "The ssh gateway",
               :proc => Proc.new { |key| Chef::Config[:knife][:ssh_gateway] = key }
 
+            option :forward_agent,
+              :short => "-A",
+              :long => "--forward-agent",
+              :description => "Enable SSH agent forwarding",
+              :boolean => true
+
             option :identity_file,
               :short => "-i IDENTITY_FILE",
               :long => "--identity-file IDENTITY_FILE",
@@ -96,6 +102,11 @@ class Chef
               :description => "Execute the bootstrap via sudo",
               :boolean => true
 
+            option :use_sudo_password,
+              :long => "--use-sudo-password",
+              :description => "Execute the bootstrap via sudo with password",
+              :boolean => false
+
             option :template_file,
               :long => "--template-file TEMPLATE",
               :description => "Full path to location of template to use",
@@ -128,6 +139,16 @@ class Chef
                 Chef::Config[:knife][:hints] ||= Hash.new
                 name, path = h.split("=")
                 Chef::Config[:knife][:hints][name] = path ? JSON.parse(::File.read(path)) : Hash.new  }
+      
+            option :secret,
+              :short => "-s SECRET",
+              :long  => "--secret ",
+              :description => "The secret key to use to encrypt data bag item values"
+
+            option :secret_file,
+              :long => "--secret-file SECRET_FILE",
+              :description => "A file containing the secret key to use to encrypt data bag item values"
+
           end
         end
 

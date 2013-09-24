@@ -34,12 +34,18 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
       @config[:bootstrap_ip_address] = "127.0.0.1"
       @config[:chef_node_name] = "testnode"
       @config[:environment] = "_default"
+      @config[:first_boot_attributes] = "{\"foo\":\"bar\"}"
+      @config[:secret] = "secret"
+      @config[:secret_file] = "secret_file"
       @config.stub(:locate_config_value).and_return({})
       @instance.bootstrap = Chef::Knife::Bootstrap.new
       @instance.init_bootstrap_options
       expect(@instance.bootstrap.name_args).to eq(@config[:bootstrap_ip_address])
       expect(@instance.bootstrap.config[:chef_node_name]).to eq(@config[:chef_node_name])
       expect(@instance.bootstrap.config[:environment]).to eq(@config[:environment])
+      expect(@instance.bootstrap.config[:first_boot_attributes]).to eq(@config[:first_boot_attributes])
+      expect(@instance.bootstrap.config[:secret]).to eq(@config[:secret])
+      expect(@instance.bootstrap.config[:secret_file]).to eq(@config[:secret_file])
     end
   end
 end
