@@ -57,6 +57,9 @@ class Chef
           # see chef/knife/bootstrap.rb #warn_chef_config_secret_key.
           bootstrap.config[:encrypted_data_bag_secret] = locate_config_value(:encrypted_data_bag_secret)
           bootstrap.config[:encrypted_data_bag_secret_file] = locate_config_value(:encrypted_data_bag_secret_file)
+          bootstrap.config[:first_boot_attributes] = locate_config_value(:first_boot_attributes)
+          bootstrap.config[:secret] = locate_config_value(:secret)
+          bootstrap.config[:secret_file] = locate_config_value(:secret_file)
         end
 
       end
