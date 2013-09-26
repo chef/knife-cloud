@@ -42,6 +42,9 @@ describe Chef::Knife::Cloud::SshBootstrapProtocol do
       @config[:chef_node_name] = "testnode"
       @config[:environment] = "_default"
       @config[:ssh_user] = "testuser"
+      @config[:ssh_gateway] = "ssh_gateway"
+      @config[:forward_agent] = true
+      @config[:use_sudo_password] = true
       @config.stub(:locate_config_value).and_return({})
       @instance.bootstrap = Chef::Knife::Bootstrap.new
       @instance.init_bootstrap_options
@@ -49,6 +52,9 @@ describe Chef::Knife::Cloud::SshBootstrapProtocol do
       expect(@instance.bootstrap.config[:chef_node_name]).to eq(@config[:chef_node_name])
       expect(@instance.bootstrap.config[:environment]).to eq(@config[:environment])
       expect(@instance.bootstrap.config[:ssh_user]).to eq(@config[:ssh_user])
+      expect(@instance.bootstrap.config[:forward_agent]).to be_true
+      expect(@instance.bootstrap.config[:use_sudo_password]).to be_true
+      expect(@instance.bootstrap.config[:ssh_gateway]).to eq(@config[:ssh_gateway])
     end
   end
 

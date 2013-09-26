@@ -40,6 +40,9 @@ class Chef
           bootstrap.config[:host_key_verify] = @config[:host_key_verify]
           bootstrap.config[:use_sudo] = true unless @config[:ssh_user] == 'root'
           bootstrap.config[:template_file] =  @config[:template_file]
+          bootstrap.config[:ssh_gateway] = locate_config_value(:ssh_gateway)
+          bootstrap.config[:forward_agent] = locate_config_value(:forward_agent)
+          bootstrap.config[:use_sudo_password] = locate_config_value(:use_sudo_password)
           super
         end
 
