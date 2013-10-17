@@ -37,30 +37,46 @@ FOR /F "tokens=1-8 delims=.[] " %%A IN ('ver') DO (
 @set WinBuild=%%F
 )
 
+@set LATEST_OS_VERSION_MAJOR=6
+@set LATEST_OS_VERSION_MINOR=3
+
+@if /i %WinMajor% GTR %LATEST_OS_VERSION_MAJOR% goto VersionUnknown
+@if /i %WinMajor% EQU %LATEST_OS_VERSION_MAJOR%  (
+  @if /i %WinMinor% GTR %LATEST_OS_VERSION_MINOR% goto VersionUnknown
+)
+
 goto Version%WinMajor%.%WinMinor%
 
+:VersionUnknown
 @rem If this is an unknown version of windows set the default
 @set MACHINE_OS=2008r2
-goto architecture
+@echo Warning: Unknown version of Windows, assuming default of Windows %MACHINE_OS%
+goto architecture_select
 
 :Version6.0
 @set MACHINE_OS=2008
-goto architecture
+goto architecture_select
 
 :Version5.2
 @set MACHINE_OS=2003r2
-goto architecture
+goto architecture_select
 
 :Version6.1
 @set MACHINE_OS=2008r2
-goto architecture
+goto architecture_select
 
 :Version6.2
 @set MACHINE_OS=2012
-goto architecture
+goto architecture_select
 
-:architecture
+@rem Currently Windows Server 2012 R2 is treated as equivalent to Windows Server 2012 
+:Version6.3
+goto Version6.2
 
+:architecture_select
+goto Architecture%PROCESSOR_ARCHITEW6432%
+
+:Architecture
 goto Architecture%PROCESSOR_ARCHITECTURE%
 
 @rem If this is an unknown architecture set the default
@@ -78,7 +94,10 @@ goto install
 :install
 @rem Install Chef using chef-client MSI installer
 
-@set "REMOTE_SOURCE_MSI_URL=https://www.opscode.com/chef/download?p=windows&pv=%MACHINE_OS%&m=%MACHINE_ARCH%"
+
+<% url="https://www.opscode.com/chef/download?p=windows&pv=%MACHINE_OS%&m=%MACHINE_ARCH%" -%>
+<% url += "&v=#{@config[:bootstrap_version]}" if @config.key? :bootstrap_version -%>
+@set "REMOTE_SOURCE_MSI_URL=<%= url %>"
 @set "LOCAL_DESTINATION_MSI_PATH=<%= local_download_path %>"
 @set "FALLBACK_QUERY_STRING=&DownloadContext=PowerShell"
 
@@ -105,9 +124,15 @@ cscript /nologo <%= bootstrap_directory %>\wget.vbs /url:"%REMOTE_SOURCE_MSI_URL
 
 @endlocal
 
+@echo off
+echo Writing validation key...
+
 > <%= bootstrap_directory %>\validation.pem (
  <%= validation_key %>
 )
+
+echo Validation key written.
+@echo on
 
 <% if @config[:encrypted_data_bag_secret] -%>
 > <%= bootstrap_directory %>\encrypted_data_bag_secret (
