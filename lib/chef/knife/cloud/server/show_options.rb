@@ -18,18 +18,17 @@
 class Chef
   class Knife
     class Cloud
-      class CloudExceptions
-        class KnifeCloudError < RuntimeError; end
-        class ServiceConnectionError < KnifeCloudError; end
-        class ValidationError < KnifeCloudError; end
-        class ServerCreateError < KnifeCloudError; end
-        class ServerSetupError < KnifeCloudError; end
-        class ServerDeleteError < KnifeCloudError; end
-        class ServerListingError < KnifeCloudError; end
-        class ImageListingError < KnifeCloudError; end
-        class ServerCreateDependenciesError < KnifeCloudError; end
-        class BootstrapError < KnifeCloudError; end
-        class ServerShowError < KnifeCloudError; end
+      module ServerShowOptions
+        def self.included(includer)
+          includer.class_eval do
+
+            option :instance_id,
+              :long => "--instance-id INSTANCE_ID",
+              :description => "Required. Instance Id of Server",
+              :proc => Proc.new { |i| Chef::Config[:knife][:instance_id] = i }
+              
+          end
+        end
       end
     end
   end

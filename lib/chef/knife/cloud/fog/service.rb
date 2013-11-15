@@ -121,6 +121,29 @@ class Chef
         def add_api_endpoint
           raise Chef::Exceptions::Override, "You must override add_api_endpoint in #{self.to_s} to add endpoint in auth_params for connection"
         end
+
+        def get_server(instance_id)
+          begin
+            server = connection.servers.get(instance_id)
+          rescue Excon::Errors::BadRequest => e
+            response = Chef::JSONCompat.from_json(e.response.body)
+            ui.fatal("Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}")
+            raise e
+          end
+        end
+
+        def server_summary(server, columns_with_info = [])
+          # columns_with_info is array of hash with label, key and attribute extraction callback, ex [{:label => "Label text", :key => 'key', value_callback => callback_method to extract/format the required value}, ...]
+          list = []
+          columns_with_info.each do |col_info|
+            value = (col_info[:value_callback].nil? ? server.send(col_info[:key]).to_s : col_info[:value_callback].call(server.send(col_info[:key])))
+            if !(value.nil? || value.empty?)
+              list << ui.color(col_info[:label], :bold)
+              list << value
+            end
+          end
+          puts ui.list(list, :uneven_columns_across, 2) if columns_with_info.length > 0
+        end
       end
     end
   end
