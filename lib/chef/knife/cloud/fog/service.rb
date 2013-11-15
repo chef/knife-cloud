@@ -149,6 +149,16 @@ class Chef
           server.name
         end
 
+        def get_server(instance_id)
+          begin
+            server = connection.servers.get(instance_id)
+          rescue Excon::Errors::BadRequest => e
+            response = Chef::JSONCompat.from_json(e.response.body)
+            ui.fatal("Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}")
+            raise e
+          end
+        end
+
         def server_summary(server, columns_with_info = [])
           # columns_with_info is array of hash with label, key and attribute extraction callback, ex [{:label => "Label text", :key => 'key', value => 'the_actual_value', value_callback => callback_method to extract/format the required value}, ...]
           list = []
