@@ -42,7 +42,7 @@ class Chef
         def execute_command
           server = service.get_server(locate_config_value(:instance_id))
           if server.nil?
-            error_message = "Server doesn't exists of this #{locate_config_value(:instance_id)} instance id."
+            error_message = "Server doesn't exists for this #{locate_config_value(:instance_id)} instance id."
             ui.error(error_message)
             raise CloudExceptions::ServerShowError, error_message
           else
