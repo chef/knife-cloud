@@ -24,6 +24,12 @@ class Chef
       class ServerCreateCommand < Command
         attr_accessor :server, :create_options
 
+        def initialize
+          super
+          # columns_with_info is array of hash with label, key and attribute extraction callback, ex [{:label => "Label text", :key => 'key', value_callback => callback_method to extract/format the required value}, ...]
+          @columns_with_info = []
+        end
+
         def validate_params!
           # Some cloud provider like openstack does not provide way to identify image-os-type, So in such cases take image-os-type from user otherwise set it in code using set_image_os_type method.
           set_image_os_type
@@ -68,6 +74,7 @@ class Chef
             service.delete_server_dependencies
             raise e
           end
+          service.server_summary(@server, @columns_with_info)
         end
 
         # Derived classes can override after_exec_command and also call cleanup_on_failure if any exception occured.
@@ -108,6 +115,7 @@ class Chef
         def before_bootstrap
         end
         def after_bootstrap
+          service.server_summary(@server, @columns_with_info)
         end
 
         # knife-plugin can override set_image_os_type to set image_os_type by using their own meachanism.
