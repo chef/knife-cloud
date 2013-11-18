@@ -40,8 +40,6 @@ shared_examples_for Chef::Knife::Cloud::Service do |instance|
     it "creates the server." do
       server = double()
       instance.stub_chain(:connection, :servers, :create).and_return(server)
-      server.should_receive(:name).ordered
-      server.should_receive(:id).ordered
       instance.stub_chain(:ui, :color)
       server.should_receive(:wait_for)
       instance.create_server({:server_create_timeout => 600})
