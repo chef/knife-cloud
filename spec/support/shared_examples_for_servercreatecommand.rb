@@ -34,6 +34,7 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
   describe "#execute_command" do
     it "calls create_server" do
       instance.service.should_receive(:create_server).and_return(true)
+      instance.service.should_receive(:server_summary)
       instance.execute_command
     end
 
@@ -61,6 +62,13 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
       instance.should_receive(:before_bootstrap).ordered
       instance.should_receive(:after_bootstrap).ordered      
       instance.bootstrap
+    end
+  end
+
+  describe "#after_bootstrap" do
+    it "display server summary" do
+      instance.service.should_receive(:server_summary)
+      instance.after_bootstrap
     end
   end
 
