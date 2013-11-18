@@ -48,4 +48,22 @@ shared_examples_for Chef::Knife::Cloud::Service do |instance|
     end
   end
 
+  describe "#get_server" do
+    it "return server." do
+      server = double()
+      instance.stub_chain(:connection, :servers, :create).and_return(server)
+      instance.connection.servers.should_receive(:get)
+      instance.get_server("instance_id")
+    end
+  end
+
+  describe "#server_summary" do
+    it "show server details." do
+      server = double()
+      instance.ui = double()
+      instance.ui.should_receive(:list)
+      server.should_receive(:id)
+      instance.server_summary(server, [{:label => 'Instance ID', :key => 'id'}])
+    end
+  end  
 end
