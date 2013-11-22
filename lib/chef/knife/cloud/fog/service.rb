@@ -30,6 +30,7 @@ class Chef
 
         def connection
           add_api_endpoint
+          add_custom_arguments
           @connection ||= begin
               connection = Fog::Compute.new(@auth_params)
                           rescue Excon::Errors::Unauthorized => e
@@ -120,6 +121,10 @@ class Chef
 
         def add_api_endpoint
           raise Chef::Exceptions::Override, "You must override add_api_endpoint in #{self.to_s} to add endpoint in auth_params for connection"
+        end
+
+        def add_custom_arguments
+          Chef::Config[:knife][:custom_arguments].map{|args| args.map{|k,v| @auth_params.merge!(k.to_sym => v)}} unless Chef::Config[:knife][:custom_arguments].nil?
         end
       end
     end
