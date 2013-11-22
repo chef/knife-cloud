@@ -31,6 +31,7 @@ class Chef
 
         def connection
           add_api_endpoint
+          add_custom_arguments
           @connection ||= begin
               connection = Fog::Compute.new(@auth_params)
                           rescue Excon::Errors::Unauthorized => e
@@ -127,7 +128,7 @@ class Chef
             raise CloudExceptions::CloudAPIException, error_message
           end
         end
-        
+
         def delete_server_on_failure(server = nil)
           server.destroy if ! server.nil?
         end
@@ -171,6 +172,10 @@ class Chef
         def is_image_windows?(image)
           image_info = connection.images.get(image)
           !image_info.nil? ? image_info.platform == 'windows' : false
+        end
+
+        def add_custom_arguments
+          Chef::Config[:knife][:custom_arguments].map{|args| args.map{|k,v| @auth_params.merge!(k.to_sym => v)}} unless Chef::Config[:knife][:custom_arguments].nil?
         end
       end
     end
