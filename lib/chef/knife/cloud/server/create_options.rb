@@ -70,11 +70,6 @@ class Chef
               :default => includer.snake_case_name.split('_').first,
               :proc => Proc.new { |key| Chef::Config[:knife][:chef_node_name_prefix] = key }
 
-            option :custom_arguments,
-              :long => "--custom-arguments CUSTOM_ARGUMENTS",
-              :description => "Custom arguments to be passed to Fog.",
-              :proc => Proc.new {|args| Chef::Config[:knife][:custom_arguments] =  args.split(',').map{|keys| keys.split('=')}.map{|j| Hash[*j.map{|k| k.strip}]}}
-
           end
         end
 

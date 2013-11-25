@@ -1,5 +1,6 @@
 #
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
+# Author:: Prabhu Das (<prabhu.das@clogeny.com>)
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 #
 
@@ -30,7 +31,6 @@ class Chef
 
         def connection
           add_api_endpoint
-          add_custom_arguments
           @connection ||= begin
               connection = Fog::Compute.new(@auth_params)
                           rescue Excon::Errors::Unauthorized => e
@@ -47,6 +47,7 @@ class Chef
         # cloud server specific implementation methods for commands.
         def create_server(options = {})
           begin
+            add_custom_arguments(options[:server_def])
             server = connection.servers.create(options[:server_def])
           rescue Excon::Errors::BadRequest => e
             response = Chef::JSONCompat.from_json(e.response.body)
@@ -123,8 +124,8 @@ class Chef
           raise Chef::Exceptions::Override, "You must override add_api_endpoint in #{self.to_s} to add endpoint in auth_params for connection"
         end
 
-        def add_custom_arguments
-          Chef::Config[:knife][:custom_arguments].map{|args| args.map{|k,v| @auth_params.merge!(k.to_sym => v)}} unless Chef::Config[:knife][:custom_arguments].nil?
+        def add_custom_arguments(server_def)
+          Chef::Config[:knife][:custom_arguments].map{|args| args.map{|k,v| server_def.merge!(k.to_sym => v)}} unless Chef::Config[:knife][:custom_arguments].nil?
         end
       end
     end
