@@ -31,7 +31,6 @@ class Chef
 
         def connection
           add_api_endpoint
-          add_custom_arguments
           @connection ||= begin
               connection = Fog::Compute.new(@auth_params)
                           rescue Excon::Errors::Unauthorized => e
@@ -48,6 +47,7 @@ class Chef
         # cloud server specific implementation methods for commands.
         def create_server(options = {})
           begin
+            add_custom_arguments(options[:server_def])
             server = connection.servers.create(options[:server_def])
           rescue Excon::Errors::BadRequest => e
             response = Chef::JSONCompat.from_json(e.response.body)
@@ -176,6 +176,10 @@ class Chef
 
         def add_custom_arguments
           Chef::Config[:knife][:custom_arguments].map{|args| args.map{|k,v| @auth_params.merge!(k.to_sym => v)}} unless Chef::Config[:knife][:custom_arguments].nil?
+        end
+
+        def add_custom_arguments(server_def)
+          Chef::Config[:knife][:custom_arguments].map{|args| args.map{|k,v| server_def.merge!(k.to_sym => v)}} unless Chef::Config[:knife][:custom_arguments].nil?
         end
       end
     end
