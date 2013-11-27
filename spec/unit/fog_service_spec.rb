@@ -2,7 +2,6 @@
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 require 'chef/knife/cloud/fog/service'
-
 require 'support/shared_examples_for_service'
 
 describe Chef::Knife::Cloud::FogService do
@@ -22,5 +21,21 @@ describe Chef::Knife::Cloud::FogService do
       instance.connection
     end
 
+  end
+
+  context "add_custom_arguments" do
+    before(:each) do
+      Chef::Config[:knife][:custom_arguments] = [{"state"=>"Inactive"}]
+      @server_def = {:name=>"vm-1", :image_ref=>"123",:flavor_ref=>"2", :key_name=>"key"}
+      instance.add_custom_arguments(@server_def)
+    end
+
+    it "adds the custom arguments provided to server_def" do
+      expect(@server_def.include?(:state)).to be true
+    end
+
+    it "sets the provided arguments with supplied values" do
+      expect(@server_def[:state] == "Inactive").to be true
+    end 
   end
 end
