@@ -24,7 +24,7 @@ class Chef
             option :custom_arguments,
               :long => "--custom-arguments CUSTOM_ARGUMENTS",
               :description => "Custom arguments to be passed to Fog.",
-              :proc => Proc.new {|args| Chef::Config[:knife][:custom_arguments] =  args.split(',').map{|keys| keys.split('=')}.map{|j| Hash[*j.map{|k| k.strip}]}}
+              :proc => Proc.new {|args| Chef::Config[:knife][:custom_arguments] =  args.split(';').map{|keys| keys.split('=')}.map{|j| Hash[*j.map{|k| k.strip}]}}
           end
         end
 
