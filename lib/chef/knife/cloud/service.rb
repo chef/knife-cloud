@@ -68,6 +68,10 @@ class Chef
           raise Chef::Exceptions::Override, "You must override list_images in #{self.to_s}"
         end
 
+        def add_custom_attributes(server_def)
+          Chef::Config[:knife][:custom_attributes].map{|args| args.map{|k,v| server_def.merge!(k.to_sym => v)}} unless Chef::Config[:knife][:custom_attributes].nil?
+        end
+
       end # class service
     end
   end
