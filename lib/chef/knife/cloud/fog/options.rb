@@ -21,13 +21,8 @@ class Chef
               :description => "Your API endpoint. Eg, for Eucalyptus it can be 'http://ecc.eucalyptus.com:8773/services/Eucalyptus'",
               :proc => Proc.new { |endpoint| Chef::Config[:knife][:api_endpoint] = endpoint }
 
-            option :custom_arguments,
-              :long => "--custom-arguments CUSTOM_ARGUMENTS",
-              :description => "Custom arguments to be passed to Fog.",
-              :proc => Proc.new {|args| Chef::Config[:knife][:custom_arguments] =  args.split(';').map{|keys| keys.split('=')}.map{|j| Hash[*j.map{|k| k.strip}]}}
           end
         end
-
       end
     end
   end
