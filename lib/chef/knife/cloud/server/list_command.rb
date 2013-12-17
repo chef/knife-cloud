@@ -37,8 +37,9 @@ class Chef
           list = []
           @columns_with_info.each do |col_info|
             if config[:chef_data] && @chef_data_col_info.include?(col_info)
-              if @node_list.include?(server.name)
-                node =  @node_list[server.name]
+              server_name = server.attributes.include?(:name) ? server.name : server.tags['Name']
+              if @node_list.include?(server_name)
+                node =  @node_list[server_name]
                 # Raise serverlisting error on invalid chef_node_attribute.
                 if col_info[:key] == config[:chef_node_attribute] && ! node.attribute?(col_info[:key])
                   error_message = "The Node does not have a #{col_info[:key]} attribute."
