@@ -62,11 +62,13 @@ describe Chef::Knife::Cloud::ServerListCommand do
     end
 
     it "return columns_with_info values" do
+      resources.first.stub_chain(:attributes, :include?).and_return(true)
       @derived_instance.node.should_receive(:attribute?).with("platform_family").and_return(true)
       @derived_instance.get_resource_col_val(resources.first).should eq(["server-1", "_default", "debian"])
     end
 
     it "raise error on invalide chef_node_attribute" do
+      resources.first.stub_chain(:attributes, :include?).and_return(true)
       @derived_instance.ui.stub(:error)
       @derived_instance.node.should_receive(:attribute?).with("platform_family").and_return(false)
       expect { @derived_instance.get_resource_col_val(resources.first) }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServerListingError, "The Node does not have a platform_family attribute.")
