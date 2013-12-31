@@ -1,4 +1,5 @@
 # Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
+# Author:: Prabhu Das (<prabhu.das@clogeny.com>)
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 
 require 'spec_helper'
@@ -59,16 +60,16 @@ describe Chef::Knife::Cloud::ServerListCommand do
       @derived_instance.config[:chef_data] = true
       @derived_instance.config[:chef_node_attribute] = "platform_family"
       @derived_instance.before_exec_command
+      @derived_instance.service = double Chef::Knife::Cloud::Service.new
+      @derived_instance.service.stub(:get_server_name).with(resources.first).and_return("server-1")
     end
 
     it "return columns_with_info values" do
-      resources.first.stub_chain(:attributes, :include?).and_return(true)
       @derived_instance.node.should_receive(:attribute?).with("platform_family").and_return(true)
       @derived_instance.get_resource_col_val(resources.first).should eq(["server-1", "_default", "debian"])
     end
 
     it "raise error on invalide chef_node_attribute" do
-      resources.first.stub_chain(:attributes, :include?).and_return(true)
       @derived_instance.ui.stub(:error)
       @derived_instance.node.should_receive(:attribute?).with("platform_family").and_return(false)
       expect { @derived_instance.get_resource_col_val(resources.first) }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServerListingError, "The Node does not have a platform_family attribute.")
