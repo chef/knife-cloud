@@ -58,8 +58,8 @@ class Chef
             end
             raise CloudExceptions::ServerCreateError, message
           end
-
-          msg_pair("Instance Name", server.name)
+ 
+          msg_pair("Instance Name", get_server_name(server))
           msg_pair("Instance ID", server.id)
 
           print "\n#{ui.color("Waiting for server [wait time = #{options[:server_create_timeout]}]", :magenta)}"
@@ -120,6 +120,10 @@ class Chef
 
         def add_api_endpoint
           raise Chef::Exceptions::Override, "You must override add_api_endpoint in #{self.to_s} to add endpoint in auth_params for connection"
+        end
+
+        def get_server_name(server)
+          server.name
         end
       end
     end

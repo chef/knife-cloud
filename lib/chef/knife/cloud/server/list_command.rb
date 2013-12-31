@@ -1,4 +1,3 @@
-
 require 'chef/knife/cloud/list_resource_command'
 require 'chef/knife/cloud/exceptions'
 
@@ -37,7 +36,7 @@ class Chef
           list = []
           @columns_with_info.each do |col_info|
             if config[:chef_data] && @chef_data_col_info.include?(col_info)
-              server_name = server.attributes.include?(:name) ? server.name : server.tags['Name']
+              server_name = service.get_server_name(server)
               if @node_list.include?(server_name)
                 node =  @node_list[server_name]
                 # Raise serverlisting error on invalid chef_node_attribute.
