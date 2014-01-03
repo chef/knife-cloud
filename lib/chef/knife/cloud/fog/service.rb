@@ -75,7 +75,7 @@ class Chef
           begin
             server = connection.servers.get(server_name)
 
-            msg_pair("Instance Name", server.name)
+            msg_pair("Instance Name", get_server_name(server))
             msg_pair("Instance ID", server.id)
 
             puts "\n"
