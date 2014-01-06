@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 require 'chef/knife/cloud/command'
 require 'chef/knife/cloud/exceptions'
 require 'chef/knife/cloud/chefbootstrap/bootstrapper'
@@ -51,6 +50,7 @@ class Chef
         
         def before_exec_command
           begin
+            post_connection_validations
             service.create_server_dependencies
           rescue CloudExceptions::ServerCreateDependenciesError => e
             ui.fatal(e.message)
@@ -122,6 +122,8 @@ class Chef
           chef_node_name = "#{prefix}-"+rand.to_s.split('.')[1]
         end
 
+        def post_connection_validations
+        end
       end # class ServerCreateCommand
     end
   end
