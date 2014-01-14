@@ -120,16 +120,6 @@ class Chef
           raise Chef::Exceptions::Override, "You must override add_api_endpoint in #{self.to_s} to add endpoint in auth_params for connection"
         end
 
-        def get_server(instance_id)
-          begin
-            server = connection.servers.get(instance_id)
-          rescue Excon::Errors::BadRequest => e
-            response = Chef::JSONCompat.from_json(e.response.body)
-            ui.fatal("Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}")
-            raise e
-          end
-        end
-
         def get_server_name(server)
           server.name
         end
