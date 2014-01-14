@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 require 'chef/knife/cloud/command'
 require 'chef/knife/cloud/exceptions'
 require 'chef/knife/cloud/chefbootstrap/bootstrapper'
@@ -24,6 +23,12 @@ class Chef
     class Cloud
       class ServerCreateCommand < Command
         attr_accessor :server, :create_options
+
+        def initialize(argv=[])
+          super argv
+          # columns_with_info is array of hash with label, key and attribute extraction callback, ex [{:label => "Label text", :key => 'key', value_callback => callback_method to extract/format the required value}, ...]
+          @columns_with_info = []
+        end
 
         def validate_params!
           # Some cloud provider like openstack does not provide way to identify image-os-type, So in such cases take image-os-type from user otherwise set it in code using set_image_os_type method.
@@ -51,6 +56,7 @@ class Chef
         
         def before_exec_command
           begin
+            post_connection_validations
             service.create_server_dependencies
           rescue CloudExceptions::ServerCreateDependenciesError => e
             ui.fatal(e.message)
@@ -68,6 +74,7 @@ class Chef
             service.delete_server_dependencies
             raise e
           end
+          service.server_summary(@server, @columns_with_info)
         end
 
         # Derived classes can override after_exec_command and also call cleanup_on_failure if any exception occured.
@@ -108,6 +115,7 @@ class Chef
         def before_bootstrap
         end
         def after_bootstrap
+          service.server_summary(@server, @columns_with_info)
         end
 
         # knife-plugin can override set_image_os_type to set image_os_type by using their own meachanism.
@@ -122,6 +130,8 @@ class Chef
           chef_node_name = "#{prefix}-"+rand.to_s.split('.')[1]
         end
 
+        def post_connection_validations
+        end
       end # class ServerCreateCommand
     end
   end
