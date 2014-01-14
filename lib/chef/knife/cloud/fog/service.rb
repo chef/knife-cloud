@@ -1,5 +1,6 @@
 #
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
+# Author:: Prabhu Das (<prabhu.das@clogeny.com>)
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 #
 
@@ -142,12 +143,18 @@ class Chef
                     else
                       col_info[:value]
                     end
+
             if !(value.nil? || value.empty?)
               list << ui.color(col_info[:label], :bold)
               list << value
             end
           end
           puts ui.list(list, :uneven_columns_across, 2) if columns_with_info.length > 0
+        end
+
+        def is_image_windows?(image)
+          image_info = connection.images.get(image)
+          !image_info.nil? ? image_info.platform == 'windows' : false
         end
       end
     end
