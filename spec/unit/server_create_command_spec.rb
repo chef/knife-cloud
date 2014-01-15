@@ -28,7 +28,6 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
     end
 
     it "run sucessfully on all params exist" do
-      @instance.should_receive(:set_image_os_type)
       expect { @instance.validate_params! }.to_not raise_error
       expect(@instance.config[:chef_node_name]).to eq(Chef::Config[:knife][:chef_node_name])
     end
@@ -82,23 +81,12 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
     end
   end
 
-  describe "#set_image_os_type" do
+  describe "#set_default_config" do
     it "set valid image os type" do
       instance = Chef::Knife::Cloud::ServerCreateCommand.new
       instance.config[:bootstrap_protocol] = 'winrm'
-      instance.set_image_os_type
+      instance.set_default_config
       expect(instance.config[:image_os_type]).to eq('windows')
     end
   end
-
-  describe "#validate_params!" do
-    it "calls set_image_os_type" do
-      instance = Chef::Knife::Cloud::ServerCreateCommand.new
-      instance.stub(:locate_config_value).and_return(false)
-      instance.stub(:raise)
-      instance.ui.stub(:error)
-      instance.should_receive(:set_image_os_type)
-      instance.validate_params!
-    end
-  end  
 end

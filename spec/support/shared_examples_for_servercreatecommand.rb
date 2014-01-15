@@ -78,7 +78,6 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
       instance.config[:ssh_password] = 'password'
       instance.config[:image_os_type] = 'linux'
       instance.config[:chef_node_name_prefix] = 'os'
-      instance.stub(:set_image_os_type)
       instance.should_receive(:get_node_name).and_call_original
       instance.validate_params!
       instance.config[:chef_node_name].should =~ /os-*/
@@ -90,7 +89,6 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
       instance.config[:ssh_password] = 'password'
       instance.config[:image_os_type] = 'linux'
       instance.config[:chef_node_name_prefix] = 'os'
-      instance.stub(:set_image_os_type)
       5.times do
         instance.config[:chef_node_name] = nil
         instance.validate_params!
