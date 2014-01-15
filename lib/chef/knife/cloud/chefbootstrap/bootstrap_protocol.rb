@@ -26,7 +26,7 @@ class Chef
       class BootstrapProtocol
         include Chef::Knife::Cloud::Helpers
 
-        attr_accessor :bootstrap, :ui
+        attr_accessor :bootstrap, :ui, :initial_sleep_delay
         attr_reader :config
 
         def initialize(config)

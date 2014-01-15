@@ -25,8 +25,7 @@ class Chef
   class Knife
     class Cloud
       class SshBootstrapProtocol < BootstrapProtocol
-        attr_accessor :initial_sleep_delay
-
+        
         def initialize(config)
           @bootstrap = (config[:image_os_type] == 'linux') ? Chef::Knife::Bootstrap.new : Chef::Knife::BootstrapWindowsSsh.new
           super

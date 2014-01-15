@@ -30,6 +30,9 @@ class Chef
 
         def run
           begin
+            # Set dafult config
+            set_default_config
+            
             # validate compulsory params
             validate!
 
@@ -68,6 +71,9 @@ class Chef
         end
 
         def after_exec_command
+        end
+
+        def set_default_config
         end
 
         def validate!(*keys)
