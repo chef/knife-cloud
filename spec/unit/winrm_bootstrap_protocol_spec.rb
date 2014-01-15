@@ -48,7 +48,9 @@ describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
 
   describe "#tcp_test_winrm" do
     it "return true" do
-      TCPSocket.stub(:new){true}
+      tcpSocket = double()
+      tcpSocket.stub(:close).and_return(true)
+      TCPSocket.stub(:new).and_return(tcpSocket)
       expect(@instance.tcp_test_winrm("localhost","5989")).to be(true)
     end
 
