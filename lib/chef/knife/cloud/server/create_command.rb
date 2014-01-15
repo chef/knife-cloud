@@ -31,8 +31,6 @@ class Chef
         end
 
         def validate_params!
-          # Some cloud provider like openstack does not provide way to identify image-os-type, So in such cases take image-os-type from user otherwise set it in code using set_image_os_type method.
-          set_image_os_type
           # set param vm_name to a random value if the name is not set by the user (plugin)
           config[:chef_node_name] = get_node_name(locate_config_value(:chef_node_name), locate_config_value(:chef_node_name_prefix))
 
@@ -118,8 +116,8 @@ class Chef
           service.server_summary(@server, @columns_with_info)
         end
 
-        # knife-plugin can override set_image_os_type to set image_os_type by using their own meachanism.
-        def set_image_os_type
+        # knife-plugin can override set_default_config to set default config by using their own meachanism.
+        def set_default_config
           config[:image_os_type] = 'windows' if config[:bootstrap_protocol] == 'winrm'
         end
 
