@@ -1,5 +1,6 @@
 #
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
+# Author:: Prabhu Das (<prabhu.das@clogeny.com>)
 # Copyright:: Copyright (c) 2013 Opscode, Inc.
 #
 
@@ -120,7 +121,7 @@ class Chef
         def add_api_endpoint
           raise Chef::Exceptions::Override, "You must override add_api_endpoint in #{self.to_s} to add endpoint in auth_params for connection"
         end
-        
+
         def get_server_name(server)
           server.name
         end
@@ -150,6 +151,11 @@ class Chef
             end
           end
           puts ui.list(list, :uneven_columns_across, 2) if columns_with_info.length > 0
+        end
+
+        def is_image_windows?(image)
+          image_info = connection.images.get(image)
+          !image_info.nil? ? image_info.platform == 'windows' : false
         end
       end
     end
