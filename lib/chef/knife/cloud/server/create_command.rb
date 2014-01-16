@@ -116,7 +116,7 @@ class Chef
           service.server_summary(@server, @columns_with_info)
         end
 
-        # knife-plugin can override set_default_config to set default config by using their own meachanism.
+        # knife-plugin can override set_default_config to set default config by using their own mechanism.
         def set_default_config
           config[:image_os_type] = 'windows' if config[:bootstrap_protocol] == 'winrm'
         end
