@@ -58,6 +58,8 @@ class Chef
               ui.fatal(message)
             end
             raise CloudExceptions::ServerCreateError, message
+          rescue Fog::Errors::Error => e
+            raise CloudExceptions::ServerCreateError, e.message
           end
 
           print "\n#{ui.color("Waiting for server [wait time = #{options[:server_create_timeout]}]", :magenta)}"
@@ -143,7 +145,6 @@ class Chef
                     else
                       col_info[:value]
                     end
-
             if !(value.nil? || value.empty?)
               list << ui.color(col_info[:label], :bold)
               list << value

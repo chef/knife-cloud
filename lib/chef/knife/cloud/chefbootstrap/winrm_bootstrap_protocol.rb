@@ -49,11 +49,14 @@ class Chef
 
         def wait_for_server_ready
           print "\n#{ui.color("Waiting for winrm to host (#{@config[:bootstrap_ip_address]})", :magenta)}"
-          print(".") until tcp_test_winrm(@config[:bootstrap_ip_address], @config[:winrm_port])
+          print(".") until tcp_test_winrm(@config[:bootstrap_ip_address], @config[:winrm_port]){
+            sleep @initial_sleep_delay ||= 10
+            puts("done")
+          }
         end
 
         def tcp_test_winrm(hostname, port)
-          TCPSocket.new(hostname, port)
+          tcp_socket = TCPSocket.new(hostname, port)
           return true
         rescue SocketError
           sleep 2
@@ -71,6 +74,8 @@ class Chef
         rescue Errno::ENETUNREACH
           sleep 2
           false
+        ensure
+          tcp_socket && tcp_socket.close          
         end
 
       end
