@@ -64,15 +64,16 @@ class Chef
         end
 
         def format_server_state(state)
-           state = state.to_s.downcase
-           case state
-           when 'shutting-down','terminated','stopping','stopped','error','shutoff'
-             ui.color(state, :red)
-           when 'pending','build','paused','suspended','hard_reboot'
-             ui.color(state, :yellow)
-           else
-             ui.color(state, :green)
-           end
+          state = state.to_s.downcase
+          state_color = case state
+                        when 'shutting-down','terminated','stopping','stopped','error','shutoff'
+                          :red
+                        when 'pending','build','paused','suspended','hard_reboot'
+                          :yellow
+                        else
+                          :green
+                        end
+          ui.color(state, state_color)              
         end
 
       end # class ServerListCommand
