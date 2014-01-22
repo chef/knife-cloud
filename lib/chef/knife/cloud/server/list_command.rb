@@ -52,11 +52,7 @@ class Chef
                 value = ""
               end
             else
-              value = if col_info[:nested_values].nil?
-                        (col_info[:value_callback].nil? ? server.send(col_info[:key]).to_s : col_info[:value_callback].call(server.send(col_info[:key])))
-                      else
-                        server.send(col_info[:key])[col_info[:nested_values]]
-                      end
+              value = (col_info[:value_callback].nil? ? server.send(col_info[:key]).to_s : col_info[:value_callback].call(server.send(col_info[:key])))
             end
             list << value
           end
