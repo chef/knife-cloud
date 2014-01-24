@@ -69,6 +69,31 @@ class Chef
               :description => "The prefix for chef node name",
               :default => includer.snake_case_name.split('_').first,
               :proc => Proc.new { |key| Chef::Config[:knife][:chef_node_name_prefix] = key }
+      
+            # Options used to configure winrm ssl on VM
+            option :pfx_cert,
+              :long => "--server-cert PFX_FILE",
+              :description => "Certificate to be installed on VM for winrm ssl setup. (.pfx format)",
+              :proc => Proc.new { |path| Chef::Config[:knife][:pfx_cert] = path },
+              :default => nil
+
+            option :certificate_passwd,
+              :long => "--cert-passwd CERT_PASSWD",
+              :description => "Password for certificate specified with --server-cert",
+              :proc => Proc.new { |p| Chef::Config[:knife][:certificate_passwd] = p },
+              :default => ""
+
+            option :cert_hostname_pattern,
+              :long => "--cert-hostname-pattern PATTERN",
+              :description => "Hostname/pattern used for certificate subject and winrm ssl listener. (default: *)",
+              :proc => Proc.new { |pattern| Chef::Config[:knife][:template_file] = pattern },
+              :default => "*"
+
+            option :preserve_winrm_http,
+              :long => "--preserve-winrm-http",
+              :description => "Preserve winrm HTTP listener. Only useful when configuring winrm ssl where HTTP listener is removed by default.",
+              :boolean => true,
+              :default => false
 
           end
         end

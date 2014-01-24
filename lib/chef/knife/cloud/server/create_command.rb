@@ -130,6 +130,52 @@ class Chef
 
         def post_connection_validations
         end
+
+        # This returns  powershell command script to create user and configure winrm for windows platform,
+        # knife cloud plugins can send this scripts during server create, depends upon cloud provider.
+        # Ex: AWS EC2 cloud provider gives user-data option, to execute scripts during server create
+        def create_user_data
+          username = ""
+          password = ""
+          create_user_ps = ""
+          winrm_cfg_ps = ""
+          user_data_scripts_dir = File.join(File.dirname(__FILE__), "../../../../../user-data")
+          if(locate_config_value(:bootstrap_protocol) == "winrm")
+            username = locate_config_value(:winrm_user)
+            password = locate_config_value(:winrm_password)
+          else # is ssh
+            username = locate_config_value(:ssh_user)
+            password = locate_config_value(:ssh_password)
+          end
+          # If password is not specified on CLI, means user intends to use cert for auth
+          # which is yet to be implemented/supported, if the user is already in image we cannot yet
+          # retrieve it unless the VM is created.
+          create_user_ps = ERBCompiler.run(
+            File.read(File.join(user_data_scripts_dir, "create-win-user.erb")),
+             {:user_name => username, :user_passwd => password} )
+          
+          # Load winrm configuration powershells from template.
+          if(locate_config_value(:bootstrap_protocol) == "winrm")
+            if (locate_config_value(:winrm_transport) == "ssl")
+              # Load the certificate in base64 format.
+              require "base64"
+
+              winrm_cfg_ps = ERBCompiler.run(
+                File.read(File.join(user_data_scripts_dir, "winrm-ssl.erb")),
+                { :user_data_scripts_dir => user_data_scripts_dir,
+                  :base64_encoded_certificate => Base64.encode64(File.binread(locate_config_value(:pfx_cert))).chomp,
+                  :certificate_passwd => locate_config_value(:certificate_passwd),
+                  :hostname_pattern => locate_config_value(:cert_hostname_pattern),
+                  :preserve_winrm_http => locate_config_value(:preserve_winrm_http)
+                })
+            else
+              winrm_cfg_ps = ERBCompiler.run(File.read(File.join(user_data_scripts_dir, "winrm-http.erb")), {})
+            end
+          end
+
+          # returns string which contains user create and wirnm config powershell script
+          create_user_ps << "\n" << winrm_cfg_ps
+        end
       end # class ServerCreateCommand
     end
   end

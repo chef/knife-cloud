@@ -44,6 +44,10 @@ class Chef
           bootstrap.config[:winrm_transport] = @config[:winrm_transport]
           bootstrap.config[:winrm_port] = @config[:winrm_port]
           bootstrap.config[:template_file] = @config[:template_file]
+          bootstrap.config[:ca_trust_file] = @config[:ca_trust_file]
+          bootstrap.config[:kerberos_keytab_file] = @config[:kerberos_keytab_file]
+          bootstrap.config[:kerberos_realm] = @config[:kerberos_realm]
+          bootstrap.config[:kerberos_service] = @config[:kerberos_service]
           super
         end
 
