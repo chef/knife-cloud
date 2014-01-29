@@ -43,17 +43,17 @@ class Chef
             option :flavor,
               :short => "-f FLAVOR_ID",
               :long => "--flavor FLAVOR_ID",
-              :description => "The flavor ID of server",
+              :description => "The flavor ID / size of server",
               :proc => Proc.new { |f| Chef::Config[:knife][:flavor] = f }
 
             option :bootstrap_protocol,
-              :long => "--bootstrap-protocol protocol",
+              :long => "--bootstrap-protocol PROTOCOL",
               :description => "Protocol to bootstrap servers. options: winrm/ssh. For linux servers always use ssh.",
               :default => 'ssh',
               :proc => Proc.new { |b| Chef::Config[:knife][:bootstrap_protocol] = b}
 
             option :server_create_timeout,
-              :long => "--server-create-timeout timeout",
+              :long => "--server-create-timeout TIMEOUT",
               :description => "How long to wait until the server is ready; default is 600 seconds",
               :default => 600,
               :proc => Proc.new { |v| Chef::Config[:knife][:server_create_timeout] = v}
@@ -69,6 +69,18 @@ class Chef
               :description => "The prefix for chef node name",
               :default => includer.snake_case_name.split('_').first,
               :proc => Proc.new { |key| Chef::Config[:knife][:chef_node_name_prefix] = key }
+
+            option :vm_name,
+              :short => "-vm VM_NAME"
+              :long => "--vm-name VM_NAME",
+              :description => "Name of the VM",
+              :proc => Proc.new { |v| Chef::Config[:knife][:vm_name] = v}
+
+            option :region,
+              :short => "-m REGION"
+              :long => "--region REGION",
+              :description => "Region / Location / Geagraphic area of the data center",
+              :proc => Proc.new { |r| Chef::Config[:knife][:region] = r}
 
           end
         end
