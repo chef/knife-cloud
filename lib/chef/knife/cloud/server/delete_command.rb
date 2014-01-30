@@ -57,7 +57,7 @@ class Chef
           rescue Net::HTTPServerException => e
             error_message = "#{e.message}. Could not find a #{type_name} named #{name} to delete!"
             ui.warn(error_message)
-            raise e, error_message
+            raise CloudExceptions::ServerDeleteError, error_message
           end
         end
 

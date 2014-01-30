@@ -12,7 +12,9 @@ class Chef
               # Chef::Node.list(inflate = true) to use Solr search.
               @node_list = Chef::Node.list(true)
             rescue Errno::ECONNREFUSED => e
-              raise e
+              error_message = "Connection error with Chef server. #{e}"
+              ui.warn(error_message)
+              raise CloudExceptions::ChefError, error_message
             end
             
             @chef_data_col_info = [

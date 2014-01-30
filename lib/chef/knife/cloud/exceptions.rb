@@ -26,10 +26,12 @@ class Chef
         class ServerSetupError < KnifeCloudError; end
         class ServerDeleteError < KnifeCloudError; end
         class ServerListingError < KnifeCloudError; end
+        class FlavorListingError < KnifeCloudError; end
         class ImageListingError < KnifeCloudError; end
         class ServerCreateDependenciesError < KnifeCloudError; end
         class BootstrapError < KnifeCloudError; end
         class ServerShowError < KnifeCloudError; end
+        class ChefError < KnifeCloudError; end
       end
     end
   end
