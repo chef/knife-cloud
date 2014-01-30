@@ -116,6 +116,17 @@ class Chef
             raise CloudExceptions::ImageListingError, error_message
           end
         end
+
+        def list_flavors
+          begin
+            flavors = connection.flavors.all
+          rescue Excon::Errors::BadRequest => e
+            response = Chef::JSONCompat.from_json(e.response.body)
+            error_message = "Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}"
+            ui.fatal(error_message)
+            raise CloudExceptions::ImageListingError, error_message
+          end
+        end
         
         def delete_server_on_failure(server = nil)
           server.destroy if ! server.nil?
