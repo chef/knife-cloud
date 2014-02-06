@@ -20,18 +20,16 @@ class Chef
     class Cloud
       class CloudExceptions
         class KnifeCloudError < RuntimeError; end
+        class CloudAPIException < KnifeCloudError; end
         class ServiceConnectionError < KnifeCloudError; end
         class ValidationError < KnifeCloudError; end
         class ServerCreateError < KnifeCloudError; end
         class ServerSetupError < KnifeCloudError; end
         class ServerDeleteError < KnifeCloudError; end
-        class ServerListingError < KnifeCloudError; end
-        class FlavorListingError < KnifeCloudError; end
-        class ImageListingError < KnifeCloudError; end
         class ServerCreateDependenciesError < KnifeCloudError; end
         class BootstrapError < KnifeCloudError; end
         class ServerShowError < KnifeCloudError; end
-        class ChefError < KnifeCloudError; end
+        class ChefServerError < KnifeCloudError; end
       end
     end
   end

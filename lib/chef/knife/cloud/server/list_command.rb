@@ -14,7 +14,7 @@ class Chef
             rescue Errno::ECONNREFUSED => e
               error_message = "Connection error with Chef server. #{e}"
               ui.warn(error_message)
-              raise CloudExceptions::ChefError, error_message
+              raise CloudExceptions::ChefServerError, error_message
             end
             
             @chef_data_col_info = [
@@ -45,7 +45,7 @@ class Chef
                 if col_info[:key] == config[:chef_node_attribute] && ! node.attribute?(col_info[:key])
                   error_message = "The Node does not have a #{col_info[:key]} attribute."
                   ui.error(error_message)
-                  raise CloudExceptions::ServerListingError, error_message
+                  raise CloudExceptions::CloudAPIException, error_message
                 else
                   value = (col_info[:value_callback].nil? ? node.send(col_info[:key]).to_s : col_info[:value_callback].call(node.send(col_info[:key])))
                 end

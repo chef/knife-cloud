@@ -102,7 +102,7 @@ class Chef
             response = Chef::JSONCompat.from_json(e.response.body)
             error_message = "Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}"
             ui.fatal(error_message)
-            raise CloudExceptions::ServerListingError, error_message
+            raise CloudExceptions::CloudAPIException, error_message
           end
         end
 
@@ -113,7 +113,7 @@ class Chef
             response = Chef::JSONCompat.from_json(e.response.body)
             error_message = "Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}"
             ui.fatal(error_message)
-            raise CloudExceptions::ImageListingError, error_message
+            raise CloudExceptions::CloudAPIException, error_message
           end
         end
 
@@ -124,7 +124,7 @@ class Chef
             response = Chef::JSONCompat.from_json(e.response.body)
             error_message = "Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}"
             ui.fatal(error_message)
-            raise CloudExceptions::ImageListingError, error_message
+            raise CloudExceptions::CloudAPIException, error_message
           end
         end
         
