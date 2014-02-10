@@ -57,13 +57,11 @@ class Chef
               :proc => Proc.new { |key| Chef::Config[:knife][:ssh_port] = key }
 
             option :ssh_gateway,
-              :short => "-G GATEWAY",
               :long => "--ssh-gateway GATEWAY",
               :description => "The ssh gateway",
               :proc => Proc.new { |key| Chef::Config[:knife][:ssh_gateway] = key }
 
             option :forward_agent,
-              :short => "-A",
               :long => "--forward-agent",
               :description => "Enable SSH agent forwarding",
               :boolean => true
