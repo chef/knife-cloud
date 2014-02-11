@@ -58,8 +58,6 @@ class Chef
               ui.fatal(message)
             end
             raise CloudExceptions::ServerCreateError, message
-          rescue Fog::Errors::Error => e
-            raise CloudExceptions::ServerCreateError, e.message
           end
 
           print "\n#{ui.color("Waiting for server [wait time = #{options[:server_create_timeout]}]", :magenta)}"
