@@ -117,7 +117,7 @@ class Chef
           end
         end
 
-        def list_flavors
+        def list_resource_configurations
           begin
             flavors = connection.flavors.all
           rescue Excon::Errors::BadRequest => e
