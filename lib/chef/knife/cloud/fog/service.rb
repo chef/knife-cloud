@@ -89,8 +89,9 @@ class Chef
             raise CloudExceptions::ServerDeleteError, error_message
           rescue Excon::Errors::BadRequest => e
             response = Chef::JSONCompat.from_json(e.response.body)
-            ui.fatal("Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}")
-            raise e
+            error_message = "Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}"
+            ui.fatal(error_message)
+            raise CloudExceptions::ServerDeleteError, error_message
           end
         end
 
@@ -99,8 +100,9 @@ class Chef
             servers = connection.servers.all
           rescue Excon::Errors::BadRequest => e
             response = Chef::JSONCompat.from_json(e.response.body)
-            ui.fatal("Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}")
-            raise e
+            error_message = "Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}"
+            ui.fatal(error_message)
+            raise CloudExceptions::CloudAPIException, error_message
           end
         end
 
@@ -109,8 +111,20 @@ class Chef
             images = connection.images.all
           rescue Excon::Errors::BadRequest => e
             response = Chef::JSONCompat.from_json(e.response.body)
-            ui.fatal("Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}")
-            raise e
+            error_message = "Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}"
+            ui.fatal(error_message)
+            raise CloudExceptions::CloudAPIException, error_message
+          end
+        end
+
+        def list_resource_configurations
+          begin
+            flavors = connection.flavors.all
+          rescue Excon::Errors::BadRequest => e
+            response = Chef::JSONCompat.from_json(e.response.body)
+            error_message = "Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}"
+            ui.fatal(error_message)
+            raise CloudExceptions::CloudAPIException, error_message
           end
         end
         
@@ -131,8 +145,9 @@ class Chef
             server = connection.servers.get(instance_id)
           rescue Excon::Errors::BadRequest => e
             response = Chef::JSONCompat.from_json(e.response.body)
-            ui.fatal("Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}")
-            raise e
+            error_message = "Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}"
+            ui.fatal(error_message)
+            raise CloudExceptions::KnifeCloudError, error_message
           end
         end
 

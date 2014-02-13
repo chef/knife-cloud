@@ -24,6 +24,8 @@ describe Chef::Knife::Cloud::Service do
 
  it { expect {instance.list_images(:image_filters)}.to raise_error(Chef::Exceptions::Override, "You must override list_images in #{instance.to_s}") }
 
+it { expect {instance.list_resource_configurations()}.to raise_error(Chef::Exceptions::Override, "You must override list_resource_configurations in #{instance.to_s}") }
+
  it { expect { Chef::Knife::Cloud::Service.new({:auth_params => {:provider => 'Any Cloud Provider'}}) }.to_not raise_error }
 
 end

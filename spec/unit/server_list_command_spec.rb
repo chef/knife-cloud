@@ -72,7 +72,7 @@ describe Chef::Knife::Cloud::ServerListCommand do
     it "raise error on invalide chef_node_attribute" do
       @derived_instance.ui.stub(:error)
       @derived_instance.node.should_receive(:attribute?).with("platform_family").and_return(false)
-      expect { @derived_instance.get_resource_col_val(resources.first) }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServerListingError, "The Node does not have a platform_family attribute.")
+      expect { @derived_instance.get_resource_col_val(resources.first) }.to raise_error(Chef::Knife::Cloud::CloudExceptions::CloudAPIException, "The Node does not have a platform_family attribute.")
     end    
   end
 
