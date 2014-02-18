@@ -8,7 +8,7 @@ module RSpec
       subject { knife_run }
       let(:knife_run) { run command }
       let(:command)   { fail 'Define let(:command) in the spec' }
-      let(:cmd_stdout) { @op }
+      let(:cmd_output) { @op }
 
       # Convenience method for actually running a knife command in our
       # testing repository.  Returns the Mixlib::Shellout object ready for
@@ -16,7 +16,8 @@ module RSpec
       def run(command_line)
         shell_out = Mixlib::ShellOut.new("#{command_line}")
         shell_out.timeout = 3000
-        @op = shell_out.tap(&:run_command).stdout        
+        shell_out.tap(&:run_command)
+        @op = shell_out.exitstatus == 1 ? shell_out.stderr : shell_out.stdout
         return shell_out
       end
 
