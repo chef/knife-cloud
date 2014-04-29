@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency "chef", ">= 0.10.10"
   s.add_dependency "knife-windows"  # TODO use the revision of refactored knife-windows once its released
   s.add_dependency 'mixlib-shellout'
-  s.add_dependency 'active_support'
+  s.add_dependency 'activesupport', '~> 3.2'
 
   %w(rspec-core rspec-expectations rspec-mocks rspec_junit_formatter).each { |gem| s.add_development_dependency gem }
 end
