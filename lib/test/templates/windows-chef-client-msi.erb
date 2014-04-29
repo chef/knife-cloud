@@ -221,7 +221,7 @@ mkdir <%= bootstrap_directory %>\ohai\hints
 del C:\chef_zero_startup.rb
 cd "C:\opscode\chef\embedded\bin\"
 gem install chef-zero --no-ri --no-rdoc
-echo require 'chef_zero/server' >C:\chef_zero_startup.rb
+echo require "chef_zero/server" >C:\chef_zero_startup.rb
 echo server=ChefZero::Server.new(:port =^> 8889) >>C:\chef_zero_startup.rb
 echo server.start >>C:\chef_zero_startup.rb
 C:\opscode\chef\embedded\bin\ruby C:\chef_zero_startup.rb
