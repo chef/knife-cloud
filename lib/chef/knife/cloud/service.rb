@@ -68,7 +68,6 @@ class Chef
           raise Chef::Exceptions::Override, "You must override list_images in #{self.to_s}"
         end
 
-<<<<<<< HEAD
         def list_resource_configurations
           raise Chef::Exceptions::Override, "You must override list_resource_configurations in #{self.to_s}"
         end
