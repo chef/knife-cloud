@@ -89,4 +89,78 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
       expect(instance.config[:image_os_type]).to eq('windows')
     end
   end
+
+  describe "#create_user_data" do
+    context "bootstrap protocol winrm" do
+      before(:all) do
+        @instance = Chef::Knife::Cloud::ServerCreateCommand.new
+        @instance.config[:bootstrap_protocol] = "winrm"
+        @instance.config[:winrm_user] = "testuser_winrm"
+        @instance.config[:winrm_password] = "testpassword_winrm"
+      end
+
+      it "user data includes user create script for testuser_winrm" do
+        server_def = @instance.create_user_data
+        server_def.should include("testuser_winrm")
+        server_def.should include("$newuser.SetPassword(\"testpassword_winrm\")")
+      end
+
+      it "user data includes winrm config script" do
+        server_def = @instance.create_user_data
+        server_def.should include("testuser_winrm")
+        server_def.should include("winrm quickconfig -q")
+        server_def.should include("winrm e winrm/config/listener")
+        server_def.should include("$fwrule = New-Object -ComObject HNetCfg.FwRule")
+        server_def.should include("$fwrule.Name = \"knife-winrm\"")
+        server_def.should include("$fwpolicy = New-Object -ComObject HNetCfg.FwPolicy2")
+        server_def.should include("$fwpolicy.Rules.Add($fwrule)")
+      end
+
+      context "winrm-transport set to ssl" do
+        before(:each) do
+          @instance.config[:winrm_transport] = "ssl"
+          @instance.config[:certificate_passwd] = "testwinrmcertgen"
+          @instance.config[:cert_hostname_pattern] = "*.compute-1.amazonaws.com"
+          @instance.config[:pfx_cert] = "C:\Users\cert.pfx"
+          File.should_receive(:binread).with("C:\Users\cert.pfx").and_return(" \n")
+          Base64.stub(:encode64).and_return("")
+        end
+
+        it "user data includes winrm ssl configuration commands" do
+          @instance.config[:preserve_winrm_http] = false
+          server_def = @instance.create_user_data
+          server_def.should include("testuser_winrm")
+          server_def.should include("winrm quickconfig -q")
+          server_def.should include("winrm e winrm/config/listener")
+          server_def.should include("winrm delete winrm/config/Listener?Address=*+Transport=HTTP")
+          server_def.should include("$winrmcmd = \"winrm create winrm/config/listener?Address=*+Transport=HTTPS @{Hostname=`\"*.compute-1.amazonaws.com`\";CertificateThumbprint=`\"$thumbprint`\";Port=`\"5986`\"}\"")
+          server_def.should include("$fwrule = New-Object -ComObject HNetCfg.FwRule")
+          server_def.should include("$fwrule.LocalPorts = 5986")
+          server_def.should include("$fwrule.Description = \"Open winrm ssl port\"")
+        end
+
+        it "user data includes winrm ssl configuration with preserve_winrm_http" do
+          @instance.config[:preserve_winrm_http] = true
+          server_def = @instance.create_user_data
+          server_def.should include("testuser_winrm")
+          server_def.should_not include("winrm delete winrm/config/Listener?Address=*+Transport=HTTP")
+        end
+      end
+    end
+
+    context "bootstrap protocol is ssh" do
+      before(:all) do
+        @instance = Chef::Knife::Cloud::ServerCreateCommand.new
+        @instance.config[:bootstrap_protocol] = "ssh"
+        @instance.config[:ssh_user] = "testuser_ssh"
+        @instance.config[:ssh_password] = "testpassword_ssh"
+      end
+
+      it "user data include user create script for testuser_ssh" do
+        server_def = @instance.create_user_data
+        server_def.should include("testuser_ssh")
+        server_def.should include("testpassword_ssh")
+      end
+    end
+  end
 end
