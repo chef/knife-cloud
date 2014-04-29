@@ -47,6 +47,7 @@ class Chef
         # cloud server specific implementation methods for commands.
         def create_server(options = {})
           begin
+            add_custom_attributes(options[:server_def])
             server = connection.servers.create(options[:server_def])
           rescue Excon::Errors::BadRequest => e
             response = Chef::JSONCompat.from_json(e.response.body)
@@ -127,7 +128,7 @@ class Chef
             raise CloudExceptions::CloudAPIException, error_message
           end
         end
-        
+
         def delete_server_on_failure(server = nil)
           server.destroy if ! server.nil?
         end
@@ -172,6 +173,7 @@ class Chef
           image_info = connection.images.get(image)
           !image_info.nil? ? image_info.platform == 'windows' : false
         end
+
       end
     end
   end

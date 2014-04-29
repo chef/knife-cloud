@@ -20,9 +20,9 @@ class Chef
               :long => "--api-endpoint ENDPOINT",
               :description => "Your API endpoint. Eg, for Eucalyptus it can be 'http://ecc.eucalyptus.com:8773/services/Eucalyptus'",
               :proc => Proc.new { |endpoint| Chef::Config[:knife][:api_endpoint] = endpoint }
+
           end
         end
-
       end
     end
   end
