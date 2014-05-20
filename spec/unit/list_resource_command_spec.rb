@@ -27,7 +27,7 @@ describe Chef::Knife::Cloud::ResourceListCommand do
     context "responds to #list method" do
       let(:test_resource) { "test" }
       before(:each) do
-        instance.stub_chain(:ui, :fatal)
+        instance.ui.should_receive(:fatal)
       end
 
       it "handle generic exception" do
