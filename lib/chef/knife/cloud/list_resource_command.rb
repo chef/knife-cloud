@@ -81,9 +81,9 @@ class Chef
                 puts "\n"
               end
             end
-          rescue Excon::Errors::BadRequest => e
-            response = Chef::JSONCompat.from_json(e.response.body)
-            ui.fatal("Unknown resource error (#{response['badRequest']['code']}): #{response['badRequest']['message']}")
+
+          rescue => e
+            ui.fatal("Unknown resource error : #{e.message}")
             raise e
           end
           puts ui.list(resource_list, :uneven_columns_across, @columns_with_info.length) if @columns_with_info.length > 0

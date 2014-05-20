@@ -1,5 +1,6 @@
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
-# Copyright:: Copyright (c) 2013 Opscode, Inc.
+# Author:: Prabhu Das (<prabhu.das@clogeny.com>)
+# Copyright:: Copyright (c) 2013-14 Opscode, Inc.
 
 require 'spec_helper'
 require 'chef/knife/cloud/list_resource_command'
@@ -21,6 +22,23 @@ describe Chef::Knife::Cloud::ResourceListCommand do
     it "responds to #list method" do
       instance.stub(:query_resource)
       instance.should respond_to(:list)
+    end
+
+    context "responds to #list method" do
+      let(:test_resource) { "test" }
+      before(:each) do
+        instance.stub_chain(:ui, :fatal)
+      end
+
+      it "handle generic exception" do
+        test_resource.stub(:sort_by).and_raise StandardError
+        expect {instance.list(test_resource)}.to raise_error(StandardError)
+      end
+
+      it "handle Excon::Errors::BadRequest exception." do
+        test_resource.stub(:sort_by).and_raise Excon::Errors::BadRequest.new("excon error message")
+        expect {instance.list(test_resource)}.to raise_error(Excon::Errors::BadRequest)
+      end
     end
   end
 
