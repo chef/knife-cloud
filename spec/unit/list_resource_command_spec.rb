@@ -1,6 +1,6 @@
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
 # Author:: Prabhu Das (<prabhu.das@clogeny.com>)
-# Copyright:: Copyright (c) 2013-14 Opscode, Inc.
+# Copyright:: Copyright (c) 2013-14 Chef, Inc.
 
 require 'spec_helper'
 require 'chef/knife/cloud/list_resource_command'
