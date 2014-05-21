@@ -1,5 +1,6 @@
 #
-# Copyright:: Copyright (c) 2013 Opscode, Inc.
+# Author:: Prabhu Das (<prabhu.das@clogeny.com>)
+# Copyright:: Copyright (c) 2013-14 Chef, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
