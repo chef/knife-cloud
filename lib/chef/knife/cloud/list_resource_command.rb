@@ -1,5 +1,6 @@
 #
-# Copyright:: Copyright (c) 2013 Opscode, Inc.
+# Author:: Prabhu Das (<prabhu.das@clogeny.com>)
+# Copyright:: Copyright (c) 2013-14 Chef, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -81,9 +82,9 @@ class Chef
                 puts "\n"
               end
             end
-          rescue Excon::Errors::BadRequest => e
-            response = Chef::JSONCompat.from_json(e.response.body)
-            ui.fatal("Unknown resource error (#{response['badRequest']['code']}): #{response['badRequest']['message']}")
+
+          rescue => e
+            ui.fatal("Unknown resource error : #{e.message}")
             raise e
           end
           puts ui.list(resource_list, :uneven_columns_across, @columns_with_info.length) if @columns_with_info.length > 0
