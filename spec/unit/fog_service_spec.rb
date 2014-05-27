@@ -39,7 +39,7 @@ describe Chef::Knife::Cloud::FogService do
     end 
   end
 
-  ["servers", "images"].each do |iterator|
+  ["servers", "images", "networks"].each do |iterator|
     context "list #{iterator}" do
 
       it "lists #{iterator}." do

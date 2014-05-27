@@ -93,7 +93,7 @@ class Chef
           end
         end
 
-        ["servers", "images"].each do |iterator|
+        ["servers", "images", "networks"].each do |iterator|
           define_method("list_#{iterator}") do
             begin
               connection.method(iterator).call.all
