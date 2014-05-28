@@ -74,7 +74,7 @@ class Chef
 
         def delete_server(server_name)
           begin
-            server = connection.servers.get(server_name)
+            server = get_server(server_name)
 
             msg_pair("Instance Name", get_server_name(server))
             msg_pair("Instance ID", server.id)
