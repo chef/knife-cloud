@@ -44,6 +44,24 @@ class Chef
                           end
         end
 
+        def network
+          @network ||= begin
+              network = Fog::Network.new(@auth_params)
+                          rescue Excon::Errors::Unauthorized => e
+                            error_message = "Connection failure, please check your username and password."
+                            ui.fatal(error_message)
+                            raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
+                          rescue Excon::Errors::SocketError => e
+                            error_message = "Connection failure, please check your authentication URL."
+                            ui.fatal(error_message)
+                            raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
+                          rescue Fog::Errors::NotFound => e
+                            error_message = "No Network service found. This command is unavailable with current cloud."
+                            ui.fatal(error_message)
+                            raise CloudExceptions::ServiceNetworkError, "#{e.message}. #{error_message}"
+                          end
+        end
+
         # cloud server specific implementation methods for commands.
         def create_server(options = {})
           begin
@@ -96,7 +114,12 @@ class Chef
         ["servers", "images", "networks"].each do |iterator|
           define_method("list_#{iterator}") do
             begin
-              connection.method(iterator).call.all
+              case iterator
+              when "networks"
+                network.method(iterator).call.all
+              else
+                connection.method(iterator).call.all
+              end
             rescue Excon::Errors::BadRequest => e
               handle_excon_exception(CloudExceptions::CloudAPIException, e)
             end

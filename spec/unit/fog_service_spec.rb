@@ -41,17 +41,31 @@ describe Chef::Knife::Cloud::FogService do
 
   ["servers", "images", "networks"].each do |iterator|
     context "list #{iterator}" do
+      case iterator
+      when "networks"
+        it "lists #{iterator}." do
+          instance.stub_chain(:network, "#{iterator}".to_sym, :all) 
+          instance.method("list_#{iterator}").call
+        end
 
-      it "lists #{iterator}." do
-        instance.stub_chain(:connection, "#{iterator}".to_sym, :all)
-        instance.method("list_#{iterator}").call
-      end
+        it "handles Excon::Errors::BadRequest exception." do
+          instance.stub(:ui).and_return(Object.new)
+          instance.ui.should_receive(:fatal)
+          instance.stub_chain(:network, "#{iterator}".to_sym, :all).and_raise Excon::Errors::BadRequest.new("Invalid Network")
+          expect {instance.method("list_#{iterator}").call}.to raise_error(Chef::Knife::Cloud::CloudExceptions::CloudAPIException)
+        end
+      else
+        it "lists #{iterator}." do
+          instance.stub_chain(:connection, "#{iterator}".to_sym, :all) 
+          instance.method("list_#{iterator}").call
+        end
 
-      it "handles Excon::Errors::BadRequest exception." do
-        instance.stub(:ui).and_return(Object.new)
-        instance.ui.should_receive(:fatal)
-        instance.stub_chain(:connection, "#{iterator}".to_sym, :all).and_raise Excon::Errors::BadRequest.new("Invalid Server")
-        expect {instance.method("list_#{iterator}").call}.to raise_error(Chef::Knife::Cloud::CloudExceptions::CloudAPIException)
+        it "handles Excon::Errors::BadRequest exception." do
+          instance.stub(:ui).and_return(Object.new)
+          instance.ui.should_receive(:fatal)
+          instance.stub_chain(:connection, "#{iterator}".to_sym, :all).and_raise Excon::Errors::BadRequest.new("Invalid Server")
+          expect {instance.method("list_#{iterator}").call}.to raise_error(Chef::Knife::Cloud::CloudExceptions::CloudAPIException)
+        end
       end
     end
   end
