@@ -27,6 +27,30 @@ describe Chef::Knife::Cloud::FogService do
       Fog::Network.should_receive(:new).with({:provider => 'Any Cloud Provider'})
       instance.network
     end
+
+    context "connection to fog" do
+      before do
+        instance.stub(:exit)
+        instance.stub(:ui).and_return(Object.new)
+        instance.ui.should_receive(:fatal)
+      end
+
+      it "handles Unauthorized exception." do
+        Fog::Network.should_receive(:new).with({:provider => 'Any Cloud Provider'}).and_raise Excon::Errors::Unauthorized.new("Unauthorized")
+        expect {instance.network}.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServiceConnectionError)
+      end
+
+      it "handles SocketError or any other connection exception." do
+        socket_error = Excon::Errors::SocketError.new(Exception.new "Mock Error")
+        Fog::Network.should_receive(:new).with({:provider => 'Any Cloud Provider'}).and_raise socket_error
+        expect {instance.network}.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServiceConnectionError)
+      end
+
+      it "handles NetworkNotFoundError exception." do
+        Fog::Network.should_receive(:new).with({:provider => 'Any Cloud Provider'}).and_raise Fog::Errors::NotFound.new("NotFound")
+        expect {instance.network}.to raise_error(Chef::Knife::Cloud::CloudExceptions::NetworkNotFoundError)
+      end
+    end
   end
 
   context "add_custom_attributes" do
@@ -45,33 +69,25 @@ describe Chef::Knife::Cloud::FogService do
     end 
   end
 
-  ["servers", "images", "networks"].each do |iterator|
-    context "list #{iterator}" do
-      case iterator
-      when "networks"
-        it "lists #{iterator}." do
-          instance.stub_chain(:network, "#{iterator}".to_sym, :all) 
-          instance.method("list_#{iterator}").call
-        end
+  ["servers", "images", "networks"].each do |resource_type|
+    resource =  case resource_type
+                when "networks"
+                  :network
+                else
+                  :connection
+                end
+    context "list #{resource_type}" do
+      
+      it "lists #{resource_type} of the current cloud service provider account." do
+        instance.stub_chain(resource.to_sym, "#{resource_type}".to_sym, :all) 
+        instance.method("list_#{resource_type}").call
+      end
 
-        it "handles Excon::Errors::BadRequest exception." do
-          instance.stub(:ui).and_return(Object.new)
-          instance.ui.should_receive(:fatal)
-          instance.stub_chain(:network, "#{iterator}".to_sym, :all).and_raise Excon::Errors::BadRequest.new("Invalid Network")
-          expect {instance.method("list_#{iterator}").call}.to raise_error(Chef::Knife::Cloud::CloudExceptions::CloudAPIException)
-        end
-      else
-        it "lists #{iterator}." do
-          instance.stub_chain(:connection, "#{iterator}".to_sym, :all) 
-          instance.method("list_#{iterator}").call
-        end
-
-        it "handles Excon::Errors::BadRequest exception." do
-          instance.stub(:ui).and_return(Object.new)
-          instance.ui.should_receive(:fatal)
-          instance.stub_chain(:connection, "#{iterator}".to_sym, :all).and_raise Excon::Errors::BadRequest.new("Invalid Server")
-          expect {instance.method("list_#{iterator}").call}.to raise_error(Chef::Knife::Cloud::CloudExceptions::CloudAPIException)
-        end
+      it "handles Excon::Errors::BadRequest exception." do
+        instance.stub(:ui).and_return(Object.new)
+        instance.ui.should_receive(:fatal)
+        instance.stub_chain(resource.to_sym, "#{resource_type}".to_sym, :all).and_raise Excon::Errors::BadRequest.new("Invalid Resource")
+        expect {instance.method("list_#{resource_type}").call}.to raise_error(Chef::Knife::Cloud::CloudExceptions::CloudAPIException)
       end
     end
   end

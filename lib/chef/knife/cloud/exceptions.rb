@@ -30,7 +30,7 @@ class Chef
         class BootstrapError < KnifeCloudError; end
         class ServerShowError < KnifeCloudError; end
         class ChefServerError < KnifeCloudError; end
-        class ServiceNetworkError < KnifeCloudError; end
+        class NetworkNotFoundError < KnifeCloudError; end
       end
     end
   end
