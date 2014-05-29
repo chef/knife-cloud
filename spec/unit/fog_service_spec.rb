@@ -20,7 +20,13 @@ describe Chef::Knife::Cloud::FogService do
       Fog::Compute.should_receive(:new).with({:provider => 'Any Cloud Provider'})
       instance.connection
     end
+  end
 
+  context "network" do
+    it "creates a connection to fog network with the provided auth params." do
+      Fog::Network.should_receive(:new).with({:provider => 'Any Cloud Provider'})
+      instance.network
+    end
   end
 
   context "add_custom_attributes" do
