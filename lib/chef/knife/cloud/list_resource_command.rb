@@ -73,7 +73,7 @@ class Chef
           # display column wise only if @columns_with_info is specified, else as a json for readable display.
           begin
             resource_list = @columns_with_info.map { |col_info| ui.color(col_info[:label], :bold) } if @columns_with_info.length > 0
-            resources.sort_by(&@sort_by_field.to_sym).each do |resource|
+            resources.sort_by{|x| x.send(@sort_by_field).downcase }.each do |resource|
               if @columns_with_info.length > 0
                 list = get_resource_col_val(resource)
                 resource_list.concat(list) unless list.nil?
