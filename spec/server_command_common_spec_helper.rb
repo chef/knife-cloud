@@ -12,7 +12,7 @@ $:.unshift File.expand_path('../../lib', __FILE__)
 def run_cmd_check_status_and_output(expected_status = "succeed", expected_result = nil)
   it do 
     match_status("should #{expected_status}")
-    cmd_output.should include(expected_result) if expected_result
+    expect(cmd_output).to include(expected_result) if expected_result
   end
 end
 

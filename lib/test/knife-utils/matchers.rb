@@ -15,7 +15,7 @@ RSpec::Matchers.define :have_outcome do |outcome_spec|
   end
   # Could just spit out `executed_shellout_command.inspect`, but I
   # find the formatting suboptimal for testing error messages.
-  failure_message_for_should do |executed_shellout_command|
+  failure_message do |executed_shellout_command|
     "Executed command should have matched the outcome spec #{outcome_spec.inspect}, but it didn't!\n
 \tFailed Command: #{executed_shellout_command.command}\n
 \tCommand Setting: #{RSpec::KnifeTestUtils.command_setting(executed_shellout_command).inspect}\n
