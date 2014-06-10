@@ -165,6 +165,14 @@ class Chef
           end
         end
 
+        def get_image(name_or_id)
+          connection.images.find{|img| img.name =~ /#{name_or_id}/ || img.id == name_or_id }
+        end
+
+        def get_flavor(name_or_id)
+          connection.flavors.find{|f| f.name == name_or_id || f.id == name_or_id }
+        end
+
         def server_summary(server, columns_with_info = [])
           # columns_with_info is array of hash with label, key and attribute extraction callback, ex [{:label => "Label text", :key => 'key', value => 'the_actual_value', value_callback => callback_method to extract/format the required value}, ...]
           list = []
