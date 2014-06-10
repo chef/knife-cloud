@@ -1,3 +1,20 @@
+#
+# Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
+# Copyright:: Copyright (c) 2014 Chef Software, Inc.
+# License:: Apache License, Version 2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 $:.unshift File.expand_path('../../lib', __FILE__)
 
 # Common helper methods used accrossed knife plugin during Integration testing.
@@ -12,7 +29,7 @@ $:.unshift File.expand_path('../../lib', __FILE__)
 def run_cmd_check_status_and_output(expected_status = "succeed", expected_result = nil)
   it do 
     match_status("should #{expected_status}")
-    cmd_output.should include(expected_result) if expected_result
+    expect(cmd_output).to include(expected_result) if expected_result
   end
 end
 

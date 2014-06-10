@@ -1,6 +1,20 @@
+#
 # Author:: Mukta Aphale (<mukta.aphale@clogeny.com>)
 # Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
-# Copyright:: Copyright (c) 2013 Opscode, Inc.
+# Copyright:: Copyright (c) 2013-2014 Chef Software, Inc.
+# License:: Apache License, Version 2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 require 'spec_helper'
 require 'chef/knife/cloud/server/create_command'
@@ -8,47 +22,47 @@ require 'chef/knife/cloud/server/create_command'
 shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
   before do
     instance.service = double
-    instance.ui.stub(:fatal)
+    allow(instance.ui).to receive(:fatal)
   end
 
   describe "#before_exec_command" do
     it "calls create_server_dependencies" do
-      instance.service.should_receive(:create_server_dependencies)
+      expect(instance.service).to receive(:create_server_dependencies)
       instance.before_exec_command
     end
     it "delete_server_dependencies on any error" do
-      instance.stub(:execute_command)
-      instance.stub(:after_exec_command)
-      instance.stub(:validate!)
-      instance.stub(:validate_params!)
+      allow(instance).to receive(:execute_command)
+      allow(instance).to receive(:after_exec_command)
+      allow(instance).to receive(:validate!)
+      allow(instance).to receive(:validate_params!)
       instance.service = Chef::Knife::Cloud::Service.new
-      instance.stub(:create_service_instance).and_return(instance.service)
-      instance.service.stub(:create_server_dependencies).and_raise(Chef::Knife::Cloud::CloudExceptions::ServerCreateDependenciesError)
-      instance.service.should_receive(:delete_server_dependencies)
-      instance.service.should_not_receive(:delete_server_on_failure)
-      instance.should_receive(:exit)
+      allow(instance).to receive(:create_service_instance).and_return(instance.service)
+      allow(instance.service).to receive(:create_server_dependencies).and_raise(Chef::Knife::Cloud::CloudExceptions::ServerCreateDependenciesError)
+      expect(instance.service).to receive(:delete_server_dependencies)
+      expect(instance.service).to_not receive(:delete_server_on_failure)
+      expect(instance).to receive(:exit)
       instance.run
     end
   end
 
   describe "#execute_command" do
     it "calls create_server" do
-      instance.service.should_receive(:create_server).and_return(true)
-      instance.service.should_receive(:server_summary)
+      expect(instance.service).to receive(:create_server).and_return(true)
+      expect(instance.service).to receive(:server_summary)
       instance.execute_command
     end
 
     it "delete_server_dependencies on any error" do
-      instance.stub(:before_exec_command)
-      instance.stub(:after_exec_command)
-      instance.stub(:validate!)
-      instance.stub(:validate_params!)
+      allow(instance).to receive(:before_exec_command)
+      allow(instance).to receive(:after_exec_command)
+      allow(instance).to receive(:validate!)
+      allow(instance).to receive(:validate_params!)
       instance.service = Chef::Knife::Cloud::Service.new
-      instance.stub(:create_service_instance).and_return(instance.service)
-      instance.service.stub(:create_server).and_raise(Chef::Knife::Cloud::CloudExceptions::ServerCreateError)
-      instance.service.should_receive(:delete_server_dependencies)
-      instance.service.should_not_receive(:delete_server_on_failure)
-      instance.should_receive(:exit)
+      allow(instance).to receive(:create_service_instance).and_return(instance.service)
+      allow(instance.service).to receive(:create_server).and_raise(Chef::Knife::Cloud::CloudExceptions::ServerCreateError)
+      expect(instance.service).to receive(:delete_server_dependencies)
+      expect(instance.service).to_not receive(:delete_server_on_failure)
+      expect(instance).to receive(:exit)
       instance.run
     end
   end
@@ -56,18 +70,18 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
   describe "#bootstrap" do
     it "execute with correct method calls" do
       @bootstrap = Object.new
-      @bootstrap.stub(:bootstrap)
-      instance.ui.stub(:info)
-      Chef::Knife::Cloud::Bootstrapper.stub(:new).and_return(@bootstrap)
-      instance.should_receive(:before_bootstrap).ordered
-      instance.should_receive(:after_bootstrap).ordered      
+      allow(@bootstrap).to receive(:bootstrap)
+      allow(instance.ui).to receive(:info)
+      allow(Chef::Knife::Cloud::Bootstrapper).to receive(:new).and_return(@bootstrap)
+      expect(instance).to receive(:before_bootstrap).ordered
+      expect(instance).to receive(:after_bootstrap).ordered      
       instance.bootstrap
     end
   end
 
   describe "#after_bootstrap" do
     it "display server summary" do
-      instance.service.should_receive(:server_summary)
+      expect(instance.service).to receive(:server_summary)
       instance.after_bootstrap
     end
   end
@@ -78,9 +92,9 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
       instance.config[:ssh_password] = 'password'
       instance.config[:image_os_type] = 'linux'
       instance.config[:chef_node_name_prefix] = 'os'
-      instance.should_receive(:get_node_name).and_call_original
+      expect(instance).to receive(:get_node_name).and_call_original
       instance.validate_params!
-      instance.config[:chef_node_name].should =~ /os-*/
+      expect(instance.config[:chef_node_name]).to be =~ /os-*/
     end
 
     it "auto generates unique chef_node_name" do
@@ -92,7 +106,7 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
       5.times do
         instance.config[:chef_node_name] = nil
         instance.validate_params!
-        node_names.should_not include(instance.config[:chef_node_name])
+        expect(node_names).to_not include(instance.config[:chef_node_name])
         node_names.push(instance.config[:chef_node_name])
       end
     end
@@ -102,16 +116,16 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
     it "delete server dependencies on delete_server_on_failure set" do
       instance.config[:delete_server_on_failure] = true
       instance.service = Chef::Knife::Cloud::Service.new
-      instance.service.should_receive(:delete_server_dependencies)
-      instance.service.should_receive(:delete_server_on_failure)
+      expect(instance.service).to receive(:delete_server_dependencies)
+      expect(instance.service).to receive(:delete_server_on_failure)
       instance.cleanup_on_failure
     end
 
     it "don't delete server dependencies on delete_server_on_failure option is missing" do
       instance.config[:delete_server_on_failure] = false
       Chef::Config[:knife].delete(:delete_server_on_failure)
-      instance.service.should_not_receive(:delete_server_dependencies)
-      instance.service.should_not_receive(:delete_server_on_failure)
+      expect(instance.service).to_not receive(:delete_server_dependencies)
+      expect(instance.service).to_not receive(:delete_server_on_failure)
       instance.cleanup_on_failure
     end
   end

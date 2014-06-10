@@ -1,3 +1,20 @@
+#
+# Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
+# Copyright:: Copyright (c) 2013-2014 Chef Software, Inc.
+# License:: Apache License, Version 2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 require 'spec_helper'
 require 'chef/knife/cloud/chefbootstrap/bootstrap_protocol'
 require 'chef/knife/bootstrap'
@@ -22,9 +39,9 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
   describe "#send_bootstrap_command" do
     it "execute with correct method calls" do
       @instance.bootstrap = double()
-      @instance.should_receive(:wait_for_server_ready).ordered
-      @instance.should_receive(:init_bootstrap_options).ordered
-      @instance.bootstrap.should_receive(:run)
+      expect(@instance).to receive(:wait_for_server_ready).ordered
+      expect(@instance).to receive(:init_bootstrap_options).ordered
+      expect(@instance.bootstrap).to receive(:run)
       @instance.send_bootstrap_command
     end
   end
@@ -37,7 +54,7 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
       @config[:first_boot_attributes] = "{\"foo\":\"bar\"}"
       @config[:secret] = "secret"
       @config[:secret_file] = "secret_file"
-      @config.stub(:locate_config_value).and_return({})
+      allow(@config).to receive(:locate_config_value).and_return({})
       @instance.bootstrap = Chef::Knife::Bootstrap.new
       @instance.init_bootstrap_options
       expect(@instance.bootstrap.name_args).to eq(@config[:bootstrap_ip_address])

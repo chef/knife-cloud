@@ -1,5 +1,20 @@
+#
 # Author:: Mukta Aphale (<mukta.aphale@clogeny.com>)
-# Copyright:: Copyright (c) 2013 Opscode, Inc.
+# Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
+# Copyright:: Copyright (c) 2013-2014 Chef Software, Inc.
+# License:: Apache License, Version 2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 require 'support/shared_examples_for_command'
 require 'support/shared_examples_for_servercreatecommand'
@@ -12,7 +27,7 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
   describe "#validate_params!" do
     before(:each) do
       @instance = Chef::Knife::Cloud::ServerCreateCommand.new
-      @instance.ui.stub(:error)
+      allow(@instance.ui).to receive(:error)
       Chef::Config[:knife][:bootstrap_protocol] = "ssh"
       Chef::Config[:knife][:identity_file] = "identity_file"
       Chef::Config[:knife][:ssh_password] = "ssh_password"
@@ -52,19 +67,19 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
   describe "#after_exec_command" do
     it "calls bootstrap" do
       instance = Chef::Knife::Cloud::ServerCreateCommand.new
-      instance.should_receive(:bootstrap)
+      expect(instance).to receive(:bootstrap)
       instance.after_exec_command
     end
 
     it "delete server on bootstrap failure" do
       instance = Chef::Knife::Cloud::ServerCreateCommand.new
       instance.service = Chef::Knife::Cloud::Service.new
-      instance.stub(:raise)
-      instance.ui.stub(:fatal)
+      allow(instance).to receive(:raise)
+      allow(instance.ui).to receive(:fatal)
       instance.config[:delete_server_on_failure] = true
-      instance.stub(:bootstrap).and_raise(Chef::Knife::Cloud::CloudExceptions::BootstrapError)
-      instance.service.should_receive(:delete_server_dependencies)
-      instance.service.should_receive(:delete_server_on_failure)
+      allow(instance).to receive(:bootstrap).and_raise(Chef::Knife::Cloud::CloudExceptions::BootstrapError)
+      expect(instance.service).to receive(:delete_server_dependencies)
+      expect(instance.service).to receive(:delete_server_on_failure)
       instance.after_exec_command
     end
 
@@ -72,11 +87,11 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
     it "raise error message when bootstrap fails due to image_os_type not exist" do
       instance = Chef::Knife::Cloud::ServerCreateCommand.new
       instance.service = Chef::Knife::Cloud::Service.new
-      instance.ui.stub(:fatal)
+      allow(instance.ui).to receive(:fatal)
       instance.config[:delete_server_on_failure] = true
-      instance.stub(:bootstrap).and_raise(RangeError)
-      instance.service.should_receive(:delete_server_dependencies)
-      instance.service.should_receive(:delete_server_on_failure)
+      allow(instance).to receive(:bootstrap).and_raise(RangeError)
+      expect(instance.service).to receive(:delete_server_dependencies)
+      expect(instance.service).to receive(:delete_server_on_failure)
       expect { instance.after_exec_command }.to raise_error(RangeError, "Check if --bootstrap-protocol and --image-os-type is correct. RangeError")
     end
   end

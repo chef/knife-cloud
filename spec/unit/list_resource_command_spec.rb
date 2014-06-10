@@ -1,10 +1,26 @@
+#
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
 # Author:: Prabhu Das (<prabhu.das@clogeny.com>)
-# Copyright:: Copyright (c) 2013-14 Chef, Inc.
+# Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
+# Copyright:: Copyright (c) 2013-2014 Chef Software, Inc.
+# License:: Apache License, Version 2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 require 'spec_helper'
 require 'chef/knife/cloud/list_resource_command'
 require 'support/shared_examples_for_command'
+require 'excon/errors'
 
 describe Chef::Knife::Cloud::ResourceListCommand do
   it_behaves_like Chef::Knife::Cloud::Command, Chef::Knife::Cloud::ResourceListCommand.new
@@ -15,28 +31,28 @@ describe Chef::Knife::Cloud::ResourceListCommand do
 
   context "Basic tests:" do
     it "raises exception to override #query_resource method" do
-      instance.stub(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
+      allow(instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
       expect {instance.run}.to raise_error(Chef::Exceptions::Override, "You must override query_resource in #{instance.to_s} to return resources.")
     end
 
     it "responds to #list method" do
-      instance.stub(:query_resource)
-      instance.should respond_to(:list)
+      allow(instance).to receive(:query_resource)
+      expect(instance).to respond_to(:list)
     end
 
     context "responds to #list method" do
       let(:test_resource) { "test" }
       before(:each) do
-        instance.ui.should_receive(:fatal)
+        expect(instance.ui).to receive(:fatal)
       end
 
       it "handle generic exception" do
-        test_resource.stub(:sort_by).and_raise StandardError
+        allow(test_resource).to receive(:sort_by).and_raise StandardError
         expect {instance.list(test_resource)}.to raise_error(StandardError)
       end
 
       it "handle Excon::Errors::BadRequest exception." do
-        test_resource.stub(:sort_by).and_raise Excon::Errors::BadRequest.new("excon error message")
+        allow(test_resource).to receive(:sort_by).and_raise Excon::Errors::BadRequest.new("excon error message")
         expect {instance.list(test_resource)}.to raise_error(Excon::Errors::BadRequest)
       end
     end
@@ -44,15 +60,15 @@ describe Chef::Knife::Cloud::ResourceListCommand do
 
   context "Without columns_with_info parameter in #list:" do
     before do
-      instance.stub(:query_resource).and_return(resources)
-      instance.stub(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
-      instance.stub(:puts)
+      allow(instance).to receive(:query_resource).and_return(resources)
+      allow(instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
+      allow(instance).to receive(:puts)
     end
 
     it "lists resources in json format when columns_with_info parameter is empty" do
-      instance.should_receive(:puts).with(resources[0].to_json)
-      instance.should_receive(:puts).with(resources[1].to_json)
-      instance.should_receive(:puts).with("\n").twice
+      expect(instance).to receive(:puts).with(resources[0].to_json)
+      expect(instance).to receive(:puts).with(resources[1].to_json)
+      expect(instance).to receive(:puts).with("\n").twice
       instance.run
     end
   end
@@ -69,26 +85,26 @@ describe Chef::Knife::Cloud::ResourceListCommand do
         end
 
         @derived_instance = Derived.new
-        @derived_instance.stub(:query_resource).and_return(resources)
-        @derived_instance.stub(:puts)
-        @derived_instance.stub(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
+        allow(@derived_instance).to receive(:query_resource).and_return(resources)
+        allow(@derived_instance).to receive(:puts)
+        allow(@derived_instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
       end
 
       it "lists all resources" do
-        @derived_instance.ui.should_receive(:list).with(["Instance ID", "Operating system", "resource-1", "ubuntu", "resource-2", "windows"], :uneven_columns_across, 2)
+        expect(@derived_instance.ui).to receive(:list).with(["Instance ID", "Operating system", "resource-1", "ubuntu", "resource-2", "windows"], :uneven_columns_across, 2)
         @derived_instance.run
       end
 
       it "excludes resource when filter is specified" do
         @derived_instance.resource_filters = [{:attribute => 'id', :regex => /^resource-1$/}]
-        @derived_instance.ui.should_receive(:list).with(["Instance ID", "Operating system", "resource-2", "windows"], :uneven_columns_across, 2)
+        expect(@derived_instance.ui).to receive(:list).with(["Instance ID", "Operating system", "resource-2", "windows"], :uneven_columns_across, 2)
         @derived_instance.run
       end
 
       it "lists all resources when disable filter" do
         @derived_instance.config[:disable_filter] = true
         @derived_instance.resource_filters = [{:attribute => 'id', :regex => /^resource-1$/}]
-        @derived_instance.ui.should_receive(:list).with(["Instance ID", "Operating system", "resource-1", "ubuntu", "resource-2", "windows"], :uneven_columns_across, 2)
+        expect(@derived_instance.ui).to receive(:list).with(["Instance ID", "Operating system", "resource-1", "ubuntu", "resource-2", "windows"], :uneven_columns_across, 2)
         @derived_instance.run
       end
     end
@@ -106,13 +122,13 @@ describe Chef::Knife::Cloud::ResourceListCommand do
         end
 
         @derived_instance = Derived.new
-        @derived_instance.stub(:query_resource).and_return(resources)
-        @derived_instance.stub(:puts)
-        @derived_instance.stub(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
+        allow(@derived_instance).to receive(:query_resource).and_return(resources)
+        allow(@derived_instance).to receive(:puts)
+        allow(@derived_instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
       end
 
       it "lists formatted list of resources" do
-        @derived_instance.ui.should_receive(:list).with(["Instance ID", "Operating system", "resource-1", "ubuntu - operating system with Linux kernel", "resource-2", "windows"], :uneven_columns_across, 2)
+        expect(@derived_instance.ui).to receive(:list).with(["Instance ID", "Operating system", "resource-1", "ubuntu - operating system with Linux kernel", "resource-2", "windows"], :uneven_columns_across, 2)
         @derived_instance.run
       end
     end

@@ -1,3 +1,20 @@
+#
+# Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
+# Copyright:: Copyright (c) 2013-2014 Chef Software, Inc.
+# License:: Apache License, Version 2.0
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 require 'spec_helper'
 require 'chef/knife/cloud/chefbootstrap/winrm_bootstrap_protocol'
 
@@ -6,8 +23,8 @@ describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
     @config = {:bootstrap_protocol => 'winrm'}
     @config = {:image_os_type => 'windows'}
     @instance = Chef::Knife::Cloud::WinrmBootstrapProtocol.new(@config)
-    @instance.stub(:sleep).and_return(0)
-    @instance.stub(:print)
+    allow(@instance).to receive(:sleep).and_return(0)
+    allow(@instance).to receive(:print)
   end
 
   context "Create instance" do
@@ -25,8 +42,8 @@ describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
   describe "#wait_for_server_ready" do
     it "execute with correct method calls" do
       @config[:image_os_type] = 'windows'
-      @instance.stub(:tcp_test_winrm).and_return(true)
-      @instance.should_receive(:tcp_test_winrm).ordered
+      allow(@instance).to receive(:tcp_test_winrm).and_return(true)
+      expect(@instance).to receive(:tcp_test_winrm).ordered
       @instance.wait_for_server_ready
     end
   end
@@ -49,38 +66,38 @@ describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
   describe "#tcp_test_winrm" do
     it "return true" do
       tcpSocket = double()
-      tcpSocket.stub(:close).and_return(true)
-      TCPSocket.stub(:new).and_return(tcpSocket)
+      allow(tcpSocket).to receive(:close).and_return(true)
+      allow(TCPSocket).to receive(:new).and_return(tcpSocket)
       expect(@instance.tcp_test_winrm("localhost","5989")).to be(true)
     end
 
     it "raise SocketError error" do
-      TCPSocket.stub(:new).and_raise(SocketError)
+      allow(TCPSocket).to receive(:new).and_raise(SocketError)
       expect(@instance.tcp_test_winrm("localhost","5989")).to be(false)
     end
 
     it "raise ETIMEDOUT error" do
-      TCPSocket.stub(:new).and_raise(Errno::ETIMEDOUT)
+      allow(TCPSocket).to receive(:new).and_raise(Errno::ETIMEDOUT)
       expect(@instance.tcp_test_winrm("localhost","5989")).to be(false)
     end
 
     it "raise EPERM error" do
-      TCPSocket.stub(:new).and_raise(Errno::EPERM)
+      allow(TCPSocket).to receive(:new).and_raise(Errno::EPERM)
       expect(@instance.tcp_test_winrm("localhost","5989"){raise Errno::EPERM}).to be(false)
     end
 
     it "raise ECONNREFUSED error" do
-      TCPSocket.stub(:new).and_raise(Errno::ECONNREFUSED)
+      allow(TCPSocket).to receive(:new).and_raise(Errno::ECONNREFUSED)
       expect(@instance.tcp_test_winrm("localhost","5989"){raise Errno::ECONNREFUSED}).to be(false)
     end
 
     it "raise EHOSTUNREACH error" do
-      TCPSocket.stub(:new).and_raise(Errno::EHOSTUNREACH)
+      allow(TCPSocket).to receive(:new).and_raise(Errno::EHOSTUNREACH)
       expect(@instance.tcp_test_winrm("localhost","5989"){raise Errno::EHOSTUNREACH}).to be(false)
     end
 
     it "raise ENETUNREACH error" do
-      TCPSocket.stub(:new).and_raise(Errno::ENETUNREACH)
+      allow(TCPSocket).to receive(:new).and_raise(Errno::ENETUNREACH)
       expect(@instance.tcp_test_winrm("localhost","5989"){raise Errno::ENETUNREACH}).to be(false)
     end
   end
