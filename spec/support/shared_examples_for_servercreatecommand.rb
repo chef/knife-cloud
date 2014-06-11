@@ -19,16 +19,10 @@
 require 'spec_helper'
 require 'chef/knife/cloud/server/create_command'
 
-def mock_image(id)
-  image = Object.new
-  allow(image).to receive(:id).and_return(id)
-  image
-end
-
-def mock_flavor(id)
-  flavor = Object.new
-  allow(flavor).to receive(:id).and_return(id)
-  flavor
+def get_mock_resource(id)
+  obj = Object.new
+  allow(obj).to receive(:id).and_return(id)
+  obj
 end
 
 shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
@@ -36,9 +30,9 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
     instance.service = double
     allow(instance.ui).to receive(:fatal)
     
-    allow(instance.service).to receive(:get_image).and_return(mock_image('image_id'))
+    allow(instance.service).to receive(:get_image).and_return(get_mock_resource('image_id'))
     
-    allow(instance.service).to receive(:get_flavor).and_return(mock_flavor('flavor_id'))
+    allow(instance.service).to receive(:get_flavor).and_return(get_mock_resource('flavor_id'))
   end
 
   describe "#before_exec_command" do
@@ -53,8 +47,8 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
       allow(instance).to receive(:validate_params!)
       instance.service = Chef::Knife::Cloud::Service.new
       allow(instance).to receive(:create_service_instance).and_return(instance.service)
-      allow(instance.service).to receive(:get_image).and_return(mock_image('image_id'))
-      allow(instance.service).to receive(:get_flavor).and_return(mock_flavor('flavor_id'))
+      allow(instance.service).to receive(:get_image).and_return(get_mock_resource('image_id'))
+      allow(instance.service).to receive(:get_flavor).and_return(get_mock_resource('flavor_id'))
       allow(instance.service).to receive(:create_server_dependencies).and_raise(Chef::Knife::Cloud::CloudExceptions::ServerCreateDependenciesError)
       expect(instance.service).to receive(:delete_server_dependencies)
       expect(instance.service).to_not receive(:delete_server_on_failure)
