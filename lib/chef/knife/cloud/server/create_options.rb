@@ -28,9 +28,9 @@ class Chef
             include ServerOptions
             include BootstrapOptions
             option :image,
-              :short => "-I IMAGE_ID",
-              :long => "--image IMAGE_ID",
-              :description => "The image ID for the server",
+              :short => "-I IMAGE",
+              :long => "--image IMAGE",
+              :description => "A regexp matching an image name or an image ID for the server",
               :proc => Proc.new { |i| Chef::Config[:knife][:image] = i }
 
             option :image_os_type,
@@ -43,7 +43,7 @@ class Chef
             option :flavor,
               :short => "-f FLAVOR_ID",
               :long => "--flavor FLAVOR_ID",
-              :description => "The flavor ID of server",
+              :description => "The flavor name or ID of server",
               :proc => Proc.new { |f| Chef::Config[:knife][:flavor] = f }
 
             option :bootstrap_protocol,
