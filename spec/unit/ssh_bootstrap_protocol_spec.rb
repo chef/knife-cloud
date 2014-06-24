@@ -76,12 +76,15 @@ describe Chef::Knife::Cloud::SshBootstrapProtocol do
   end
 
   describe "#tcp_test_ssh" do
+
     it "return true" do
       tcpSocket = double()
       allow(tcpSocket).to receive(:close).and_return(true)
       allow(tcpSocket).to receive(:gets).and_return(true)
       allow(TCPSocket).to receive(:new).and_return(tcpSocket)
       allow(IO).to receive(:select).and_return(true)
+      allow(tcpSocket.gets).to receive(:nil?).and_return(false)
+      allow(tcpSocket.gets).to receive(:empty?).and_return(false)
       expect(@instance.tcp_test_ssh("localhost"){}).to be(true)
     end
 

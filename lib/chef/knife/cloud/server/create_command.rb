@@ -51,7 +51,7 @@ class Chef
           error_message = ""
           raise CloudExceptions::ValidationError, error_message if errors.each{|e| ui.error(e); error_message = "#{error_message} #{e}."}.any?
         end
-        
+
         def before_exec_command
           begin
             post_connection_validations
@@ -86,7 +86,7 @@ class Chef
             raise e
           rescue => e
             error_message = "Check if --bootstrap-protocol and --image-os-type is correct. #{e.message}"
-            ui.fatal(error_message) 
+            ui.fatal(error_message)
             cleanup_on_failure
             raise e, error_message
           end

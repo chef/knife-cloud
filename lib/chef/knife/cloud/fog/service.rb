@@ -93,10 +93,10 @@ class Chef
         def delete_server(server_name)
           begin
             server = get_server(server_name)
-
             msg_pair("Instance Name", get_server_name(server))
             msg_pair("Instance ID", server.id)
 
+            puts "ser"
             puts "\n"
             ui.confirm("Do you really want to delete this server")
 
