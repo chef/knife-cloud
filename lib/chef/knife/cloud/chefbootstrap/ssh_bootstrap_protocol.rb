@@ -51,13 +51,13 @@ class Chef
           # The ssh_gateway & subnet_id are currently supported only in EC2.
           if config[:ssh_gateway]
             print(".") until tunnel_test_ssh(@config[:bootstrap_ip_address]) {
-              @initial_sleep_delay = locate_config_value(:subnet_id) ? 40 : 10
+              @initial_sleep_delay = !!locate_config_value(:subnet_id) ? 40 : 10
               sleep @initial_sleep_delay
               puts("done")
             }
           else
             print(".") until tcp_test_ssh(@config[:bootstrap_ip_address]) {
-              @initial_sleep_delay = locate_config_value(:subnet_id) ? 40 : 10
+              @initial_sleep_delay = !!locate_config_value(:subnet_id) ? 40 : 10
               sleep @initial_sleep_delay
               puts("done")
             }
