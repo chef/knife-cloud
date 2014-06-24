@@ -21,11 +21,12 @@ require 'chef/knife/cloud/chefbootstrap/bootstrap_protocol'
 require 'chef/knife/core/windows_bootstrap_context'
 require 'chef/knife/bootstrap'
 
+
 class Chef
   class Knife
     class Cloud
       class SshBootstrapProtocol < BootstrapProtocol
-        
+
         def initialize(config)
           @bootstrap = (config[:image_os_type] == 'linux') ? Chef::Knife::Bootstrap.new : Chef::Knife::BootstrapWindowsSsh.new
           super
@@ -46,40 +47,82 @@ class Chef
 
         def wait_for_server_ready
           print "\n#{ui.color("Waiting for sshd to host (#{@config[:bootstrap_ip_address]})", :magenta)}"
-          print(".") until tcp_test_ssh(@config[:bootstrap_ip_address]) {
-            sleep @initial_sleep_delay ||= 10
-            puts("done")
-          }
+
+          # The ssh_gateway & subnet_id are currently supported only in EC2.
+          if config[:ssh_gateway]
+            print(".") until tunnel_test_ssh(@config[:bootstrap_ip_address]) {
+              @initial_sleep_delay = locate_config_value(:subnet_id) ? 40 : 10
+              sleep @initial_sleep_delay
+              puts("done")
+            }
+          else
+            print(".") until tcp_test_ssh(@config[:bootstrap_ip_address]) {
+              @initial_sleep_delay = locate_config_value(:subnet_id) ? 40 : 10
+              sleep @initial_sleep_delay
+              puts("done")
+            }
+          end
         end
 
         def tcp_test_ssh(hostname)
           tcp_socket = TCPSocket.new(hostname, 22)
           readable = IO.select([tcp_socket], nil, nil, 5)
           if readable
-            Chef::Log.debug("sshd accepting connections on #{hostname}, banner is #{tcp_socket.gets}")
-            yield
-            true
+            ssh_banner = tcp_socket.gets
+            if ssh_banner.nil? or ssh_banner.empty?
+              false
+            else
+              Chef::Log.debug("ssh accepting connections on #{hostname}, banner is #{tcp_socket.gets}")
+              yield
+              true
+            end
           else
             false
           end
-        rescue Errno::ETIMEDOUT
-          false
-        rescue Errno::EPERM
-          false
-        rescue Errno::ECONNREFUSED
-          sleep 2
-          false
-        rescue Errno::EHOSTUNREACH, Errno::ENETUNREACH
-          sleep 2
-          false
-        rescue Errno::ENETUNREACH
-          sleep 2
-          false
-        ensure
-          tcp_socket && tcp_socket.close
+          rescue Errno::ETIMEDOUT
+            Chef::Log.debug("ssh timed out: #{hostname}")
+            false
+          rescue Errno::EPERM
+            Chef::Log.debug("ssh timed out: #{hostname}")
+            false
+          rescue Errno::ECONNREFUSED
+            Chef::Log.debug("ssh failed to connect: #{hostname}")
+            sleep 2
+            false
+          rescue Errno::EHOSTUNREACH, Errno::ENETUNREACH
+            Chef::Log.debug("ssh failed to connect: #{hostname}")
+            sleep 2
+            false
+          rescue Errno::ENETUNREACH
+            Chef::Log.debug("ssh failed to connect: #{hostname}")
+            sleep 2
+            false
+           # This happens on some mobile phone networks
+          rescue Errno::ECONNRESET
+             Chef::Log.debug("ssh reset its connection: #{hostname}")
+            sleep 2
+            false
+          ensure
+            tcp_socket && tcp_socket.close
+          end
         end
 
-      end
+        def tunnel_test_ssh(hostname, &block)
+          gw_host, gw_user = @config[:ssh_gateway].split('@').reverse
+          gw_host, gw_port = gw_host.split(':')
+          gateway = Net::SSH::Gateway.new(gw_host, gw_user, :port => gw_port || 22)
+          status = false
+          gateway.open(hostname, config[:ssh_port]) do |local_tunnel_port|
+            status = tcp_test_ssh('localhost', local_tunnel_port, &block)
+          end
+          status
+          rescue SocketError, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::ENETUNREACH, IOError
+            sleep 2
+            false
+          rescue Errno::EPERM, Errno::ETIMEDOUT
+            false
+        end
+
     end
   end
 end

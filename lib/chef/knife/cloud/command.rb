@@ -32,7 +32,7 @@ class Chef
           begin
             # Set dafult config
             set_default_config
-            
+
             # validate compulsory params
             validate!
 
