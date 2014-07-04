@@ -28,25 +28,6 @@ Alternatively, you can build the gem from the knife-cloud source code.
 
 Create a new ruby project, say knife-myplugin. Add the knife-cloud gem to its gemspec.
 
-- Gemfile
-
-Sample Gemfile:
-
-	source "https://rubygems.org"
-
-	# Specify your gem's dependencies in knife-<yourcloud>.gemspec
-	gemspec
-
-	group :development do
-	  gem 'rspec', '>= 2.7.0'
-	  gem 'guard-rspec'
-	  gem 'rspec_junit_formatter'
-	  gem 'rake'
-	  gem 'mixlib-shellout'
-	end
-
-- knife-myplugin.gemspec
-
 Sample gemspec:
 
 	# -*- encoding: utf-8 -*-
@@ -75,7 +56,21 @@ Sample gemspec:
 	  %w(rspec-core rspec-expectations rspec-mocks rspec_junit_formatter).each { |gem| s.add_development_dependency gem }
 	end
 
-	
+Sample Gemfile:
+
+	source "https://rubygems.org"
+
+	# Specify your gem's dependencies in knife-<yourcloud>.gemspec
+	gemspec
+
+	group :development do
+	  gem 'rspec', '>= 2.7.0'
+	  gem 'guard-rspec'
+	  gem 'rspec_junit_formatter'
+	  gem 'rake'
+	  gem 'mixlib-shellout'
+	end
+
 ### Code structure
 
 Create a new ruby project, say knife-myplugin. Its code structure will look like:
@@ -94,10 +89,10 @@ Create a new ruby project, say knife-myplugin. Its code structure will look like
 	
 ### Service
 
+- myplugin_service.rb
+
 Knife-cloud has a wrapper written for the Fog service. It can be used in your plugin as mentioned in the steps below. If ruby Fog does not have support for your cloud provider, you will have to write your own Service class analogous to the Chef::Knife::Cloud::FogService class which is defined in knife-cloud.
 Implement your Service class which should inherit from the FogService class.
-
-- myplugin_service.rb
 
 Example Code:
 
@@ -124,9 +119,9 @@ Example Code:
 
 #### Service Options
 
-This inherits all the options provided by Fog. You will have to add any cloud specific auth options.
-
 - myplugin_service_options.rb
+
+This inherits all the options provided by Fog. You will have to add any cloud specific auth options.
 
 Example Code:
 
