@@ -108,6 +108,7 @@ class Chef
             option :template_file,
               :long => "--template-file TEMPLATE",
               :description => "Full path to location of template to use",
+              :proc => Proc.new { |t| Chef::Config[:knife][:template_file] = t },
               :default => false
 
             option :run_list,
