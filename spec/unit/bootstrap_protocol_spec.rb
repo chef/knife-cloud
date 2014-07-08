@@ -54,6 +54,7 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
       @config[:first_boot_attributes] = "{\"foo\":\"bar\"}"
       @config[:secret] = "secret"
       @config[:secret_file] = "secret_file"
+      @config[:template_file] = "../template_file"
       allow(@config).to receive(:locate_config_value).and_return({})
       @instance.bootstrap = Chef::Knife::Bootstrap.new
       @instance.init_bootstrap_options
@@ -63,6 +64,7 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
       expect(@instance.bootstrap.config[:first_boot_attributes]).to eq(@config[:first_boot_attributes])
       expect(@instance.bootstrap.config[:secret]).to eq(@config[:secret])
       expect(@instance.bootstrap.config[:secret_file]).to eq(@config[:secret_file])
+      expect(@instance.bootstrap.config[:template_file]).to eq(@config[:template_file])
     end
   end
 end
