@@ -118,6 +118,7 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
       bootstrap_install_command = "bootstrap_install_command"
       bootstrap_wget_options = "bootstrap_wget_options"
       bootstrap_curl_options = "bootstrap_curl_options"
+      bootstrap_no_proxy = "bootstrap_no_proxy"
 
       instance.options[:bootstrap_url][:proc].call bootstrap_url
       expect(Chef::Config[:knife][:bootstrap_url]).to eq(bootstrap_url)
@@ -130,6 +131,9 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
 
       instance.options[:bootstrap_curl_options][:proc].call bootstrap_curl_options
       expect(Chef::Config[:knife][:bootstrap_curl_options]).to eq(bootstrap_curl_options)
+
+      instance.options[:bootstrap_no_proxy][:proc].call bootstrap_no_proxy
+      expect(Chef::Config[:knife][:bootstrap_no_proxy]).to eq(bootstrap_no_proxy)      
 
       expect(instance.options[:auth_timeout][:default]).to eq(25)
     end
