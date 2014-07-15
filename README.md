@@ -1,6 +1,12 @@
 Knife Cloud
 ===============
 
+[![Build Status](http://img.shields.io/travis/opscode/knife-cloud.svg)][travis]
+[![Code Climate](http://img.shields.io/codeclimate/github/opscode/knife-cloud.svg)][codeclimate]
+
+[travis]: https://travis-ci.org/opscode/knife-cloud
+[codeclimate]: https://codeclimate.com/github/opscode/knife-cloud
+
 ## Description
 
 Knife-cloud is a library for implementing knife plugins that integrate cloud
