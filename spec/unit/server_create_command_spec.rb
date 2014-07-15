@@ -19,6 +19,7 @@
 require 'support/shared_examples_for_command'
 require 'support/shared_examples_for_servercreatecommand'
 require 'net/ssh'
+require 'chef/knife/cloud/server/create_options'
 
 describe Chef::Knife::Cloud::ServerCreateCommand do
   it_behaves_like Chef::Knife::Cloud::Command, Chef::Knife::Cloud::ServerCreateCommand.new
@@ -102,6 +103,39 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
       instance.config[:bootstrap_protocol] = 'winrm'
       instance.set_default_config
       expect(instance.config[:image_os_type]).to eq('windows')
+    end
+  end
+
+  describe "#bootstrap options" do
+
+    class ServerCreate < Chef::Knife::Cloud::ServerCreateCommand
+      include Chef::Knife::Cloud::ServerCreateOptions
+    end
+
+    it "set chef config knife options" do
+      instance = ServerCreate.new
+      bootstrap_url = "bootstrap_url"
+      bootstrap_install_command = "bootstrap_install_command"
+      bootstrap_wget_options = "bootstrap_wget_options"
+      bootstrap_curl_options = "bootstrap_curl_options"
+      bootstrap_no_proxy = "bootstrap_no_proxy"
+
+      instance.options[:bootstrap_url][:proc].call bootstrap_url
+      expect(Chef::Config[:knife][:bootstrap_url]).to eq(bootstrap_url)
+
+      instance.options[:bootstrap_install_command][:proc].call bootstrap_install_command
+      expect(Chef::Config[:knife][:bootstrap_install_command]).to eq(bootstrap_install_command)
+
+      instance.options[:bootstrap_wget_options][:proc].call bootstrap_wget_options
+      expect(Chef::Config[:knife][:bootstrap_wget_options]).to eq(bootstrap_wget_options)
+
+      instance.options[:bootstrap_curl_options][:proc].call bootstrap_curl_options
+      expect(Chef::Config[:knife][:bootstrap_curl_options]).to eq(bootstrap_curl_options)
+
+      instance.options[:bootstrap_no_proxy][:proc].call bootstrap_no_proxy
+      expect(Chef::Config[:knife][:bootstrap_no_proxy]).to eq(bootstrap_no_proxy)      
+
+      expect(instance.options[:auth_timeout][:default]).to eq(25)
     end
   end
 end

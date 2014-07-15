@@ -90,6 +90,11 @@ class Chef
               :description => "The proxy server for the node being bootstrapped",
               :proc => Proc.new { |p| Chef::Config[:knife][:bootstrap_proxy] = p }
 
+            option :bootstrap_no_proxy,
+              :long => "--bootstrap-no-proxy [NO_PROXY_URL|NO_PROXY_IP]",
+              :description => "Do not proxy locations for the node being bootstrapped; this option is used internally by Opscode",
+              :proc => Proc.new { |np| Chef::Config[:knife][:bootstrap_no_proxy] = np }
+
             option :distro,
               :short => "-d DISTRO",
               :long => "--distro DISTRO",
@@ -138,7 +143,7 @@ class Chef
                 Chef::Config[:knife][:hints] ||= Hash.new
                 name, path = h.split("=")
                 Chef::Config[:knife][:hints][name] = path ? JSON.parse(::File.read(path)) : Hash.new  }
-      
+
             option :secret,
               :short => "-s SECRET",
               :long  => "--secret ",
@@ -148,9 +153,32 @@ class Chef
               :long => "--secret-file SECRET_FILE",
               :description => "A file containing the secret key to use to encrypt data bag item values"
 
+            option :bootstrap_url,
+              :long        => "--bootstrap-url URL",
+              :description => "URL to a custom installation script",
+              :proc        => Proc.new { |u| Chef::Config[:knife][:bootstrap_url] = u }
+
+            option :bootstrap_install_command,
+              :long        => "--bootstrap-install-command COMMANDS",
+              :description => "Custom command to install chef-client",
+              :proc        => Proc.new { |ic| Chef::Config[:knife][:bootstrap_install_command] = ic }
+
+            option :bootstrap_wget_options,
+              :long        => "--bootstrap-wget-options OPTIONS",
+              :description => "Add options to wget when installing chef-client",
+              :proc        => Proc.new { |wo| Chef::Config[:knife][:bootstrap_wget_options] = wo }
+
+            option :bootstrap_curl_options,
+              :long        => "--bootstrap-curl-options OPTIONS",
+              :description => "Add options to curl when install chef-client",
+              :proc        => Proc.new { |co| Chef::Config[:knife][:bootstrap_curl_options] = co }
+
+            option :auth_timeout,
+              :long => "--auth-timeout MINUTES",
+              :description => "The maximum time in minutes to wait to for authentication over the transport to the node to succeed. The default value is 25 minutes.",
+              :default => 25
           end
         end
-
       end # module ends
     end
   end
