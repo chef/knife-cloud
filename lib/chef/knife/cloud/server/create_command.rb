@@ -111,28 +111,7 @@ class Chef
 
         # any cloud specific initializations/cleanup we want to do around bootstrap.
         def before_bootstrap
-          #Here, ssh config override winrm config
-
-          # unchanged ssh_user and changed winrm_user, override ssh_user
-          if locate_config_value(:ssh_user).eql?(options[:ssh_user][:default]) &&
-              !locate_config_value(:winrm_user).eql?(options[:winrm_user][:default])
-            config[:ssh_user] = locate_config_value(:winrm_user)
-          end
-          # unchanged ssh_port and changed winrm_port, override ssh_port
-          if locate_config_value(:ssh_port).nil? &&
-              !locate_config_value(:winrm_port).eql?(options[:winrm_port][:default])
-            config[:ssh_port] = locate_config_value(:winrm_port)
-          end
-          # unset ssh_password and set winrm_password, override ssh_password
-          if locate_config_value(:ssh_password).nil? &&
-              !locate_config_value(:winrm_password).nil?
-            config[:ssh_password] = locate_config_value(:winrm_password)
-          end
-          # unset identity_file and set kerberos_keytab_file, override identity_file
-          if locate_config_value(:identity_file).nil? &&
-              !locate_config_value(:kerberos_keytab_file).nil?
-            config[:identity_file] = locate_config_value(:kerberos_keytab_file)
-          end
+          ssh_override_winrm if locate_config_value(:bootstrap_protocol) == 'ssh'
         end
 
         def after_bootstrap
@@ -152,6 +131,32 @@ class Chef
         end
 
         def post_connection_validations
+        end
+
+        private
+
+        # Here, ssh config override winrm config
+        def ssh_override_winrm
+          # unchanged ssh_user and changed winrm_user, override ssh_user
+          if locate_config_value(:ssh_user).eql?(options[:ssh_user][:default]) &&
+              !locate_config_value(:winrm_user).eql?(options[:winrm_user][:default])
+            config[:ssh_user] = locate_config_value(:winrm_user)
+          end
+          # unchanged ssh_port and changed winrm_port, override ssh_port
+          if locate_config_value(:ssh_port).nil? &&
+              !locate_config_value(:winrm_port).eql?(options[:winrm_port][:default])
+            config[:ssh_port] = locate_config_value(:winrm_port)
+          end
+          # unset ssh_password and set winrm_password, override ssh_password
+          if locate_config_value(:ssh_password).nil? &&
+              !locate_config_value(:winrm_password).nil?
+            config[:ssh_password] = locate_config_value(:winrm_password)
+          end
+          # unset identity_file and set kerberos_keytab_file, override identity_file
+          if locate_config_value(:identity_file).nil? &&
+              !locate_config_value(:kerberos_keytab_file).nil?
+            config[:identity_file] = locate_config_value(:kerberos_keytab_file)
+          end          
         end
       end # class ServerCreateCommand
     end
