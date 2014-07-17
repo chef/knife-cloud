@@ -106,11 +106,11 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
     end
   end
 
-  describe "#bootstrap options" do
+  class ServerCreate < Chef::Knife::Cloud::ServerCreateCommand
+    include Chef::Knife::Cloud::ServerCreateOptions
+  end
 
-    class ServerCreate < Chef::Knife::Cloud::ServerCreateCommand
-      include Chef::Knife::Cloud::ServerCreateOptions
-    end
+  describe "#bootstrap options" do
 
     it "set chef config knife options" do
       instance = ServerCreate.new
@@ -136,6 +136,63 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
       expect(Chef::Config[:knife][:bootstrap_no_proxy]).to eq(bootstrap_no_proxy)      
 
       expect(instance.options[:auth_timeout][:default]).to eq(25)
+    end
+  end
+
+  describe "#before_bootstrap" do
+
+    before(:all) { @instance = ServerCreate.new }
+
+    context "bootstrap_protocol shh" do
+      before {@instance.config[:bootstrap_protocol] = "ssh"}
+      
+      it "set ssh_user value by using -x option for ssh bootstrap protocol or linux image" do
+        # Currently -x option set config[:winrm_user]
+        # default value of config[:ssh_user] is root
+        @instance.config[:winrm_user] = "ubuntu"
+        @instance.config[:ssh_user] = "root"
+
+        @instance.before_bootstrap
+        expect(@instance.config[:ssh_user]).to eq("ubuntu")
+      end
+
+      it "set ssh_password value by using -P option for ssh bootstrap protocol or linux image" do
+        # Currently -P option set config[:winrm_password]
+        # default value of config[:ssh_password] is nil
+        @instance.config[:winrm_password] = "winrm_password"
+        @instance.config[:ssh_password] = nil
+
+        @instance.before_bootstrap
+        expect(@instance.config[:ssh_password]).to eq("winrm_password")
+      end
+
+      it "set ssh_port value by using -p option for ssh bootstrap protocol or linux image" do
+        # Currently -p option set config[:winrm_port]
+        # default value of config[:ssh_port] is nil
+        @instance.config[:winrm_port] = "1234"
+        @instance.config[:ssh_port] =  nil
+
+        @instance.before_bootstrap
+        expect(@instance.config[:ssh_port]).to eq("1234")
+      end
+
+      it "set identity_file value by using -i option for ssh bootstrap protocol or linux image" do
+        # Currently -i option set config[:kerberos_keytab_file]
+        # default value of config[:identity_file] is nil
+        @instance.config[:kerberos_keytab_file] = "kerberos_keytab_file"
+        @instance.config[:identity_file] = nil
+
+        @instance.before_bootstrap
+        expect(@instance.config[:identity_file]).to eq("kerberos_keytab_file")
+      end
+    end
+
+    context "bootstrap_protocol winrm" do
+      it "skip ssh_override_winrm" do
+        @instance.config[:bootstrap_protocol] = "winrm"
+        expect(@instance).to_not receive(:ssh_override_winrm)
+        @instance.before_bootstrap
+      end
     end
   end
 end
