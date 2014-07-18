@@ -168,9 +168,9 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
 
       it "set ssh_port value by using -p option for ssh bootstrap protocol or linux image" do
         # Currently -p option set config[:winrm_port]
-        # default value of config[:ssh_port] is nil
+        # default value of config[:ssh_port] is 22
         @instance.config[:winrm_port] = "1234"
-        @instance.config[:ssh_port] =  nil
+        @instance.config[:ssh_port] =  "22"
 
         @instance.before_bootstrap
         expect(@instance.config[:ssh_port]).to eq("1234")

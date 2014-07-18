@@ -143,7 +143,7 @@ class Chef
             config[:ssh_user] = locate_config_value(:winrm_user)
           end
           # unchanged ssh_port and changed winrm_port, override ssh_port
-          if locate_config_value(:ssh_port).nil? &&
+          if locate_config_value(:ssh_port).eql?(options[:ssh_port][:default]) &&
               !locate_config_value(:winrm_port).eql?(options[:winrm_port][:default])
             config[:ssh_port] = locate_config_value(:winrm_port)
           end

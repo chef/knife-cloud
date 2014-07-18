@@ -54,12 +54,18 @@ class Chef
               :short => "-p PORT",
               :long => "--ssh-port PORT",
               :description => "The ssh port",
-              :proc => Proc.new { |key| Chef::Config[:knife][:ssh_port] = key }
+              :proc => Proc.new { |key| Chef::Config[:knife][:ssh_port] = key },
+              :default => "22"
 
             option :ssh_gateway,
               :long => "--ssh-gateway GATEWAY",
-              :description => "The ssh gateway",
+              :description => "The ssh gateway server. Any proxies configured in your ssh config are automatically used by default.",
               :proc => Proc.new { |key| Chef::Config[:knife][:ssh_gateway] = key }
+
+            option :ssh_gateway_identity,
+              :long => "--ssh-gateway-identity IDENTITY_FILE",
+              :description => "The private key for ssh gateway server",
+              :proc => Proc.new { |key| Chef::Config[:knife][:ssh_gateway_identity] = key }
 
             option :forward_agent,
               :long => "--forward-agent",
