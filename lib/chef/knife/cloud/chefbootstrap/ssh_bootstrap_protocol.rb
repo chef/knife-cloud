@@ -21,6 +21,7 @@ require 'chef/knife/cloud/chefbootstrap/bootstrap_protocol'
 require 'chef/knife/core/windows_bootstrap_context'
 require 'chef/knife/bootstrap'
 
+
 class Chef
   class Knife
     class Cloud
