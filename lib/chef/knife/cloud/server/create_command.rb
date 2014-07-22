@@ -51,7 +51,7 @@ class Chef
           error_message = ""
           raise CloudExceptions::ValidationError, error_message if errors.each{|e| ui.error(e); error_message = "#{error_message} #{e}."}.any?
         end
-        
+
         def before_exec_command
           begin
             post_connection_validations
@@ -86,7 +86,7 @@ class Chef
             raise e
           rescue => e
             error_message = "Check if --bootstrap-protocol and --image-os-type is correct. #{e.message}"
-            ui.fatal(error_message) 
+            ui.fatal(error_message)
             cleanup_on_failure
             raise e, error_message
           end
@@ -143,7 +143,7 @@ class Chef
             config[:ssh_user] = locate_config_value(:winrm_user)
           end
           # unchanged ssh_port and changed winrm_port, override ssh_port
-          if locate_config_value(:ssh_port).nil? &&
+          if locate_config_value(:ssh_port).eql?(options[:ssh_port][:default]) &&
               !locate_config_value(:winrm_port).eql?(options[:winrm_port][:default])
             config[:ssh_port] = locate_config_value(:winrm_port)
           end

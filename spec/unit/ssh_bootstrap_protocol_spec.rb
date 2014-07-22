@@ -76,38 +76,41 @@ describe Chef::Knife::Cloud::SshBootstrapProtocol do
   end
 
   describe "#tcp_test_ssh" do
+
     it "return true" do
       tcpSocket = double()
       allow(tcpSocket).to receive(:close).and_return(true)
       allow(tcpSocket).to receive(:gets).and_return(true)
       allow(TCPSocket).to receive(:new).and_return(tcpSocket)
       allow(IO).to receive(:select).and_return(true)
-      expect(@instance.tcp_test_ssh("localhost"){}).to be(true)
+      allow(tcpSocket.gets).to receive(:nil?).and_return(false)
+      allow(tcpSocket.gets).to receive(:empty?).and_return(false)
+      expect(@instance.tcp_test_ssh("localhost","22"){}).to be(true)
     end
 
     it "raise ETIMEDOUT error" do
       allow(TCPSocket).to receive(:new).and_raise(Errno::ETIMEDOUT)
-      expect(@instance.tcp_test_ssh("localhost"){}).to be(false)
+      expect(@instance.tcp_test_ssh("localhost","22"){}).to be(false)
     end
 
     it "raise EPERM error" do
       allow(TCPSocket).to receive(:new).and_raise(Errno::EPERM)
-      expect(@instance.tcp_test_ssh("localhost"){}).to be(false)
+      expect(@instance.tcp_test_ssh("localhost","22"){}).to be(false)
     end
 
     it "raise ECONNREFUSED error" do
       allow(TCPSocket).to receive(:new).and_raise(Errno::ECONNREFUSED)
-      expect(@instance.tcp_test_ssh("localhost"){}).to be(false)
+      expect(@instance.tcp_test_ssh("localhost","22"){}).to be(false)
     end
 
     it "raise EHOSTUNREACH error" do
       allow(TCPSocket).to receive(:new).and_raise(Errno::EHOSTUNREACH)
-      expect(@instance.tcp_test_ssh("localhost"){}).to be(false)
+      expect(@instance.tcp_test_ssh("localhost","22"){}).to be(false)
     end
 
     it "raise ENETUNREACH error" do
       allow(TCPSocket).to receive(:new).and_raise(Errno::ENETUNREACH)
-      expect(@instance.tcp_test_ssh("localhost"){}).to be(false)
+      expect(@instance.tcp_test_ssh("localhost","22"){}).to be(false)
     end
   end
 end
