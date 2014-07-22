@@ -96,7 +96,6 @@ class Chef
             msg_pair("Instance Name", get_server_name(server))
             msg_pair("Instance ID", server.id)
 
-            puts "ser"
             puts "\n"
             ui.confirm("Do you really want to delete this server")
 
