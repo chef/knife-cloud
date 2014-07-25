@@ -10,7 +10,7 @@ Knife Cloud
 ## Description
 
 Knife-cloud is a library for implementing knife plugins that integrate cloud
-infrastructure with Chef. For more information about knife and Chef visit http://opscode.com/chef.
+infrastructure with Chef. For more information about knife and Chef visit https://getchef.com/chef.
 
 ## Purpose
 
@@ -27,12 +27,17 @@ Alternatively, you can build the gem from the knife-cloud source code.
 
 	$ git clone https://github.com/opscode/knife-cloud
 	$ cd knife-cloud
-	$ gem build .\knife-cloud.gemspec
+	$ rake gem
 	$ gem install knife-cloud-x.y.z.gem
 
 ## Writing your custom plugin
 
-Create a new ruby project, say knife-myplugin. Add the knife-cloud gem to its gemspec.
+General documentation of how to develop a knife plugin can be found in
+[Chef documentation](http://docs.getchef.com/plugin_knife_custom.html). Use of
+the `knife-cloud` gem to implement the plugin automates many aspects of the
+process.
+
+Here is an example of how `knife-cloud` can be used. First, create a new ruby project, say knife-myplugin. Add the knife-cloud gem to its gemspec.
 
 Sample gemspec:
 
