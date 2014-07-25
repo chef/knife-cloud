@@ -3,9 +3,9 @@
 ## Unreleased
 * No changes unreleased
 
-Last Release: v1.0.0 (2014-05-15)
+Last Release: v1.0.0.rc.0 (2014-07-25)
 -------------------
-- First public release
+- First public release candidate
 
 
 
