@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.extra_rdoc_files = ["README.md", "LICENSE" ]
   s.authors     = ["Kaustubh Deorukhkar", "Ameya Varade"]
-  s.email       = ["kaustubh@clogeny.com"]
+  s.email       = ["dev@getchef.com"]
   s.homepage    = "https://github.com/opscode/knife-cloud"
   s.summary     = %q{knife-cloud plugin}
   s.description = s.summary
@@ -19,8 +19,8 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib", "spec"]
 
   s.add_dependency "fog", ">= 1.10.0"
+  s.add_dependency 'knife-windows', '>= 0.5.14'
   s.add_dependency "chef", ">= 0.10.10"
-  s.add_dependency "knife-windows"  # TODO use the revision of refactored knife-windows once its released
   s.add_dependency 'mixlib-shellout'
 
   %w(rspec-core rspec-expectations rspec-mocks rspec_junit_formatter).each { |gem| s.add_development_dependency gem }
