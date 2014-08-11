@@ -103,7 +103,8 @@ Create a new ruby project, say knife-myplugin. Its code structure will look like
 - myplugin_service.rb
 
 Knife-cloud has a wrapper written for the Fog service. It can be used in your plugin as mentioned in the steps below. If ruby Fog does not have support for your cloud provider, you will have to write your own Service class analogous to the Chef::Knife::Cloud::FogService class which is defined in knife-cloud.
-Implement your Service class which should inherit from the FogService class.
+* Add a dependency on the desired version of the `Fog` gem to your plugin's gemspec.
+* Implement your Service class which should inherit from the FogService class.
 
 Example Code:
 
