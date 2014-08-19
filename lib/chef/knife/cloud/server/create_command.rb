@@ -126,8 +126,8 @@ class Chef
         #generate a random name if chef_node_name is empty
         def get_node_name(chef_node_name, prefix)
           return chef_node_name unless chef_node_name.nil?
-          #lazy uuids
-          chef_node_name = "#{prefix}-"+rand.to_s.split('.')[1]
+          #lazy uuids, 15 chars cause windows has limits
+          chef_node_name = ("#{prefix}-"+rand.to_s.split('.')[1]).slice(0,14)
         end
 
         def post_connection_validations
