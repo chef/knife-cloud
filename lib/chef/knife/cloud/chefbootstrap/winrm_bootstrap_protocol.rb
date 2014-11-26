@@ -32,7 +32,6 @@ class Chef
 
         def load_winrm_deps
           require 'winrm'
-          require 'em-winrm'
           require 'chef/knife/bootstrap_windows_winrm'
           require 'chef/knife/core/windows_bootstrap_context'
           require 'chef/knife/winrm'
@@ -75,7 +74,7 @@ class Chef
           sleep 2
           false
         ensure
-          tcp_socket && tcp_socket.close          
+          tcp_socket && tcp_socket.close
         end
 
       end
