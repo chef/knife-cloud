@@ -179,6 +179,25 @@ class Chef
               :description => "Add options to curl when install chef-client",
               :proc        => Proc.new { |co| Chef::Config[:knife][:bootstrap_curl_options] = co }
 
+            option :bootstrap_vault_file,
+              :long        => '--bootstrap-vault-file VAULT_FILE',
+              :description => 'A JSON file with a list of vault(s) and item(s) to be updated'
+
+            option :bootstrap_vault_json,
+              :long        => '--bootstrap-vault-json VAULT_JSON',
+              :description => 'A JSON string with the vault(s) and item(s) to be updated'
+
+            option :bootstrap_vault_item,
+              :long        => '--bootstrap-vault-item VAULT_ITEM',
+              :description => 'A single vault and item to update as "vault:item"',
+              :proc        => Proc.new { |i|
+                (vault, item) = i.split(/:/)
+                Chef::Config[:knife][:bootstrap_vault_item] ||= {}
+                Chef::Config[:knife][:bootstrap_vault_item][vault] ||= []
+                Chef::Config[:knife][:bootstrap_vault_item][vault].push(item)
+                Chef::Config[:knife][:bootstrap_vault_item]
+              }
+
             option :auth_timeout,
               :long => "--auth-timeout MINUTES",
               :description => "The maximum time in minutes to wait to for authentication over the transport to the node to succeed. The default value is 25 minutes.",
