@@ -61,6 +61,9 @@ class Chef
           bootstrap.config[:secret] = locate_config_value(:secret)
           bootstrap.config[:secret_file] = locate_config_value(:secret_file)
           bootstrap.config[:template_file] =  locate_config_value(:template_file)
+          bootstrap.config[:bootstrap_vault_file] = locate_config_value(:bootstrap_vault_file)
+          bootstrap.config[:bootstrap_vault_json] = locate_config_value(:bootstrap_vault_json)
+          bootstrap.config[:bootstrap_vault_item] =  locate_config_value(:bootstrap_vault_item)
         end
 
       end

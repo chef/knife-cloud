@@ -55,6 +55,9 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
       @config[:secret] = "secret"
       @config[:secret_file] = "secret_file"
       @config[:template_file] = "../template_file"
+      @config[:bootstrap_vault_file] = "/foo/bar/baz"
+      @config[:bootstrap_vault_json] = '{ "vault": "item1" }'
+      @config[:bootstrap_vault_item] = { 'vault' => 'item1' }
       allow(@config).to receive(:locate_config_value).and_return({})
       @instance.bootstrap = Chef::Knife::Bootstrap.new
       @instance.init_bootstrap_options
@@ -65,6 +68,9 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
       expect(@instance.bootstrap.config[:secret]).to eq(@config[:secret])
       expect(@instance.bootstrap.config[:secret_file]).to eq(@config[:secret_file])
       expect(@instance.bootstrap.config[:template_file]).to eq(@config[:template_file])
+      expect(@instance.bootstrap.config[:bootstrap_vault_file]).to eq(@config[:bootstrap_vault_file])
+      expect(@instance.bootstrap.config[:bootstrap_vault_json]).to eq(@config[:bootstrap_vault_json])
+      expect(@instance.bootstrap.config[:bootstrap_vault_item]).to eq(@config[:bootstrap_vault_item])
     end
   end
 end
