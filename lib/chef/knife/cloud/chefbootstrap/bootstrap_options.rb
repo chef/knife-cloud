@@ -104,7 +104,16 @@ class Chef
             option :distro,
               :short => "-d DISTRO",
               :long => "--distro DISTRO",
-              :description => "Bootstrap a distro using a template"
+              :description => "Bootstrap a distro using a template. [DEPRECATED] Use -t / --template option instead.",
+              :proc => Proc.new { |t|
+                Chef::Log.warn("[DEPRECATED] -d / --distro option is deprecated. Use -t / --template option instead.")
+                Chef::Config[:knife][:bootstrap_template] = t
+              }
+
+            option :bootstrap_template,
+              :short => "-t TEMPLATE",
+              :long => "--bootstrap-template TEMPLATE",
+              :description => "Bootstrap Chef using a built-in or custom template. Set to the full path of an erb template or use one of the built-in templates."
 
             option :use_sudo,
               :long => "--sudo",
@@ -118,9 +127,11 @@ class Chef
 
             option :template_file,
               :long => "--template-file TEMPLATE",
-              :description => "Full path to location of template to use",
-              :proc => Proc.new { |t| Chef::Config[:knife][:template_file] = t },
-              :default => false
+              :description => "Full path to location of template to use. [DEPRECATED] Use -t / --bootstrap-template option instead.",
+              :proc        => Proc.new { |v|
+                Chef::Log.warn("[DEPRECATED] --template-file option is deprecated. Use -t / --bootstrap-template option instead.")
+                v
+              }
 
             option :run_list,
               :short => "-r RUN_LIST",
