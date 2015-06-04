@@ -61,6 +61,18 @@ class Chef
           bootstrap.config[:secret] = locate_config_value(:secret)
           bootstrap.config[:secret_file] = locate_config_value(:secret_file)
           bootstrap.config[:template_file] =  locate_config_value(:template_file)
+          bootstrap.config[:bootstrap_template] =  locate_config_value(:bootstrap_template)
+          bootstrap.config[:node_ssl_verify_mode] = locate_config_value(:node_ssl_verify_mode)
+          bootstrap.config[:node_verify_api_cert] = locate_config_value(:node_verify_api_cert)
+          bootstrap.config[:bootstrap_no_proxy] = locate_config_value(:bootstrap_no_proxy)
+          bootstrap.config[:bootstrap_url] = locate_config_value(:bootstrap_url)
+          bootstrap.config[:bootstrap_install_command] = locate_config_value(:bootstrap_install_command)
+          bootstrap.config[:bootstrap_wget_options] = locate_config_value(:bootstrap_wget_options)
+          bootstrap.config[:bootstrap_curl_options] = locate_config_value(:bootstrap_curl_options)
+          bootstrap.config[:bootstrap_vault_file] = locate_config_value(:bootstrap_vault_file)
+          bootstrap.config[:bootstrap_vault_json] = locate_config_value(:bootstrap_vault_json)
+          bootstrap.config[:bootstrap_vault_item] = locate_config_value(:bootstrap_vault_item)
+          bootstrap.config[:use_sudo_password] = locate_config_value(:use_sudo_password)
         end
 
       end
