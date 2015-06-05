@@ -11,3 +11,8 @@ elsif ENV['CHEF_VERSION'] == '< 12'
 else
   gem 'chef', ENV['CHEF_VERSION']
 end
+
+group :development do
+  gem 'rake'
+  gem 'knife-windows'
+end
