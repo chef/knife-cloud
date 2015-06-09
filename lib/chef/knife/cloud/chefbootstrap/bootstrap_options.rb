@@ -175,16 +175,6 @@ class Chef
               :description => "URL to a custom installation script",
               :proc        => Proc.new { |u| Chef::Config[:knife][:bootstrap_url] = u }
 
-            option :bootstrap_install_command,
-              :long        => "--bootstrap-install-command COMMANDS",
-              :description => "Custom command to install chef-client",
-              :proc        => Proc.new { |ic| Chef::Config[:knife][:bootstrap_install_command] = ic }
-
-            option :bootstrap_wget_options,
-              :long        => "--bootstrap-wget-options OPTIONS",
-              :description => "Add options to wget when installing chef-client",
-              :proc        => Proc.new { |wo| Chef::Config[:knife][:bootstrap_wget_options] = wo }
-
             option :bootstrap_curl_options,
               :long        => "--bootstrap-curl-options OPTIONS",
               :description => "Add options to curl when install chef-client",
@@ -209,11 +199,6 @@ class Chef
               :long        => "--[no-]node-verify-api-cert",
               :description => "Verify the SSL cert for HTTPS requests to the Chef server API.",
               :boolean     => true
-
-            option :bootstrap_no_proxy,
-              :long => "--bootstrap-no-proxy [NO_PROXY_URL|NO_PROXY_IP]",
-              :description => "Do not proxy locations for the node being bootstrapped; this option is used internally by Opscode",
-              :proc => Proc.new { |np| Chef::Config[:knife][:bootstrap_no_proxy] = np }
 
             option :bootstrap_url,
               :long        => "--bootstrap-url URL",
