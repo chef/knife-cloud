@@ -10,14 +10,13 @@ exists() {
   fi
 }
 
-install_sh="http://opscode.com/chef/install.sh"
-version_string="-v <%= chef_version %>"
+install_sh="http://chef.io/chef/install.sh"
 
 if ! exists /usr/bin/chef-client; then
   if exists wget; then
-    bash <(wget <%= "--proxy=on " if knife_config[:bootstrap_proxy] %> ${install_sh} -O -) ${version_string}
+    bash <(wget <%= "--proxy=on " if knife_config[:bootstrap_proxy] %> ${install_sh} -O -)
   elif exists curl; then
-    bash <(curl -L <%= "--proxy \"#{knife_config[:bootstrap_proxy]}\" " if knife_config[:bootstrap_proxy] %> ${install_sh}) ${version_string}
+    bash <(curl -L <%= "--proxy \"#{knife_config[:bootstrap_proxy]}\" " if knife_config[:bootstrap_proxy] %> ${install_sh})
   else
     echo "Neither wget nor curl found. Please install one and try again." >&2
     exit 1
