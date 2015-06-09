@@ -200,11 +200,6 @@ class Chef
               :description => "Verify the SSL cert for HTTPS requests to the Chef server API.",
               :boolean     => true
 
-            option :bootstrap_url,
-              :long        => "--bootstrap-url URL",
-              :description => "URL to a custom installation script",
-              :proc        => Proc.new { |u| Chef::Config[:knife][:bootstrap_url] = u }
-
             option :bootstrap_install_command,
               :long        => "--bootstrap-install-command COMMANDS",
               :description => "Custom command to install chef-client",
@@ -214,11 +209,6 @@ class Chef
               :long        => "--bootstrap-wget-options OPTIONS",
               :description => "Add options to wget when installing chef-client",
               :proc        => Proc.new { |wo| Chef::Config[:knife][:bootstrap_wget_options] = wo }
-
-            option :bootstrap_curl_options,
-              :long        => "--bootstrap-curl-options OPTIONS",
-              :description => "Add options to curl when install chef-client",
-              :proc        => Proc.new { |co| Chef::Config[:knife][:bootstrap_curl_options] = co }
 
             option :bootstrap_vault_file,
               :long        => '--bootstrap-vault-file VAULT_FILE',
@@ -239,10 +229,6 @@ class Chef
                 Chef::Config[:knife][:bootstrap_vault_item]
               }
 
-            option :use_sudo_password,
-              :long => "--use-sudo-password",
-              :description => "Execute the bootstrap via sudo with password",
-              :boolean => false
           end
         end
       end # module ends
