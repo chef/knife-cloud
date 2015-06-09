@@ -3,8 +3,8 @@
 [![Build Status](http://img.shields.io/travis/opscode/knife-cloud.svg)][travis]
 [![Code Climate](http://img.shields.io/codeclimate/github/opscode/knife-cloud.svg)][codeclimate]
 
-[travis]: https://travis-ci.org/opscode/knife-cloud
-[codeclimate]: https://codeclimate.com/github/opscode/knife-cloud
+[travis]: https://travis-ci.org/chef/knife-cloud
+[codeclimate]: https://codeclimate.com/github/chef/knife-cloud
 
 ## Description
 
