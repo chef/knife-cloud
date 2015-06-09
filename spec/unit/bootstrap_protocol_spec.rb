@@ -55,6 +55,17 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
       @config[:secret] = "secret"
       @config[:secret_file] = "secret_file"
       @config[:template_file] = "../template_file"
+      @config[:bootstrap_vault_file] = "/foo/bar/baz"
+      @config[:bootstrap_vault_json] = '{ "vault": "item1" }'
+      @config[:bootstrap_vault_item] = { 'vault' => 'item1' }
+      @config[:bootstrap_template] = "../template_file"
+      @config[:node_ssl_verify_mode] = "none"
+      @config[:node_verify_api_cert] = true
+      @config[:bootstrap_url] = "https://www.chef.io/chef/install.sh"
+      @config[:bootstrap_install_command] = "curl -l https://www.chef.io/chef/install.sh | sudo bash -s --"
+      @config[:bootstrap_wget_options] = "-e use_proxy=yes -e http://myproxy.com:8080"
+      @config[:bootstrap_curl_options] = "--proxy http://myproxy.com:8080"
+      @config[:use_sudo_password] = "true"
       allow(@config).to receive(:locate_config_value).and_return({})
       @instance.bootstrap = Chef::Knife::Bootstrap.new
       @instance.init_bootstrap_options
@@ -65,6 +76,17 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
       expect(@instance.bootstrap.config[:secret]).to eq(@config[:secret])
       expect(@instance.bootstrap.config[:secret_file]).to eq(@config[:secret_file])
       expect(@instance.bootstrap.config[:template_file]).to eq(@config[:template_file])
+      expect(@instance.bootstrap.config[:bootstrap_vault_file]).to eq(@config[:bootstrap_vault_file])
+      expect(@instance.bootstrap.config[:bootstrap_vault_json]).to eq(@config[:bootstrap_vault_json])
+      expect(@instance.bootstrap.config[:bootstrap_vault_item]).to eq(@config[:bootstrap_vault_item])
+      expect(@instance.bootstrap.config[:bootstrap_template]).to eq(@config[:bootstrap_template])
+      expect(@instance.bootstrap.config[:node_ssl_verify_mode]).to eq(@config[:node_ssl_verify_mode])
+      expect(@instance.bootstrap.config[:node_verify_api_cert]).to eq(@config[:node_verify_api_cert])
+      expect(@instance.bootstrap.config[:bootstrap_url]).to eq(@config[:bootstrap_url])
+      expect(@instance.bootstrap.config[:bootstrap_install_command]).to eq(@config[:bootstrap_install_command])
+      expect(@instance.bootstrap.config[:bootstrap_wget_options]).to eq(@config[:bootstrap_wget_options])
+      expect(@instance.bootstrap.config[:bootstrap_curl_options]).to eq(@config[:bootstrap_curl_options])
+      expect(@instance.bootstrap.config[:use_sudo_password]).to eq(@config[:use_sudo_password])
     end
   end
 end

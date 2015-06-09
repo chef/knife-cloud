@@ -104,7 +104,16 @@ class Chef
             option :distro,
               :short => "-d DISTRO",
               :long => "--distro DISTRO",
-              :description => "Bootstrap a distro using a template"
+              :description => "Bootstrap a distro using a template. [DEPRECATED] Use -t / --template option instead.",
+              :proc => Proc.new { |t|
+                Chef::Log.warn("[DEPRECATED] -d / --distro option is deprecated. Use -t / --template option instead.")
+                Chef::Config[:knife][:bootstrap_template] = t
+              }
+
+            option :bootstrap_template,
+              :short => "-t TEMPLATE",
+              :long => "--bootstrap-template TEMPLATE",
+              :description => "Bootstrap Chef using a built-in or custom template. Set to the full path of an erb template or use one of the built-in templates."
 
             option :use_sudo,
               :long => "--sudo",
@@ -118,9 +127,11 @@ class Chef
 
             option :template_file,
               :long => "--template-file TEMPLATE",
-              :description => "Full path to location of template to use",
-              :proc => Proc.new { |t| Chef::Config[:knife][:template_file] = t },
-              :default => false
+              :description => "Full path to location of template to use. [DEPRECATED] Use -t / --bootstrap-template option instead.",
+              :proc        => Proc.new { |v|
+                Chef::Log.warn("[DEPRECATED] --template-file option is deprecated. Use -t / --bootstrap-template option instead.")
+                v
+              }
 
             option :run_list,
               :short => "-r RUN_LIST",
@@ -164,6 +175,31 @@ class Chef
               :description => "URL to a custom installation script",
               :proc        => Proc.new { |u| Chef::Config[:knife][:bootstrap_url] = u }
 
+            option :bootstrap_curl_options,
+              :long        => "--bootstrap-curl-options OPTIONS",
+              :description => "Add options to curl when install chef-client",
+              :proc        => Proc.new { |co| Chef::Config[:knife][:bootstrap_curl_options] = co }
+
+            option :auth_timeout,
+              :long => "--auth-timeout MINUTES",
+              :description => "The maximum time in minutes to wait to for authentication over the transport to the node to succeed. The default value is 25 minutes.",
+              :default => 25
+
+            option :node_ssl_verify_mode,
+              :long        => "--node-ssl-verify-mode [peer|none]",
+              :description => "Whether or not to verify the SSL cert for all HTTPS requests.",
+              :proc        => Proc.new { |v|
+                valid_values = ["none", "peer"]
+                unless valid_values.include?(v)
+                  raise "Invalid value '#{v}' for --node-ssl-verify-mode. Valid values are: #{valid_values.join(", ")}"
+                end
+              }
+
+            option :node_verify_api_cert,
+              :long        => "--[no-]node-verify-api-cert",
+              :description => "Verify the SSL cert for HTTPS requests to the Chef server API.",
+              :boolean     => true
+
             option :bootstrap_install_command,
               :long        => "--bootstrap-install-command COMMANDS",
               :description => "Custom command to install chef-client",
@@ -174,15 +210,25 @@ class Chef
               :description => "Add options to wget when installing chef-client",
               :proc        => Proc.new { |wo| Chef::Config[:knife][:bootstrap_wget_options] = wo }
 
-            option :bootstrap_curl_options,
-              :long        => "--bootstrap-curl-options OPTIONS",
-              :description => "Add options to curl when install chef-client",
-              :proc        => Proc.new { |co| Chef::Config[:knife][:bootstrap_curl_options] = co }
+            option :bootstrap_vault_file,
+              :long        => '--bootstrap-vault-file VAULT_FILE',
+              :description => 'A JSON file with a list of vault(s) and item(s) to be updated'
 
-            option :auth_timeout,
-              :long => "--auth-timeout MINUTES",
-              :description => "The maximum time in minutes to wait to for authentication over the transport to the node to succeed. The default value is 25 minutes.",
-              :default => 25
+            option :bootstrap_vault_json,
+              :long        => '--bootstrap-vault-json VAULT_JSON',
+              :description => 'A JSON string with the vault(s) and item(s) to be updated'
+
+            option :bootstrap_vault_item,
+              :long        => '--bootstrap-vault-item VAULT_ITEM',
+              :description => 'A single vault and item to update as "vault:item"',
+              :proc        => Proc.new { |i|
+                (vault, item) = i.split(/:/)
+                Chef::Config[:knife][:bootstrap_vault_item] ||= {}
+                Chef::Config[:knife][:bootstrap_vault_item][vault] ||= []
+                Chef::Config[:knife][:bootstrap_vault_item][vault].push(item)
+                Chef::Config[:knife][:bootstrap_vault_item]
+              }
+
           end
         end
       end # module ends

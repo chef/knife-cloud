@@ -1,0 +1,18 @@
+source "https://rubygems.org"
+
+# Specify your gem's dependencies in knife-cloud.gemspec
+gemspec
+
+if ENV['CHEF_VERSION'] == 'master'
+  gem 'chef', github: 'chef/chef'
+elsif ENV['CHEF_VERSION'] == '< 12'
+  gem 'ohai', '7.4.1'
+  gem 'chef', ENV['CHEF_VERSION']
+else
+  gem 'chef', ENV['CHEF_VERSION']
+end
+
+group :development do
+  gem 'rake'
+  gem 'knife-windows'
+end
