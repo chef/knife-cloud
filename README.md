@@ -405,7 +405,7 @@ Example -
 
 ## License
 
-Copyright:: Copyright (c) 2015 Chef Software, Inc.
+Copyright:: Copyright (c) 2014-2015 Chef Software, Inc.
 
 License:: Apache License, Version 2.0
 
