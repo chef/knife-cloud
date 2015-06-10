@@ -1,31 +1,32 @@
-Knife Cloud
-===============
+# Knife Cloud
 
 [![Build Status](http://img.shields.io/travis/opscode/knife-cloud.svg)][travis]
 [![Code Climate](http://img.shields.io/codeclimate/github/opscode/knife-cloud.svg)][codeclimate]
 
-[travis]: https://travis-ci.org/opscode/knife-cloud
-[codeclimate]: https://codeclimate.com/github/opscode/knife-cloud
+[travis]: https://travis-ci.org/chef/knife-cloud
+[codeclimate]: https://codeclimate.com/github/chef/knife-cloud
 
 ## Description
 
-Knife-cloud is a library for implementing knife plugins that integrate cloud
-infrastructure with Chef. For more information about knife and Chef visit https://getchef.com/chef.
+`knife-cloud` is a library for implementing knife plugins that integrate cloud
+infrastructure with Chef. For more information about knife and Chef visit https://chef.io/chef.
 
 ## Purpose
 
-The knife-cloud library has been designed to integrate the common tasks of all knife plugins. As a developer of a knife plugin, you will not have to worry about writing generic code in your plugin, eg: the Chef bootstrap code or SSH / WinRM connection code. 
+The knife-cloud library has been designed to integrate the common tasks of all knife plugins. As a developer of a knife plugin, you will not have to worry about writing generic code in your plugin, eg: the Chef bootstrap code or SSH / WinRM connection code.
 
 ## Installation
 
 This library is distributed as a Ruby Gem. To install it, run:
 
     $ gem install knife-cloud
+    $ # OR
+    $ chef exec gem install knife-cloud
 
 Depending on your system's configuration, you may need to run this command with root privileges.
 Alternatively, you can build the gem from the knife-cloud source code.
 
-	$ git clone https://github.com/opscode/knife-cloud
+	$ git clone https://github.com/chef/knife-cloud
 	$ cd knife-cloud
 	$ rake gem
 	$ gem install knife-cloud-x.y.z.gem
@@ -33,7 +34,7 @@ Alternatively, you can build the gem from the knife-cloud source code.
 ## Writing your custom plugin
 
 General documentation of how to develop a knife plugin can be found in
-[Chef documentation](http://docs.getchef.com/plugin_knife_custom.html). Use of
+[Chef documentation](http://docs.chef.io/plugin_knife_custom.html). Use of
 the `knife-cloud` gem to implement the plugin automates many aspects of the
 process.
 
@@ -97,7 +98,7 @@ Create a new ruby project, say knife-myplugin. Its code structure will look like
 				myplugin_server_delete.rb
 				myplugin_server_list.rb
 				myplugin_flavor_list.rb
-	
+
 ### Service
 
 - myplugin_service.rb
@@ -113,7 +114,7 @@ Example Code:
 	  class Knife
 		class Cloud
 		  class MypluginService < FogService
-		  
+
 			def initialize(options = {})
 				# TODO - Add cloud specific auth params to be passed to fog connection. See knife-openstack for real life example.
 				super(options.merge({
@@ -184,7 +185,7 @@ This class will inherit from the Chef::Knife::Cloud::ServerCreateCommand class.
 			include MypluginServiceOptions
 
 			banner "knife myplugin server create (options)"
-			
+
 		  end
 		end
 	  end
@@ -269,7 +270,7 @@ Following is the code template for the above methods
         def validate_params!
           super
           errors = []
-          
+
           # TODO - Add your validation here for any create server parameters and populate errors [] with error message strings.
 
           # errors << "your error message" if some_param_undefined
@@ -277,7 +278,7 @@ Following is the code template for the above methods
           error_message = ""
           raise CloudExceptions::ValidationError, error_message if errors.each{|e| ui.error(e); error_message = "#{error_message} #{e}."}.any?
         end
-	
+
 ### Server Delete Command
 
 - myplugin_server_delete.rb
@@ -404,7 +405,7 @@ Example -
 
 ## License
 
-Copyright:: Copyright (c) 2014 Chef Software, Inc.
+Copyright:: Copyright (c) 2014-2015 Chef Software, Inc.
 
 License:: Apache License, Version 2.0
 
