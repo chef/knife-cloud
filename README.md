@@ -1,9 +1,8 @@
 # Knife Cloud
 
-[![Build Status](http://img.shields.io/travis/opscode/knife-cloud.svg)][travis]
+[![Build Status](https://travis-ci.org/chef/knife-cloud.svg?branch=master)](https://travis-ci.org/chef/knife-cloud)
 [![Code Climate](http://img.shields.io/codeclimate/github/opscode/knife-cloud.svg)][codeclimate]
 
-[travis]: https://travis-ci.org/chef/knife-cloud
 [codeclimate]: https://codeclimate.com/github/chef/knife-cloud
 
 ## Description
