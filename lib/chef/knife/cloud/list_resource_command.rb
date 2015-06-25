@@ -53,7 +53,7 @@ class Chef
           end
           false
         end
-        
+
         # Derived class can override this to add more functionality.
         def get_resource_col_val(resource)
           resource_filtered = false
@@ -70,24 +70,29 @@ class Chef
 
         # When @columns_with_info is nil display all
         def list(resources)
-          # display column wise only if @columns_with_info is specified, else as a json for readable display.
-          begin
-            resource_list = @columns_with_info.map { |col_info| ui.color(col_info[:label], :bold) } if @columns_with_info.length > 0
-            resources.sort_by{|x| x.send(@sort_by_field).downcase }.each do |resource|
-              if @columns_with_info.length > 0
-                list = get_resource_col_val(resource)
-                resource_list.concat(list) unless list.nil?
-              else
-                puts resource.to_json
-                puts "\n"
+          if(config[:format] == "summary")
+            # display column wise only if @columns_with_info is specified, else as a json for readable display.
+            begin
+              resource_list = @columns_with_info.map { |col_info| ui.color(col_info[:label], :bold) } if @columns_with_info.length > 0
+              resources.sort_by{|x| x.send(@sort_by_field).downcase }.each do |resource|
+                if @columns_with_info.length > 0
+                  list = get_resource_col_val(resource)
+                  resource_list.concat(list) unless list.nil?
+                else
+                  puts resource.to_json
+                  puts "\n"
+                end
               end
+
+            rescue => e
+              ui.fatal("Unknown resource error : #{e.message}")
+              raise e
             end
 
-          rescue => e
-            ui.fatal("Unknown resource error : #{e.message}")
-            raise e
+            puts ui.list(resource_list, :uneven_columns_across, @columns_with_info.length) if @columns_with_info.length > 0
+          else
+            output(format_for_display(resources))
           end
-          puts ui.list(resource_list, :uneven_columns_across, @columns_with_info.length) if @columns_with_info.length > 0
         end
 
       end # class ResourceListCommand

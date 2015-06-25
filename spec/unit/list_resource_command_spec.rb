@@ -24,7 +24,7 @@ require 'excon/errors'
 
 describe Chef::Knife::Cloud::ResourceListCommand do
   it_behaves_like Chef::Knife::Cloud::Command, Chef::Knife::Cloud::ResourceListCommand.new
-  
+
   let (:instance) {Chef::Knife::Cloud::ResourceListCommand.new}
   let (:resources) {[ TestResource.new({:id => "resource-1", :os => "ubuntu"}),
                    TestResource.new({:id => "resource-2", :os => "windows"})]}
@@ -44,6 +44,7 @@ describe Chef::Knife::Cloud::ResourceListCommand do
       let(:test_resource) { "test" }
       before(:each) do
         expect(instance.ui).to receive(:fatal)
+        instance.config[:format] = "summary"
       end
 
       it "handle generic exception" do
@@ -63,6 +64,7 @@ describe Chef::Knife::Cloud::ResourceListCommand do
       allow(instance).to receive(:query_resource).and_return(resources)
       allow(instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
       allow(instance).to receive(:puts)
+      instance.config[:format] = "summary"
     end
 
     it "lists resources in json format when columns_with_info parameter is empty" do
@@ -88,6 +90,7 @@ describe Chef::Knife::Cloud::ResourceListCommand do
         allow(@derived_instance).to receive(:query_resource).and_return(resources)
         allow(@derived_instance).to receive(:puts)
         allow(@derived_instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
+        @derived_instance.config[:format] = "summary"
       end
 
       it "lists all resources" do
@@ -125,6 +128,7 @@ describe Chef::Knife::Cloud::ResourceListCommand do
         allow(@derived_instance).to receive(:query_resource).and_return(resources)
         allow(@derived_instance).to receive(:puts)
         allow(@derived_instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
+        @derived_instance.config[:format] = "summary"
       end
 
       it "lists formatted list of resources" do
