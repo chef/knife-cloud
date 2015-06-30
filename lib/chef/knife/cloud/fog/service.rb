@@ -6,6 +6,7 @@
 
 require 'chef/knife/cloud/service'
 require 'chef/knife/cloud/exceptions'
+require 'pry'
 
 class Chef
   class Knife
@@ -138,10 +139,47 @@ class Chef
 
         def list_resource_configurations
           begin
-            flavors = connection.flavors.all
+            connection.flavors.all
           rescue Excon::Errors::BadRequest => e
             handle_excon_exception(CloudExceptions::CloudAPIException, e)
           end
+        end
+
+        def list_addresses
+          connection.addresses.all
+        rescue Excon::Errors::BadRequest => e
+          handle_excon_exception(CloudExceptions::CloudAPIException, e)
+        end
+
+        def delete_address(address_id)
+          response = get_address(address_id)
+          msg_pair('IP address', get_address_ip(response))
+          puts "\n"
+          ui.confirm('Do you really want to delete this ip')
+          connection.release_address(address_id)
+        rescue Fog::Compute::OpenStack::NotFound
+          error_message = "IP address with id #{address_id} not found."
+          ui.error(error_message)
+        rescue Excon::Errors::BadRequest => e
+          handle_excon_exception(CloudExceptions::ServerDeleteError, e)
+        end
+
+        def get_address_ip(response)
+          if response.body['floating_ip']
+            response.body['floating_ip']['ip']
+          end
+        end
+
+        def get_address(address_id)
+          connection.get_address(address_id)
+        rescue Excon::Errors::BadRequest => e
+          handle_excon_exception(CloudExceptions::KnifeCloudError, e)
+        end
+
+        def allocate_address
+          connectin.allocate_address
+        rescue Excon::Errors::BadRequest => e
+          handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         end
 
         def delete_server_on_failure(server = nil)
@@ -158,7 +196,7 @@ class Chef
 
         def get_server(instance_id)
           begin
-            server = connection.servers.get(instance_id)
+            connection.servers.get(instance_id)
           rescue Excon::Errors::BadRequest => e
             handle_excon_exception(CloudExceptions::KnifeCloudError, e)
           end
