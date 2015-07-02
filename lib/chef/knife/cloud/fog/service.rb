@@ -151,7 +151,7 @@ class Chef
           handle_excon_exception(CloudExceptions::CloudAPIException, e)
         end
 
-        def delete_address(address_id)
+        def release_address(address_id)
           response = get_address(address_id)
           msg_pair('IP address', get_address_ip(response))
           puts "\n"
@@ -177,7 +177,15 @@ class Chef
         end
 
         def allocate_address
-          connectin.allocate_address
+          connection.allocate_address.body
+        rescue Excon::Errors::Forbidden => e
+          error_message = if e.response
+                        response = Chef::JSONCompat.from_json(e.response.body)
+                        "(#{response['forbidden']['code']}): #{response['forbidden']['message']}"
+                      else
+                        "Unknown server error : #{e.message}"
+                      end
+          ui.fatal(error_message)
         rescue Excon::Errors::BadRequest => e
           handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         end
@@ -231,7 +239,6 @@ class Chef
           image_info = connection.images.get(image)
           !image_info.nil? ? image_info.platform == 'windows' : false
         end
-
       end
     end
   end
