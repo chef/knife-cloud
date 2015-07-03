@@ -154,7 +154,7 @@ class Chef
         def release_address(address_id)
           response = get_address(address_id)
           msg_pair('IP address', get_address_ip(response))
-          puts "\n"
+          puts '\n'
           ui.confirm('Do you really want to delete this ip')
           connection.release_address(address_id)
         rescue Fog::Compute::OpenStack::NotFound
@@ -180,12 +180,18 @@ class Chef
           connection.allocate_address.body
         rescue Excon::Errors::Forbidden => e
           error_message = if e.response
-                        response = Chef::JSONCompat.from_json(e.response.body)
-                        "(#{response['forbidden']['code']}): #{response['forbidden']['message']}"
-                      else
-                        "Unknown server error : #{e.message}"
-                      end
+                            response = Chef::JSONCompat.from_json(e.response.body)
+                            "(#{response['forbidden']['code']}): #{response['forbidden']['message']}"
+                          else
+                            "Unknown server error : #{e.message}"
+                          end
           ui.fatal(error_message)
+        rescue Excon::Errors::BadRequest => e
+          handle_excon_exception(CloudExceptions::KnifeCloudError, e)
+        end
+
+        def associate_address(*args)
+          connection.associate_address(*args)
         rescue Excon::Errors::BadRequest => e
           handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         end
