@@ -6,7 +6,6 @@
 
 require 'chef/knife/cloud/service'
 require 'chef/knife/cloud/exceptions'
-require 'pry'
 
 class Chef
   class Knife
@@ -129,7 +128,7 @@ class Chef
         def handle_excon_exception(exception_class, e)
           error_message = if e.response
                             response = Chef::JSONCompat.from_json(e.response.body)
-                            "Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}"
+                            "Unknown server error (#{response[response.keys[0]]['code']}): #{response[response.keys[0]]['message']}"
                           else
                             "Unknown server error : #{e.message}"
                           end
@@ -158,16 +157,14 @@ class Chef
           ui.confirm('Do you really want to delete this ip')
           connection.release_address(address_id)
         rescue Fog::Compute::OpenStack::NotFound
-          error_message = "IP address with id #{address_id} not found."
+          error_message = 'Floating ip not found.'
           ui.error(error_message)
         rescue Excon::Errors::BadRequest => e
           handle_excon_exception(CloudExceptions::ServerDeleteError, e)
         end
 
         def get_address_ip(response)
-          if response.body['floating_ip']
-            response.body['floating_ip']['ip']
-          end
+          response.body['floating_ip']['ip'] if response.body['floating_ip']
         end
 
         def get_address(address_id)
@@ -179,13 +176,7 @@ class Chef
         def allocate_address
           connection.allocate_address.body
         rescue Excon::Errors::Forbidden => e
-          error_message = if e.response
-                            response = Chef::JSONCompat.from_json(e.response.body)
-                            "(#{response['forbidden']['code']}): #{response['forbidden']['message']}"
-                          else
-                            "Unknown server error : #{e.message}"
-                          end
-          ui.fatal(error_message)
+          handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         rescue Excon::Errors::BadRequest => e
           handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         end
@@ -196,8 +187,19 @@ class Chef
           handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         end
 
+        def disassociate_address(*args)
+          connection.disassociate_address(*args)
+        rescue Fog::Compute::OpenStack::NotFound
+          error_message = 'Floating ip not found.'
+          ui.error(error_message)
+        rescue Excon::Errors::UnprocessableEntity => e
+          handle_excon_exception(CloudExceptions::KnifeCloudError, e)
+        rescue Excon::Errors::BadRequest => e
+          handle_excon_exception(CloudExceptions::KnifeCloudError, e)
+        end
+
         def delete_server_on_failure(server = nil)
-          server.destroy if ! server.nil?
+          server.destroy unless server.nil?
         end
 
         def add_api_endpoint
@@ -209,11 +211,9 @@ class Chef
         end
 
         def get_server(instance_id)
-          begin
-            connection.servers.get(instance_id)
-          rescue Excon::Errors::BadRequest => e
-            handle_excon_exception(CloudExceptions::KnifeCloudError, e)
-          end
+          connection.servers.get(instance_id)
+        rescue Excon::Errors::BadRequest => e
+          handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         end
 
         def get_image(name_or_id)
