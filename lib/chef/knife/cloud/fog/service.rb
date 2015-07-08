@@ -174,7 +174,8 @@ class Chef
         end
 
         def allocate_address
-          connection.allocate_address.body
+          response = connection.allocate_address
+          response.body
         rescue Excon::Errors::Forbidden => e
           handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         rescue Excon::Errors::BadRequest => e

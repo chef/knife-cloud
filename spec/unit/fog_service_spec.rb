@@ -143,13 +143,13 @@ describe Chef::Knife::Cloud::FogService do
     end
 
     it 'releases address successfully' do
-      address_id = "test-addres-id"
-      @address = TestResource.new("body" => { "floating_ip" =>
-                                            { "instance_id" => nil,
-                                              "ip" => "127.0.0.1",
-                                              "fixed_ip" => nil,
-                                              "id"=> "test-addres-id",
-                                              "pool"=> "public-110"
+      address_id = 'test-addres-id'
+      @address = TestResource.new('body' => { 'floating_ip' =>
+                                            { 'instance_id' => nil,
+                                              'ip' => '127.0.0.1',
+                                              'fixed_ip' => nil,
+                                              'id' => 'test-addres-id',
+                                              'pool' => 'public-110'
                                             }
                                           })
       instance.ui = double
