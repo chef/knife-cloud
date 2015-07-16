@@ -31,6 +31,7 @@ class Chef
         class ServerShowError < KnifeCloudError; end
         class ChefServerError < KnifeCloudError; end
         class NetworkNotFoundError < KnifeCloudError; end
+        class NotFoundError < KnifeCloudError; end
       end
     end
   end

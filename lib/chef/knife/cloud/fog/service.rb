@@ -156,11 +156,12 @@ class Chef
           puts '\n'
           ui.confirm('Do you really want to delete this ip')
           connection.release_address(address_id)
-        rescue Fog::Compute::OpenStack::NotFound
+        rescue Fog::Compute::OpenStack::NotFound => e
           error_message = 'Floating ip not found.'
           ui.error(error_message)
+          raise CloudExceptions::NotFoundError, "#{e.message}"
         rescue Excon::Errors::BadRequest => e
-          handle_excon_exception(CloudExceptions::ServerDeleteError, e)
+          handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         end
 
         def get_address_ip(response)
@@ -176,6 +177,10 @@ class Chef
         def allocate_address
           response = connection.allocate_address
           response.body
+        rescue Fog::Compute::OpenStack::NotFound => e
+          error_message = 'Floating ip pool not found.'
+          ui.error(error_message)
+          raise CloudExceptions::NotFoundError, "#{e.message}"
         rescue Excon::Errors::Forbidden => e
           handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         rescue Excon::Errors::BadRequest => e
