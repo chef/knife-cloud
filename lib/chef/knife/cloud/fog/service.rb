@@ -174,8 +174,8 @@ class Chef
           handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         end
 
-        def allocate_address
-          response = connection.allocate_address
+        def allocate_address(pool = nil)
+          response = connection.allocate_address(pool)
           response.body
         rescue Fog::Compute::OpenStack::NotFound => e
           error_message = 'Floating ip pool not found.'
