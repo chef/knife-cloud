@@ -153,7 +153,7 @@ class Chef
         def release_address(address_id)
           response = get_address(address_id)
           msg_pair('IP address', get_address_ip(response))
-          puts '\n'
+          puts
           ui.confirm('Do you really want to delete this ip')
           connection.release_address(address_id)
         rescue Fog::Compute::OpenStack::NotFound => e
