@@ -128,7 +128,7 @@ class Chef
         def handle_excon_exception(exception_class, e)
           error_message = if e.response
                             response = Chef::JSONCompat.from_json(e.response.body)
-                            "Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}"
+                            "Unknown server error (#{response[response.keys[0]]['code']}): #{response[response.keys[0]]['message']}"
                           else
                             "Unknown server error : #{e.message}"
                           end
@@ -138,14 +138,74 @@ class Chef
 
         def list_resource_configurations
           begin
-            flavors = connection.flavors.all
+            connection.flavors.all
           rescue Excon::Errors::BadRequest => e
             handle_excon_exception(CloudExceptions::CloudAPIException, e)
           end
         end
 
+        def list_addresses
+          connection.addresses.all
+        rescue Excon::Errors::BadRequest => e
+          handle_excon_exception(CloudExceptions::CloudAPIException, e)
+        end
+
+        def release_address(address_id)
+          response = get_address(address_id)
+          msg_pair('IP address', get_address_ip(response))
+          puts '\n'
+          ui.confirm('Do you really want to delete this ip')
+          connection.release_address(address_id)
+        rescue Fog::Compute::OpenStack::NotFound => e
+          error_message = 'Floating ip not found.'
+          ui.error(error_message)
+          raise CloudExceptions::NotFoundError, "#{e.message}"
+        rescue Excon::Errors::BadRequest => e
+          handle_excon_exception(CloudExceptions::KnifeCloudError, e)
+        end
+
+        def get_address_ip(response)
+          response.body['floating_ip']['ip'] if response.body['floating_ip']
+        end
+
+        def get_address(address_id)
+          connection.get_address(address_id)
+        rescue Excon::Errors::BadRequest => e
+          handle_excon_exception(CloudExceptions::KnifeCloudError, e)
+        end
+
+        def allocate_address(pool = nil)
+          response = connection.allocate_address(pool)
+          response.body
+        rescue Fog::Compute::OpenStack::NotFound => e
+          error_message = 'Floating ip pool not found.'
+          ui.error(error_message)
+          raise CloudExceptions::NotFoundError, "#{e.message}"
+        rescue Excon::Errors::Forbidden => e
+          handle_excon_exception(CloudExceptions::KnifeCloudError, e)
+        rescue Excon::Errors::BadRequest => e
+          handle_excon_exception(CloudExceptions::KnifeCloudError, e)
+        end
+
+        def associate_address(*args)
+          connection.associate_address(*args)
+        rescue Excon::Errors::BadRequest => e
+          handle_excon_exception(CloudExceptions::KnifeCloudError, e)
+        end
+
+        def disassociate_address(*args)
+          connection.disassociate_address(*args)
+        rescue Fog::Compute::OpenStack::NotFound
+          error_message = 'Floating ip not found.'
+          ui.error(error_message)
+        rescue Excon::Errors::UnprocessableEntity => e
+          handle_excon_exception(CloudExceptions::KnifeCloudError, e)
+        rescue Excon::Errors::BadRequest => e
+          handle_excon_exception(CloudExceptions::KnifeCloudError, e)
+        end
+
         def delete_server_on_failure(server = nil)
-          server.destroy if ! server.nil?
+          server.destroy unless server.nil?
         end
 
         def add_api_endpoint
@@ -157,11 +217,9 @@ class Chef
         end
 
         def get_server(instance_id)
-          begin
-            server = connection.servers.get(instance_id)
-          rescue Excon::Errors::BadRequest => e
-            handle_excon_exception(CloudExceptions::KnifeCloudError, e)
-          end
+          connection.servers.get(instance_id)
+        rescue Excon::Errors::BadRequest => e
+          handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         end
 
         def get_image(name_or_id)
@@ -193,7 +251,6 @@ class Chef
           image_info = connection.images.get(image)
           !image_info.nil? ? image_info.platform == 'windows' : false
         end
-
       end
     end
   end

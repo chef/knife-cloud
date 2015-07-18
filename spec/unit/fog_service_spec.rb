@@ -82,7 +82,7 @@ describe Chef::Knife::Cloud::FogService do
 
     it "sets the provided attributes with supplied values" do
       expect(@server_def[:state] == "Inactive").to be true
-    end 
+    end
   end
 
   ["servers", "images", "networks"].each do |resource_type|
@@ -93,9 +93,9 @@ describe Chef::Knife::Cloud::FogService do
                   :connection
                 end
     context "list #{resource_type}" do
-      
+
       it "lists #{resource_type} of the current cloud service provider account." do
-        allow(instance).to receive_message_chain(resource.to_sym, "#{resource_type}".to_sym, :all) 
+        allow(instance).to receive_message_chain(resource.to_sym, "#{resource_type}".to_sym, :all)
         instance.method("list_#{resource_type}").call
       end
 
@@ -133,6 +133,31 @@ describe Chef::Knife::Cloud::FogService do
       expect(instance).to receive(:get_server).and_return(nil)
       expect(instance.ui).to receive(:error).with(error_message)
       expect { instance.delete_server(server_name) }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServerDeleteError, error_message)
+    end
+  end
+
+  context '#release_address' do
+    before(:each) do
+      allow(instance).to receive(:add_api_endpoint)
+      allow(Fog::Compute).to receive(:new).with({:provider => 'Any Cloud Provider'})
+    end
+
+    it 'releases address successfully' do
+      address_id = 'test-addres-id'
+      @address = TestResource.new('body' => { 'floating_ip' =>
+                                            { 'instance_id' => nil,
+                                              'ip' => '127.0.0.1',
+                                              'fixed_ip' => nil,
+                                              'id' => 'test-addres-id',
+                                              'pool' => 'public-110'
+                                            }
+                                          })
+      instance.ui = double
+      expect(instance).to receive(:get_address).and_return(@address)
+      expect(instance).to receive(:msg_pair).with('IP address', '127.0.0.1')
+      expect(instance.ui).to receive(:confirm)
+      allow(instance.connection).to receive(:release_address)
+      instance.release_address(address_id)
     end
   end
 end
