@@ -43,6 +43,7 @@ class Chef
           bootstrap.config[:winrm_transport] = @config[:winrm_transport]
           bootstrap.config[:winrm_port] = @config[:winrm_port]
           bootstrap.config[:auth_timeout] =  @config[:auth_timeout]
+          bootstrap.config[:winrm_ssl_verify_mode] = @config[:winrm_ssl_verify_mode]
           super
         end
 
