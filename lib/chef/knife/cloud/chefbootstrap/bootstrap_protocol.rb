@@ -73,6 +73,9 @@ class Chef
           bootstrap.config[:bootstrap_vault_json] = locate_config_value(:bootstrap_vault_json)
           bootstrap.config[:bootstrap_vault_item] = locate_config_value(:bootstrap_vault_item)
           bootstrap.config[:use_sudo_password] = locate_config_value(:use_sudo_password)
+          bootstrap.config[:msi_url] = locate_config_value(:msi_url)
+          bootstrap.config[:install_as_service] = locate_config_value(:install_as_service)
+          bootstrap.config[:session_timeout] = locate_config_value(:session_timeout)
         end
 
       end

@@ -55,6 +55,7 @@ describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
       @config[:environment] = "_default"
       @config[:winrm_user] = "testuser"
       @config[:auth_timeout] = "100"
+      @config[:winrm_ssl_verify_mode] = "verify_none"
       @instance.bootstrap = Chef::Knife::Bootstrap.new
       @instance.init_bootstrap_options
       expect(@instance.bootstrap.name_args).to eq(@config[:bootstrap_ip_address])
@@ -62,6 +63,7 @@ describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
       expect(@instance.bootstrap.config[:environment]).to eq(@config[:environment])
       expect(@instance.bootstrap.config[:winrm_user]).to eq(@config[:winrm_user])
       expect(@instance.bootstrap.config[:auth_timeout]).to eq(@config[:auth_timeout])
+      expect(@instance.bootstrap.config[:winrm_ssl_verify_mode]).to eq(@config[:winrm_ssl_verify_mode])
     end
   end
 

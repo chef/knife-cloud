@@ -66,6 +66,9 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
       @config[:bootstrap_wget_options] = "-e use_proxy=yes -e http://myproxy.com:8080"
       @config[:bootstrap_curl_options] = "--proxy http://myproxy.com:8080"
       @config[:use_sudo_password] = "true"
+      @config[:msi_url] = "https://opscode-omnibus-packages.s3.amazonaws.com/windows/2008r2/x86_64/chef-client-12.3.0-1.msi"
+      @config[:session_timeout] = "42"
+      @config[:install_as_service] = "true"
       allow(@config).to receive(:locate_config_value).and_return({})
       @instance.bootstrap = Chef::Knife::Bootstrap.new
       @instance.init_bootstrap_options
@@ -87,6 +90,9 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
       expect(@instance.bootstrap.config[:bootstrap_wget_options]).to eq(@config[:bootstrap_wget_options])
       expect(@instance.bootstrap.config[:bootstrap_curl_options]).to eq(@config[:bootstrap_curl_options])
       expect(@instance.bootstrap.config[:use_sudo_password]).to eq(@config[:use_sudo_password])
+      expect(@instance.bootstrap.config[:msi_url]).to eq(@config[:msi_url])
+      expect(@instance.bootstrap.config[:install_as_service]).to eq(@config[:install_as_service])
+      expect(@instance.bootstrap.config[:session_timeout]).to eq(@config[:session_timeout])
     end
   end
 end
