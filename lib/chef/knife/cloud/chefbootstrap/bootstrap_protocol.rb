@@ -46,7 +46,7 @@ class Chef
 
         def init_bootstrap_options
           # set the command bootstrap options.
-          bootstrap.name_args = locate_config_value(:bootstrap_ip_address)
+          bootstrap.name_args << locate_config_value(:bootstrap_ip_address)
           bootstrap.config[:chef_node_name] = locate_config_value(:chef_node_name)
           bootstrap.config[:run_list] = locate_config_value(:run_list)
           bootstrap.config[:prerelease] = locate_config_value(:prerelease)

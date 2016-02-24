@@ -72,7 +72,7 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
       allow(@config).to receive(:locate_config_value).and_return({})
       @instance.bootstrap = Chef::Knife::Bootstrap.new
       @instance.init_bootstrap_options
-      expect(@instance.bootstrap.name_args).to eq(@config[:bootstrap_ip_address])
+      expect(@instance.bootstrap.name_args).to eq([@config[:bootstrap_ip_address]])
       expect(@instance.bootstrap.config[:chef_node_name]).to eq(@config[:chef_node_name])
       expect(@instance.bootstrap.config[:environment]).to eq(@config[:environment])
       expect(@instance.bootstrap.config[:first_boot_attributes]).to eq(@config[:first_boot_attributes])

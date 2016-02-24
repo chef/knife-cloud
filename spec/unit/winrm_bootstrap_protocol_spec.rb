@@ -58,7 +58,7 @@ describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
       @config[:winrm_ssl_verify_mode] = "verify_none"
       @instance.bootstrap = Chef::Knife::Bootstrap.new
       @instance.init_bootstrap_options
-      expect(@instance.bootstrap.name_args).to eq(@config[:bootstrap_ip_address])
+      expect(@instance.bootstrap.name_args).to eq([@config[:bootstrap_ip_address]])
       expect(@instance.bootstrap.config[:chef_node_name]).to eq(@config[:chef_node_name])
       expect(@instance.bootstrap.config[:environment]).to eq(@config[:environment])
       expect(@instance.bootstrap.config[:winrm_user]).to eq(@config[:winrm_user])
