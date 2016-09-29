@@ -20,7 +20,7 @@
 require 'spec_helper'
 require 'chef/knife/cloud/list_resource_command'
 require 'support/shared_examples_for_command'
-require 'excon/errors'
+require 'excon/error'
 
 describe Chef::Knife::Cloud::ResourceListCommand do
   it_behaves_like Chef::Knife::Cloud::Command, Chef::Knife::Cloud::ResourceListCommand.new
@@ -52,9 +52,9 @@ describe Chef::Knife::Cloud::ResourceListCommand do
         expect {instance.list(test_resource)}.to raise_error(StandardError)
       end
 
-      it "handle Excon::Errors::BadRequest exception." do
-        allow(test_resource).to receive(:sort_by).and_raise Excon::Errors::BadRequest.new("excon error message")
-        expect {instance.list(test_resource)}.to raise_error(Excon::Errors::BadRequest)
+      it "handle Excon::Error::BadRequest exception." do
+        allow(test_resource).to receive(:sort_by).and_raise Excon::Error::BadRequest.new("excon error message")
+        expect {instance.list(test_resource)}.to raise_error(Excon::Error::BadRequest)
       end
     end
   end

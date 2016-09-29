@@ -17,10 +17,12 @@ Gem::Specification.new do |s|
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
   s.require_paths = %w(lib spec)
+  s.required_ruby_version = ">= 2.2.2"
 
-  s.add_dependency 'knife-windows', '>= 0.5.14'
-  s.add_dependency 'chef', '>= 0.10.10'
+  s.add_dependency 'knife-windows', '>= 1.0'
+  s.add_dependency 'chef',  '>= 12.0'
   s.add_dependency 'mixlib-shellout'
+  s.add_dependency 'excon', '>=  0.50' # excon 0.50 renamed the errors class and required updating rescues
 
-  %w(rspec-core rspec-expectations rspec-mocks rspec_junit_formatter fog rubocop).each { |gem| s.add_development_dependency gem }
+  %w(rspec-core rspec-expectations rspec-mocks rspec_junit_formatter fog chefstyle).each { |gem| s.add_development_dependency gem }
 end

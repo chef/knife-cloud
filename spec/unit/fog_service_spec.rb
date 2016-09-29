@@ -52,12 +52,12 @@ describe Chef::Knife::Cloud::FogService do
       end
 
       it "handles Unauthorized exception." do
-        expect(Fog::Network).to receive(:new).with({:provider => 'Any Cloud Provider'}).and_raise Excon::Errors::Unauthorized.new("Unauthorized")
+        expect(Fog::Network).to receive(:new).with({:provider => 'Any Cloud Provider'}).and_raise Excon::Error::Unauthorized.new("Unauthorized")
         expect {instance.network}.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServiceConnectionError)
       end
 
       it "handles SocketError or any other connection exception." do
-        socket_error = Excon::Errors::SocketError.new(Exception.new "Mock Error")
+        socket_error = Excon::Error::SocketError.new(Exception.new "Mock Error")
         expect(Fog::Network).to receive(:new).with({:provider => 'Any Cloud Provider'}).and_raise socket_error
         expect {instance.network}.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServiceConnectionError)
       end
@@ -99,10 +99,10 @@ describe Chef::Knife::Cloud::FogService do
         instance.method("list_#{resource_type}").call
       end
 
-      it "handles Excon::Errors::BadRequest exception." do
+      it "handles Excon::Error::BadRequest exception." do
         allow(instance).to receive(:ui).and_return(Object.new)
         allow(instance.ui).to receive(:fatal)
-        allow(instance).to receive_message_chain(resource.to_sym, "#{resource_type}".to_sym, :all).and_raise Excon::Errors::BadRequest.new("Invalid Resource")
+        allow(instance).to receive_message_chain(resource.to_sym, "#{resource_type}".to_sym, :all).and_raise Excon::Error::BadRequest.new("Invalid Resource")
         expect {instance.method("list_#{resource_type}").call}.to raise_error(Chef::Knife::Cloud::CloudExceptions::CloudAPIException)
       end
     end
