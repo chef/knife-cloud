@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'knife-windows', '>= 1.0'
   s.add_dependency 'chef',  '>= 12.0'
   s.add_dependency 'mixlib-shellout'
+  s.add_dependency 'excon', '>=  0.50' # excon 0.50 renamed the errors class and required updating rescues
 
   %w(rspec-core rspec-expectations rspec-mocks rspec_junit_formatter fog chefstyle).each { |gem| s.add_development_dependency gem }
 end

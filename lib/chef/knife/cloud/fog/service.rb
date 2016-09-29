@@ -33,11 +33,11 @@ class Chef
           add_api_endpoint
           @connection ||= begin
             connection  = Fog::Compute.new(@auth_params)
-                          rescue Excon::Errors::Unauthorized => e
+                          rescue Excon::Error::Unauthorized => e
                             error_message = "Connection failure, please check your username and password."
                             ui.fatal(error_message)
                             raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
-                          rescue Excon::Errors::SocketError => e
+                          rescue Excon::Error::SocketError => e
                             error_message = "Connection failure, please check your authentication URL."
                             ui.fatal(error_message)
                             raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
@@ -47,11 +47,11 @@ class Chef
         def network
           @network ||= begin
             network = Fog::Network.new(@auth_params)
-                      rescue Excon::Errors::Unauthorized => e
+                      rescue Excon::Error::Unauthorized => e
                         error_message = "Connection failure, please check your username and password."
                         ui.fatal(error_message)
                         raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
-                      rescue Excon::Errors::SocketError => e
+                      rescue Excon::Error::SocketError => e
                         error_message = "Connection failure, please check your authentication URL."
                         ui.fatal(error_message)
                         raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
@@ -67,7 +67,7 @@ class Chef
           begin
             add_custom_attributes(options[:server_def])
             server = connection.servers.create(options[:server_def])
-          rescue Excon::Errors::BadRequest => e
+          rescue Excon::Error::BadRequest => e
             response = Chef::JSONCompat.from_json(e.response.body)
             if response['badRequest']['code'] == 400
               message = "Bad request (400): #{response['badRequest']['message']}"
@@ -105,7 +105,7 @@ class Chef
             error_message = "Could not locate server '#{server_name}'."
             ui.error(error_message)
             raise CloudExceptions::ServerDeleteError, error_message
-          rescue Excon::Errors::BadRequest => e
+          rescue Excon::Error::BadRequest => e
             handle_excon_exception(CloudExceptions::ServerDeleteError, e)
           end
         end
@@ -119,7 +119,7 @@ class Chef
               else
                 connection.method(resource_type).call.all
               end
-            rescue Excon::Errors::BadRequest => e
+            rescue Excon::Error::BadRequest => e
               handle_excon_exception(CloudExceptions::CloudAPIException, e)
             end
           end
@@ -139,14 +139,14 @@ class Chef
         def list_resource_configurations
           begin
             connection.flavors.all
-          rescue Excon::Errors::BadRequest => e
+          rescue Excon::Error::BadRequest => e
             handle_excon_exception(CloudExceptions::CloudAPIException, e)
           end
         end
 
         def list_addresses
           connection.addresses.all
-        rescue Excon::Errors::BadRequest => e
+        rescue Excon::Error::BadRequest => e
           handle_excon_exception(CloudExceptions::CloudAPIException, e)
         end
 
@@ -160,7 +160,7 @@ class Chef
           error_message = 'Floating ip not found.'
           ui.error(error_message)
           raise CloudExceptions::NotFoundError, "#{e.message}"
-        rescue Excon::Errors::BadRequest => e
+        rescue Excon::Error::BadRequest => e
           handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         end
 
@@ -170,7 +170,7 @@ class Chef
 
         def get_address(address_id)
           connection.get_address(address_id)
-        rescue Excon::Errors::BadRequest => e
+        rescue Excon::Error::BadRequest => e
           handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         end
 
@@ -181,15 +181,15 @@ class Chef
           error_message = 'Floating ip pool not found.'
           ui.error(error_message)
           raise CloudExceptions::NotFoundError, "#{e.message}"
-        rescue Excon::Errors::Forbidden => e
+        rescue Excon::Error::Forbidden => e
           handle_excon_exception(CloudExceptions::KnifeCloudError, e)
-        rescue Excon::Errors::BadRequest => e
+        rescue Excon::Error::BadRequest => e
           handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         end
 
         def associate_address(*args)
           connection.associate_address(*args)
-        rescue Excon::Errors::BadRequest => e
+        rescue Excon::Error::BadRequest => e
           handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         end
 
@@ -198,9 +198,9 @@ class Chef
         rescue Fog::Compute::OpenStack::NotFound
           error_message = 'Floating ip not found.'
           ui.error(error_message)
-        rescue Excon::Errors::UnprocessableEntity => e
+        rescue Excon::Error::UnprocessableEntity => e
           handle_excon_exception(CloudExceptions::KnifeCloudError, e)
-        rescue Excon::Errors::BadRequest => e
+        rescue Excon::Error::BadRequest => e
           handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         end
 
@@ -218,7 +218,7 @@ class Chef
 
         def get_server(instance_id)
           connection.servers.get(instance_id)
-        rescue Excon::Errors::BadRequest => e
+        rescue Excon::Error::BadRequest => e
           handle_excon_exception(CloudExceptions::KnifeCloudError, e)
         end
 
