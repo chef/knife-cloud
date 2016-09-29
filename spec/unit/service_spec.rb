@@ -31,11 +31,11 @@ describe Chef::Knife::Cloud::Service do
 
  it { expect {instance.delete_server(:server_name)}.to raise_error(Chef::Exceptions::Override, "You must override delete_server in #{instance.to_s}") }
 
- it { expect {instance.delete_server}.to raise_error(ArgumentError, "wrong number of arguments (given 0, expected 1)") }
+ it { expect {instance.delete_server}.to raise_error(ArgumentError) }
 
  it { expect {instance.list_servers}.to raise_error(Chef::Exceptions::Override, "You must override list_servers in #{instance.to_s}") }
 
- it { expect {instance.list_images}.to raise_error(ArgumentError, "wrong number of arguments (given 0, expected 1)") }
+ it { expect {instance.list_images}.to raise_error(ArgumentError) }
 
  it { expect {instance.list_images(:image_filters)}.to raise_error(Chef::Exceptions::Override, "You must override list_images in #{instance.to_s}") }
 
