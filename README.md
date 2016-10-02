@@ -1,9 +1,6 @@
 # Knife Cloud
 
-[![Build Status](https://travis-ci.org/chef/knife-cloud.svg?branch=master)](https://travis-ci.org/chef/knife-cloud)
-[![Code Climate](http://img.shields.io/codeclimate/github/opscode/knife-cloud.svg)][codeclimate]
-
-[codeclimate]: https://codeclimate.com/github/chef/knife-cloud
+[![Gem Version](https://badge.fury.io/rb/knife-cloud.svg)](https://rubygems.org/gems/knife-cloud) [![Build Status](https://travis-ci.org/chef/knife-cloud.svg?branch=master)](https://travis-ci.org/chef/knife-cloud)
 
 ## Description
 
