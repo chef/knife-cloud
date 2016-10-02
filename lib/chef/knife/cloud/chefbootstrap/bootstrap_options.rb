@@ -15,9 +15,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-require 'chef/knife/winrm_base'
-require 'chef/knife/core/bootstrap_context'
-require 'net/ssh/multi'
+require "chef/knife/winrm_base"
+require "chef/knife/core/bootstrap_context"
+require "net/ssh/multi"
 
 class Chef
   class Knife
@@ -29,11 +29,11 @@ class Chef
           includer.class_eval do
 
             deps do
-              require 'chef/json_compat'
-              require 'tempfile'
-              require 'highline'
-              require 'net/ssh'
-              require 'chef/knife/ssh'
+              require "chef/json_compat"
+              require "tempfile"
+              require "highline"
+              require "net/ssh"
+              require "chef/knife/ssh"
               Chef::Knife::Ssh.load_deps
             end
 
@@ -159,7 +159,7 @@ class Chef
               :proc => Proc.new { |h|
                 Chef::Config[:knife][:hints] ||= Hash.new
                 name, path = h.split("=")
-                Chef::Config[:knife][:hints][name] = path ? JSON.parse(::File.read(path)) : Hash.new  }
+                Chef::Config[:knife][:hints][name] = path ? JSON.parse(::File.read(path)) : Hash.new }
 
             option :secret,
               :short => "-s SECRET",
@@ -189,7 +189,7 @@ class Chef
               :long        => "--node-ssl-verify-mode [peer|none]",
               :description => "Whether or not to verify the SSL cert for all HTTPS requests.",
               :proc        => Proc.new { |v|
-                valid_values = ["none", "peer"]
+                valid_values = %w{none peer}
                 unless valid_values.include?(v)
                   raise "Invalid value '#{v}' for --node-ssl-verify-mode. Valid values are: #{valid_values.join(", ")}"
                 end
@@ -211,15 +211,15 @@ class Chef
               :proc        => Proc.new { |wo| Chef::Config[:knife][:bootstrap_wget_options] = wo }
 
             option :bootstrap_vault_file,
-              :long        => '--bootstrap-vault-file VAULT_FILE',
-              :description => 'A JSON file with a list of vault(s) and item(s) to be updated'
+              :long        => "--bootstrap-vault-file VAULT_FILE",
+              :description => "A JSON file with a list of vault(s) and item(s) to be updated"
 
             option :bootstrap_vault_json,
-              :long        => '--bootstrap-vault-json VAULT_JSON',
-              :description => 'A JSON string with the vault(s) and item(s) to be updated'
+              :long        => "--bootstrap-vault-json VAULT_JSON",
+              :description => "A JSON string with the vault(s) and item(s) to be updated"
 
             option :bootstrap_vault_item,
-              :long        => '--bootstrap-vault-item VAULT_ITEM',
+              :long        => "--bootstrap-vault-item VAULT_ITEM",
               :description => 'A single vault and item to update as "vault:item"',
               :proc        => Proc.new { |i|
                 (vault, item) = i.split(/:/)
@@ -232,7 +232,7 @@ class Chef
               :short => "-u URL",
               :long => "--msi-url URL",
               :description => "Location of the Chef Client MSI. The default templates will prefer to download from this location. The MSI will be downloaded from chef.io if not provided.",
-              :default => ''
+              :default => ""
 
             option :install_as_service,
               :long => "--install-as-service",

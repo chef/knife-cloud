@@ -15,23 +15,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'spec_helper'
-require 'chef/knife/cloud/chefbootstrap/bootstrap_protocol'
-require 'chef/knife/bootstrap'
+require "spec_helper"
+require "chef/knife/cloud/chefbootstrap/bootstrap_protocol"
+require "chef/knife/bootstrap"
 
 describe Chef::Knife::Cloud::BootstrapProtocol do
   before do
-    @config = {:bootstrap_protocol => 'ssh'}
+    @config = { :bootstrap_protocol => "ssh" }
     @instance = Chef::Knife::Cloud::BootstrapProtocol.new(@config)
   end
 
   context "BootstrapProtocol initializer" do
     it "asks for compulsory properties while creating @instance" do
-      expect {Chef::Knife::Cloud::BootstrapProtocol.new}.to raise_error(ArgumentError)
+      expect { Chef::Knife::Cloud::BootstrapProtocol.new }.to raise_error(ArgumentError)
     end
 
     it "creating @instance" do
-      expect {Chef::Knife::Cloud::BootstrapProtocol.new(@config)}.to_not raise_error
+      expect { Chef::Knife::Cloud::BootstrapProtocol.new(@config) }.to_not raise_error
       expect(Chef::Knife::Cloud::BootstrapProtocol.new(@config).class).to eq(Chef::Knife::Cloud::BootstrapProtocol)
     end
   end
@@ -57,7 +57,7 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
       @config[:template_file] = "../template_file"
       @config[:bootstrap_vault_file] = "/foo/bar/baz"
       @config[:bootstrap_vault_json] = '{ "vault": "item1" }'
-      @config[:bootstrap_vault_item] = { 'vault' => 'item1' }
+      @config[:bootstrap_vault_item] = { "vault" => "item1" }
       @config[:bootstrap_template] = "../template_file"
       @config[:node_ssl_verify_mode] = "none"
       @config[:node_verify_api_cert] = true

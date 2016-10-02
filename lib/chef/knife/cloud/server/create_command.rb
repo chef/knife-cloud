@@ -14,9 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-require 'chef/knife/cloud/command'
-require 'chef/knife/cloud/exceptions'
-require 'chef/knife/cloud/chefbootstrap/bootstrapper'
+require "chef/knife/cloud/command"
+require "chef/knife/cloud/exceptions"
+require "chef/knife/cloud/chefbootstrap/bootstrapper"
 
 class Chef
   class Knife
@@ -24,7 +24,7 @@ class Chef
       class ServerCreateCommand < Command
         attr_accessor :server, :create_options
 
-        def initialize(argv=[])
+        def initialize(argv = [])
           super argv
           # columns_with_info is array of hash with label, key and attribute extraction callback, ex [{:label => "Label text", :key => 'key', value_callback => callback_method to extract/format the required value}, ...]
           @columns_with_info = []
@@ -37,11 +37,11 @@ class Chef
           # validate ssh_user, ssh_password, identity_file for ssh bootstrap protocol and winrm_password for winrm bootstrap protocol
           errors = []
 
-          if locate_config_value(:bootstrap_protocol) == 'ssh'
+          if locate_config_value(:bootstrap_protocol) == "ssh"
             if locate_config_value(:identity_file).nil? && locate_config_value(:ssh_password).nil?
               errors << "You must provide either Identity file or SSH Password."
             end
-          elsif locate_config_value(:bootstrap_protocol) == 'winrm'
+          elsif locate_config_value(:bootstrap_protocol) == "winrm"
             if locate_config_value(:winrm_password).nil?
               errors << "You must provide Winrm Password."
             end
@@ -49,7 +49,7 @@ class Chef
             errors << "You must provide a valid bootstrap protocol. options [ssh/winrm]. For linux type images, options [ssh]"
           end
           error_message = ""
-          raise CloudExceptions::ValidationError, error_message if errors.each{|e| ui.error(e); error_message = "#{error_message} #{e}."}.any?
+          raise CloudExceptions::ValidationError, error_message if errors.each { |e| ui.error(e); error_message = "#{error_message} #{e}." }.any?
         end
 
         def before_exec_command
@@ -111,7 +111,7 @@ class Chef
 
         # any cloud specific initializations/cleanup we want to do around bootstrap.
         def before_bootstrap
-          ssh_override_winrm if locate_config_value(:bootstrap_protocol) == 'ssh'
+          ssh_override_winrm if locate_config_value(:bootstrap_protocol) == "ssh"
         end
 
         def after_bootstrap
@@ -120,14 +120,14 @@ class Chef
 
         # knife-plugin can override set_default_config to set default config by using their own mechanism.
         def set_default_config
-          config[:image_os_type] = 'windows' if config[:bootstrap_protocol] == 'winrm'
+          config[:image_os_type] = "windows" if config[:bootstrap_protocol] == "winrm"
         end
 
         #generate a random name if chef_node_name is empty
         def get_node_name(chef_node_name, prefix)
           return chef_node_name unless chef_node_name.nil?
           #lazy uuids, 15 chars cause windows has limits
-          chef_node_name = ("#{prefix}-"+rand.to_s.split('.')[1]).slice(0,14)
+          chef_node_name = ("#{prefix}-" + rand.to_s.split(".")[1]).slice(0, 14)
         end
 
         def post_connection_validations
@@ -156,10 +156,9 @@ class Chef
           if locate_config_value(:identity_file).nil? &&
               !locate_config_value(:kerberos_keytab_file).nil?
             config[:identity_file] = locate_config_value(:kerberos_keytab_file)
-          end          
+          end
         end
       end # class ServerCreateCommand
     end
   end
 end
-

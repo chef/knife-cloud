@@ -14,7 +14,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-require 'chef/knife/cloud/chefbootstrap/bootstrap_distribution'
+require "chef/knife/cloud/chefbootstrap/bootstrap_distribution"
 
 class Chef
   class Knife
@@ -23,7 +23,7 @@ class Chef
 
         def initialize(config)
           super
-          config[:distro] =  config[:distro] || "chef-full"
+          config[:distro] = config[:distro] || "chef-full"
         end
       end
     end

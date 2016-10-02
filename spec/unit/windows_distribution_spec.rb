@@ -15,22 +15,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'spec_helper'
-require 'chef/knife/cloud/chefbootstrap/windows_distribution'
+require "spec_helper"
+require "chef/knife/cloud/chefbootstrap/windows_distribution"
 
 describe Chef::Knife::Cloud::WindowsDistribution do
 
   before do
-    @config = {:bootstrap_protocol => 'winrm'}
+    @config = { :bootstrap_protocol => "winrm" }
   end
 
   context "Windows Distribution initializer" do
     it "asks for compulsory properties while creating instance" do
-      expect {Chef::Knife::Cloud::WindowsDistribution.new}.to raise_error(ArgumentError)
+      expect { Chef::Knife::Cloud::WindowsDistribution.new }.to raise_error(ArgumentError)
     end
 
     it "creates instance" do
-      expect {Chef::Knife::Cloud::WindowsDistribution.new(@config)}.to_not raise_error
+      expect { Chef::Knife::Cloud::WindowsDistribution.new(@config) }.to_not raise_error
       expect(Chef::Knife::Cloud::WindowsDistribution.new(@config).class).to eq(Chef::Knife::Cloud::WindowsDistribution)
     end
   end

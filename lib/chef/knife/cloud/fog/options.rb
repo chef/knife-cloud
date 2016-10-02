@@ -14,7 +14,7 @@ class Chef
               :long => "--fog-version version",
               :description => "Fog gem version to use. Use the ruby gem version strings",
               :default => "",
-              :proc => Proc.new { |v| Chef::Config[:knife][:cloud_fog_version] = v}
+              :proc => Proc.new { |v| Chef::Config[:knife][:cloud_fog_version] = v }
 
             option :api_endpoint,
               :long => "--api-endpoint ENDPOINT",

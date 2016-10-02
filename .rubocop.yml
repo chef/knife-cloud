@@ -1,0 +1,4 @@
+Style/VariableName:
+  Exclude:
+    - 'spec/unit/ssh_bootstrap_protocol_spec.rb'
+    - 'spec/unit/winrm_bootstrap_protocol_spec.rb'

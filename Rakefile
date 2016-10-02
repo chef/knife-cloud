@@ -1,23 +1,23 @@
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
 # Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
 
-require 'bundler'
+require "bundler"
 Bundler::GemHelper.install_tasks
 
-require 'rubygems'
-require 'rubygems/package_task'
+require "rubygems"
+require "rubygems/package_task"
 
 # Packaging
-GEM_NAME = 'knife-cloud'.freeze
-require File.dirname(__FILE__) + '/lib/knife-cloud/version'
-spec = eval(File.read('knife-cloud.gemspec'))
+GEM_NAME = "knife-cloud".freeze
+require File.dirname(__FILE__) + "/lib/knife-cloud/version"
+spec = eval(File.read("knife-cloud.gemspec"))
 Gem::PackageTask.new(spec) do |pkg|
   pkg.gem_spec = spec
 end
 
 desc "uninstall #{GEM_NAME}-#{Knife::Cloud::VERSION}.gem from system..."
 task :uninstall do
-  sh %(gem uninstall #{GEM_NAME} -x -v #{Knife::Cloud::VERSION} )
+  sh %{gem uninstall #{GEM_NAME} -x -v #{Knife::Cloud::VERSION} }
 end
 
 # rspec

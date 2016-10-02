@@ -15,12 +15,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'support/shared_examples_for_command'
-require 'chef/knife/cloud/server/show_command'
+require "support/shared_examples_for_command"
+require "chef/knife/cloud/server/show_command"
 
 describe Chef::Knife::Cloud::ServerShowCommand do
   it_behaves_like Chef::Knife::Cloud::Command, Chef::Knife::Cloud::ServerShowCommand.new
-  
+
   describe "#validate_params!" do
     before(:each) do
       @instance = Chef::Knife::Cloud::ServerShowCommand.new
@@ -59,6 +59,6 @@ describe Chef::Knife::Cloud::ServerShowCommand do
       expect(instance.service).to receive(:get_server).and_return(nil)
       expect(instance.service).to_not receive(:server_summary)
       expect { instance.execute_command }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServerShowError, "Server doesn't exists for this invalid_id instance id.")
-    end    
+    end
   end
 end

@@ -16,8 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require 'support/shared_examples_for_command'
+require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
+require "support/shared_examples_for_command"
 
 describe Chef::Knife::Cloud::Command do
   it_behaves_like Chef::Knife::Cloud::Command, Chef::Knife::Cloud::Command.new
@@ -26,10 +26,9 @@ describe Chef::Knife::Cloud::Command do
 
   it "overrides execute_command" do
     allow(instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
-    expect {instance.run}.to raise_error(Chef::Exceptions::Override, "You must override execute_command in #{instance.to_s}")
+    expect { instance.run }.to raise_error(Chef::Exceptions::Override, "You must override execute_command in #{instance}")
   end
 
-  it { expect {instance.run}.to raise_error(Chef::Exceptions::Override, "You must override create_service_instance in #{instance.to_s} to create cloud specific service") }
+  it { expect { instance.run }.to raise_error(Chef::Exceptions::Override, "You must override create_service_instance in #{instance} to create cloud specific service") }
 
 end
-

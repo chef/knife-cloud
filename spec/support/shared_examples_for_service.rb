@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife/cloud/service'
+require "chef/knife/cloud/service"
 
 shared_examples_for Chef::Knife::Cloud::Service do |instance|
 
@@ -60,7 +60,7 @@ shared_examples_for Chef::Knife::Cloud::Service do |instance|
       allow(instance).to receive_message_chain(:connection, :servers, :create).and_return(server)
       allow(instance).to receive_message_chain(:ui, :color)
       expect(server).to receive(:wait_for)
-      instance.create_server({:server_create_timeout => 600})
+      instance.create_server({ :server_create_timeout => 600 })
     end
   end
 
@@ -79,7 +79,7 @@ shared_examples_for Chef::Knife::Cloud::Service do |instance|
       instance.ui = double()
       expect(instance.ui).to receive(:list)
       expect(server).to receive(:id)
-      instance.server_summary(server, [{:label => 'Instance ID', :key => 'id'}])
+      instance.server_summary(server, [{ :label => "Instance ID", :key => "id" }])
     end
-  end  
+  end
 end

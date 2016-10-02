@@ -15,13 +15,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'spec_helper'
-require 'chef/knife/cloud/chefbootstrap/winrm_bootstrap_protocol'
+require "spec_helper"
+require "chef/knife/cloud/chefbootstrap/winrm_bootstrap_protocol"
 
 describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
   before do
-    @config = {:bootstrap_protocol => 'winrm'}
-    @config = {:image_os_type => 'windows'}
+    @config = { :bootstrap_protocol => "winrm" }
+    @config = { :image_os_type => "windows" }
     @instance = Chef::Knife::Cloud::WinrmBootstrapProtocol.new(@config)
     allow(@instance).to receive(:sleep).and_return(0)
     allow(@instance).to receive(:print)
@@ -29,11 +29,11 @@ describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
 
   context "Create instance" do
     it "asks for compulsory properties" do
-      expect {Chef::Knife::Cloud::WinrmBootstrapProtocol.new}.to raise_error(ArgumentError)
+      expect { Chef::Knife::Cloud::WinrmBootstrapProtocol.new }.to raise_error(ArgumentError)
     end
 
     it "windows image" do
-      @config[:image_os_type] = 'windows'
+      @config[:image_os_type] = "windows"
       winrm_bootstrap_protocol = Chef::Knife::Cloud::WinrmBootstrapProtocol.new(@config)
       expect(winrm_bootstrap_protocol.bootstrap.class).to eq(Chef::Knife::BootstrapWindowsWinrm)
     end
@@ -41,7 +41,7 @@ describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
 
   describe "#wait_for_server_ready" do
     it "execute with correct method calls" do
-      @config[:image_os_type] = 'windows'
+      @config[:image_os_type] = "windows"
       allow(@instance).to receive(:tcp_test_winrm).and_return(true)
       expect(@instance).to receive(:tcp_test_winrm).ordered
       @instance.wait_for_server_ready
@@ -72,37 +72,37 @@ describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
       tcpSocket = double()
       allow(tcpSocket).to receive(:close).and_return(true)
       allow(TCPSocket).to receive(:new).and_return(tcpSocket)
-      expect(@instance.tcp_test_winrm("localhost","5989")).to be(true)
+      expect(@instance.tcp_test_winrm("localhost", "5989")).to be(true)
     end
 
     it "raise SocketError error" do
       allow(TCPSocket).to receive(:new).and_raise(SocketError)
-      expect(@instance.tcp_test_winrm("localhost","5989")).to be(false)
+      expect(@instance.tcp_test_winrm("localhost", "5989")).to be(false)
     end
 
     it "raise ETIMEDOUT error" do
       allow(TCPSocket).to receive(:new).and_raise(Errno::ETIMEDOUT)
-      expect(@instance.tcp_test_winrm("localhost","5989")).to be(false)
+      expect(@instance.tcp_test_winrm("localhost", "5989")).to be(false)
     end
 
     it "raise EPERM error" do
       allow(TCPSocket).to receive(:new).and_raise(Errno::EPERM)
-      expect(@instance.tcp_test_winrm("localhost","5989"){raise Errno::EPERM}).to be(false)
+      expect(@instance.tcp_test_winrm("localhost", "5989") { raise Errno::EPERM }).to be(false)
     end
 
     it "raise ECONNREFUSED error" do
       allow(TCPSocket).to receive(:new).and_raise(Errno::ECONNREFUSED)
-      expect(@instance.tcp_test_winrm("localhost","5989"){raise Errno::ECONNREFUSED}).to be(false)
+      expect(@instance.tcp_test_winrm("localhost", "5989") { raise Errno::ECONNREFUSED }).to be(false)
     end
 
     it "raise EHOSTUNREACH error" do
       allow(TCPSocket).to receive(:new).and_raise(Errno::EHOSTUNREACH)
-      expect(@instance.tcp_test_winrm("localhost","5989"){raise Errno::EHOSTUNREACH}).to be(false)
+      expect(@instance.tcp_test_winrm("localhost", "5989") { raise Errno::EHOSTUNREACH }).to be(false)
     end
 
     it "raise ENETUNREACH error" do
       allow(TCPSocket).to receive(:new).and_raise(Errno::ENETUNREACH)
-      expect(@instance.tcp_test_winrm("localhost","5989"){raise Errno::ENETUNREACH}).to be(false)
+      expect(@instance.tcp_test_winrm("localhost", "5989") { raise Errno::ENETUNREACH }).to be(false)
     end
   end
 end

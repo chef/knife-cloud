@@ -4,8 +4,8 @@
 # Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
 #
 
-require 'chef/knife/cloud/service'
-require 'chef/knife/cloud/exceptions'
+require "chef/knife/cloud/service"
+require "chef/knife/cloud/exceptions"
 
 class Chef
   class Knife
@@ -21,7 +21,7 @@ class Chef
           begin
             # Load specific version of fog. Any other classes/modules using fog are loaded after this.
             gem "fog", Chef::Config[:knife][:cloud_fog_version]
-            require 'fog'
+            require "fog"
             Chef::Log.debug("Using fog version: #{Gem.loaded_specs["fog"].version}")
           rescue Exception => e
             Chef::Log.error "Error loading fog gem."
@@ -32,7 +32,7 @@ class Chef
         def connection
           add_api_endpoint
           @connection ||= begin
-            connection  = Fog::Compute.new(@auth_params)
+                            connection = Fog::Compute.new(@auth_params)
                           rescue Excon::Error::Unauthorized => e
                             error_message = "Connection failure, please check your username and password."
                             ui.fatal(error_message)
@@ -46,7 +46,7 @@ class Chef
 
         def network
           @network ||= begin
-            network = Fog::Network.new(@auth_params)
+                        network = Fog::Network.new(@auth_params)
                       rescue Excon::Error::Unauthorized => e
                         error_message = "Connection failure, please check your username and password."
                         ui.fatal(error_message)
@@ -69,7 +69,7 @@ class Chef
             server = connection.servers.create(options[:server_def])
           rescue Excon::Error::BadRequest => e
             response = Chef::JSONCompat.from_json(e.response.body)
-            if response['badRequest']['code'] == 400
+            if response["badRequest"]["code"] == 400
               message = "Bad request (400): #{response['badRequest']['message']}"
               ui.fatal(message)
             else
@@ -110,7 +110,7 @@ class Chef
           end
         end
 
-        ["servers", "images", "networks"].each do |resource_type|
+        %w{servers images networks}.each do |resource_type|
           define_method("list_#{resource_type}") do
             begin
               case resource_type
@@ -152,12 +152,12 @@ class Chef
 
         def release_address(address_id)
           response = get_address(address_id)
-          msg_pair('IP address', get_address_ip(response))
+          msg_pair("IP address", get_address_ip(response))
           puts
-          ui.confirm('Do you really want to delete this ip')
+          ui.confirm("Do you really want to delete this ip")
           connection.release_address(address_id)
         rescue Fog::Compute::OpenStack::NotFound => e
-          error_message = 'Floating ip not found.'
+          error_message = "Floating ip not found."
           ui.error(error_message)
           raise CloudExceptions::NotFoundError, "#{e.message}"
         rescue Excon::Error::BadRequest => e
@@ -165,7 +165,7 @@ class Chef
         end
 
         def get_address_ip(response)
-          response.body['floating_ip']['ip'] if response.body['floating_ip']
+          response.body["floating_ip"]["ip"] if response.body["floating_ip"]
         end
 
         def get_address(address_id)
@@ -178,7 +178,7 @@ class Chef
           response = connection.allocate_address(pool)
           response.body
         rescue Fog::Compute::OpenStack::NotFound => e
-          error_message = 'Floating ip pool not found.'
+          error_message = "Floating ip pool not found."
           ui.error(error_message)
           raise CloudExceptions::NotFoundError, "#{e.message}"
         rescue Excon::Error::Forbidden => e
@@ -196,7 +196,7 @@ class Chef
         def disassociate_address(*args)
           connection.disassociate_address(*args)
         rescue Fog::Compute::OpenStack::NotFound
-          error_message = 'Floating ip not found.'
+          error_message = "Floating ip not found."
           ui.error(error_message)
         rescue Excon::Error::UnprocessableEntity => e
           handle_excon_exception(CloudExceptions::KnifeCloudError, e)
@@ -209,7 +209,7 @@ class Chef
         end
 
         def add_api_endpoint
-          raise Chef::Exceptions::Override, "You must override add_api_endpoint in #{self.to_s} to add endpoint in auth_params for connection"
+          raise Chef::Exceptions::Override, "You must override add_api_endpoint in #{self} to add endpoint in auth_params for connection"
         end
 
         def get_server_name(server)
@@ -223,11 +223,11 @@ class Chef
         end
 
         def get_image(name_or_id)
-          connection.images.find{|img| img.name =~ /#{name_or_id}/ || img.id == name_or_id }
+          connection.images.find { |img| img.name =~ /#{name_or_id}/ || img.id == name_or_id }
         end
 
         def get_flavor(name_or_id)
-          connection.flavors.find{|f| f.name == name_or_id || f.id == name_or_id }
+          connection.flavors.find { |f| f.name == name_or_id || f.id == name_or_id }
         end
 
         def server_summary(server, columns_with_info = [])
@@ -249,7 +249,7 @@ class Chef
 
         def is_image_windows?(image)
           image_info = connection.images.get(image)
-          !image_info.nil? ? image_info.platform == 'windows' : false
+          !image_info.nil? ? image_info.platform == "windows" : false
         end
       end
     end

@@ -15,8 +15,8 @@
 # limitations under the License.
 #
 
-require 'chef/knife/cloud/chefbootstrap/bootstrap_options'
-require 'chef/knife/cloud/server/options'
+require "chef/knife/cloud/chefbootstrap/bootstrap_options"
+require "chef/knife/cloud/server/options"
 
 class Chef
   class Knife
@@ -49,15 +49,15 @@ class Chef
             option :bootstrap_protocol,
               :long => "--bootstrap-protocol protocol",
               :description => "Protocol to bootstrap servers. options: winrm/ssh. For linux servers always use ssh.",
-              :default => 'ssh',
-              :proc => Proc.new { |b| Chef::Config[:knife][:bootstrap_protocol] = b}
+              :default => "ssh",
+              :proc => Proc.new { |b| Chef::Config[:knife][:bootstrap_protocol] = b }
 
             option :server_create_timeout,
               :long => "--server-create-timeout timeout",
               :description => "How long to wait until the server is ready; default is 600 seconds",
               :default => 600,
-              :proc => Proc.new { |v| Chef::Config[:knife][:server_create_timeout] = v}
-            
+              :proc => Proc.new { |v| Chef::Config[:knife][:server_create_timeout] = v }
+
             option :delete_server_on_failure,
               :long => "--delete-server-on-failure",
               :boolean => true,
@@ -67,7 +67,7 @@ class Chef
             option :chef_node_name_prefix,
               :long => "--chef-node-name-prefix PREFIX_FOR_NODE_NAME",
               :description => "The prefix for chef node name",
-              :default => includer.snake_case_name.split('_').first,
+              :default => includer.snake_case_name.split("_").first,
               :proc => Proc.new { |key| Chef::Config[:knife][:chef_node_name_prefix] = key }
 
           end
@@ -77,4 +77,3 @@ class Chef
     end
   end
 end
-

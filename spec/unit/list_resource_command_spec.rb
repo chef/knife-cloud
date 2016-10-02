@@ -17,22 +17,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'spec_helper'
-require 'chef/knife/cloud/list_resource_command'
-require 'support/shared_examples_for_command'
-require 'excon/error'
+require "spec_helper"
+require "chef/knife/cloud/list_resource_command"
+require "support/shared_examples_for_command"
+require "excon/error"
 
 describe Chef::Knife::Cloud::ResourceListCommand do
   it_behaves_like Chef::Knife::Cloud::Command, Chef::Knife::Cloud::ResourceListCommand.new
 
-  let (:instance) {Chef::Knife::Cloud::ResourceListCommand.new}
-  let (:resources) {[ TestResource.new({:id => "resource-1", :os => "ubuntu"}),
-                   TestResource.new({:id => "resource-2", :os => "windows"})]}
+  let (:instance) { Chef::Knife::Cloud::ResourceListCommand.new }
+  let (:resources) do
+    [ TestResource.new({ :id => "resource-1", :os => "ubuntu" }),
+                   TestResource.new({ :id => "resource-2", :os => "windows" })] end
 
   context "Basic tests:" do
     it "raises exception to override #query_resource method" do
       allow(instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
-      expect {instance.run}.to raise_error(Chef::Exceptions::Override, "You must override query_resource in #{instance.to_s} to return resources.")
+      expect { instance.run }.to raise_error(Chef::Exceptions::Override, "You must override query_resource in #{instance} to return resources.")
     end
 
     it "responds to #list method" do
@@ -49,12 +50,12 @@ describe Chef::Knife::Cloud::ResourceListCommand do
 
       it "handle generic exception" do
         allow(test_resource).to receive(:sort_by).and_raise StandardError
-        expect {instance.list(test_resource)}.to raise_error(StandardError)
+        expect { instance.list(test_resource) }.to raise_error(StandardError)
       end
 
       it "handle Excon::Error::BadRequest exception." do
         allow(test_resource).to receive(:sort_by).and_raise Excon::Error::BadRequest.new("excon error message")
-        expect {instance.list(test_resource)}.to raise_error(Excon::Error::BadRequest)
+        expect { instance.list(test_resource) }.to raise_error(Excon::Error::BadRequest)
       end
     end
   end
@@ -81,8 +82,8 @@ describe Chef::Knife::Cloud::ResourceListCommand do
         class Derived < Chef::Knife::Cloud::ResourceListCommand
           attr_accessor :resource_filters
           def before_exec_command
-            @columns_with_info = [ { :key => 'id', :label => 'Instance ID' },
-                                 { :key => 'os', :label => 'Operating system' } ]
+            @columns_with_info = [ { :key => "id", :label => "Instance ID" },
+                                 { :key => "os", :label => "Operating system" } ]
           end
         end
 
@@ -99,14 +100,14 @@ describe Chef::Knife::Cloud::ResourceListCommand do
       end
 
       it "excludes resource when filter is specified" do
-        @derived_instance.resource_filters = [{:attribute => 'id', :regex => /^resource-1$/}]
+        @derived_instance.resource_filters = [{ :attribute => "id", :regex => /^resource-1$/ }]
         expect(@derived_instance.ui).to receive(:list).with(["Instance ID", "Operating system", "resource-2", "windows"], :uneven_columns_across, 2)
         @derived_instance.run
       end
 
       it "lists all resources when disable filter" do
         @derived_instance.config[:disable_filter] = true
-        @derived_instance.resource_filters = [{:attribute => 'id', :regex => /^resource-1$/}]
+        @derived_instance.resource_filters = [{ :attribute => "id", :regex => /^resource-1$/ }]
         expect(@derived_instance.ui).to receive(:list).with(["Instance ID", "Operating system", "resource-1", "ubuntu", "resource-2", "windows"], :uneven_columns_across, 2)
         @derived_instance.run
       end
@@ -116,11 +117,12 @@ describe Chef::Knife::Cloud::ResourceListCommand do
         class Derived < Chef::Knife::Cloud::ResourceListCommand
           attr_accessor :resource_filters
           def before_exec_command
-            @columns_with_info = [ { :key => 'id', :label => 'Instance ID' },
-                               { :key => 'os', :label => 'Operating system', :value_callback => method(:format_os) } ]
+            @columns_with_info = [ { :key => "id", :label => "Instance ID" },
+                               { :key => "os", :label => "Operating system", :value_callback => method(:format_os) } ]
           end
+
           def format_os(os)
-            (os == 'ubuntu') ? "ubuntu - operating system with Linux kernel" : os
+            (os == "ubuntu") ? "ubuntu - operating system with Linux kernel" : os
           end
         end
 

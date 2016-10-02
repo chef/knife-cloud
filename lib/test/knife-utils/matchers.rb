@@ -1,9 +1,9 @@
-require 'rspec'
-require File.expand_path(File.dirname(__FILE__) +'/knife_test_utils')
+require "rspec"
+require File.expand_path(File.dirname(__FILE__) + "/knife_test_utils")
 
 RSpec::Matchers.define :have_outcome do |outcome_spec|
   match do |executed_shellout_command|
-    valid_keys =  [:status, :stdout, :stderr]
+    valid_keys = [:status, :stdout, :stderr]
     if outcome_spec.keys & valid_keys == []
       throw "You did not specify values for any of #{valid_keys}!"
     end

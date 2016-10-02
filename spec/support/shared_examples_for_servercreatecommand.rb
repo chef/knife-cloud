@@ -16,8 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'spec_helper'
-require 'chef/knife/cloud/server/create_command'
+require "spec_helper"
+require "chef/knife/cloud/server/create_command"
 
 def get_mock_resource(id)
   obj = Object.new
@@ -29,10 +29,10 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
   before do
     instance.service = double
     allow(instance.ui).to receive(:fatal)
-    
-    allow(instance.service).to receive(:get_image).and_return(get_mock_resource('image_id'))
-    
-    allow(instance.service).to receive(:get_flavor).and_return(get_mock_resource('flavor_id'))
+
+    allow(instance.service).to receive(:get_image).and_return(get_mock_resource("image_id"))
+
+    allow(instance.service).to receive(:get_flavor).and_return(get_mock_resource("flavor_id"))
   end
 
   describe "#before_exec_command" do
@@ -47,8 +47,8 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
       allow(instance).to receive(:validate_params!)
       instance.service = Chef::Knife::Cloud::Service.new
       allow(instance).to receive(:create_service_instance).and_return(instance.service)
-      allow(instance.service).to receive(:get_image).and_return(get_mock_resource('image_id'))
-      allow(instance.service).to receive(:get_flavor).and_return(get_mock_resource('flavor_id'))
+      allow(instance.service).to receive(:get_image).and_return(get_mock_resource("image_id"))
+      allow(instance.service).to receive(:get_flavor).and_return(get_mock_resource("flavor_id"))
       allow(instance.service).to receive(:create_server_dependencies).and_raise(Chef::Knife::Cloud::CloudExceptions::ServerCreateDependenciesError)
       expect(instance.service).to receive(:delete_server_dependencies)
       expect(instance.service).to_not receive(:delete_server_on_failure)
@@ -86,7 +86,7 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
       allow(instance.ui).to receive(:info)
       allow(Chef::Knife::Cloud::Bootstrapper).to receive(:new).and_return(@bootstrap)
       expect(instance).to receive(:before_bootstrap).ordered
-      expect(instance).to receive(:after_bootstrap).ordered      
+      expect(instance).to receive(:after_bootstrap).ordered
       instance.bootstrap
     end
   end
@@ -100,10 +100,10 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
 
   describe "#get_node_name" do
     it "auto generates chef_node_name" do
-      instance.config[:bootstrap_protocol] = 'ssh'
-      instance.config[:ssh_password] = 'password'
-      instance.config[:image_os_type] = 'linux'
-      instance.config[:chef_node_name_prefix] = 'os'
+      instance.config[:bootstrap_protocol] = "ssh"
+      instance.config[:ssh_password] = "password"
+      instance.config[:image_os_type] = "linux"
+      instance.config[:chef_node_name_prefix] = "os"
       expect(instance).to receive(:get_node_name).and_call_original
       instance.validate_params!
       expect(instance.config[:chef_node_name]).to be =~ /os-*/
@@ -111,10 +111,10 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
 
     it "auto generates unique chef_node_name" do
       node_names = []
-      instance.config[:bootstrap_protocol] = 'ssh'
-      instance.config[:ssh_password] = 'password'
-      instance.config[:image_os_type] = 'linux'
-      instance.config[:chef_node_name_prefix] = 'os'
+      instance.config[:bootstrap_protocol] = "ssh"
+      instance.config[:ssh_password] = "password"
+      instance.config[:image_os_type] = "linux"
+      instance.config[:chef_node_name_prefix] = "os"
       5.times do
         instance.config[:chef_node_name] = nil
         instance.validate_params!

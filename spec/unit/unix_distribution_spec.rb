@@ -15,22 +15,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'spec_helper'
-require 'chef/knife/cloud/chefbootstrap/unix_distribution'
+require "spec_helper"
+require "chef/knife/cloud/chefbootstrap/unix_distribution"
 
 describe Chef::Knife::Cloud::UnixDistribution do
 
   before do
-    @config = {:bootstrap_protocol => 'ssh'}
+    @config = { :bootstrap_protocol => "ssh" }
   end
 
   context "Unix Distribution initializer" do
     it "asks for compulsory properties while creating instance" do
-      expect {Chef::Knife::Cloud::UnixDistribution.new}.to raise_error(ArgumentError)
+      expect { Chef::Knife::Cloud::UnixDistribution.new }.to raise_error(ArgumentError)
     end
 
     it "creates instance" do
-      expect {Chef::Knife::Cloud::UnixDistribution.new(@config)}.to_not raise_error
+      expect { Chef::Knife::Cloud::UnixDistribution.new(@config) }.to_not raise_error
       expect(Chef::Knife::Cloud::UnixDistribution.new(@config).class).to eq(Chef::Knife::Cloud::UnixDistribution)
     end
   end

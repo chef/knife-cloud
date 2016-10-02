@@ -1,8 +1,8 @@
 require "securerandom"
-require 'tmpdir'
-require 'fileutils'
-require File.expand_path(File.dirname(__FILE__) + '/knife_test_utils')
-require File.expand_path(File.dirname(__FILE__) + '/matchers')
+require "tmpdir"
+require "fileutils"
+require File.expand_path(File.dirname(__FILE__) + "/knife_test_utils")
+require File.expand_path(File.dirname(__FILE__) + "/matchers")
 
 module KnifeTestHelper
   extend RSpec::KnifeTestUtils
@@ -30,10 +30,10 @@ module KnifeTestHelper
     puts "Creating: #{file_name}"
     begin
       data_to_write = File.read(File.expand_path("#{data_to_write_file_path}", __FILE__))
-      File.open("#{file_dir}/#{file_name}", 'w') {|f| f.write(data_to_write)}
+      File.open("#{file_dir}/#{file_name}", "w") { |f| f.write(data_to_write) }
     rescue
       puts "Error while creating file - #{file_name}"
     end
   end
-  
+
 end

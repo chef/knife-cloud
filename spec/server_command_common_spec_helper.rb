@@ -15,19 +15,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-$:.unshift File.expand_path('../../lib', __FILE__)
+$:.unshift File.expand_path("../../lib", __FILE__)
 
 # Common helper methods used accrossed knife plugin during Integration testing.
-# 
+#
 # run_cmd_check_status_and_output: It checks knife plugin command exitstatus(i.e '0' = succeed and '1' = fails)
 # and also checks command output(i.e stdout or stderr)
-# 
+#
 # run_cmd_check_stdout: It checks commands stdout.
-# 
+#
 # server_create_common_bfr_aftr: Its contains common before and after blocks used for server create
 
 def run_cmd_check_status_and_output(expected_status = "succeed", expected_result = nil)
-  it do 
+  it do
     match_status("should #{expected_status}")
     expect(cmd_output).to include(expected_result) if expected_result
   end

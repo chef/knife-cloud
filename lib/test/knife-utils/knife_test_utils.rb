@@ -1,4 +1,4 @@
-require 'mixlib/shellout'
+require "mixlib/shellout"
 
 module RSpec
   module KnifeTestUtils
@@ -7,11 +7,11 @@ module RSpec
       base.class_eval do
         subject { knife_run }
         let(:knife_run) { run command }
-        let(:command)   { fail 'Define let(:command) in the spec' }
+        let(:command)   { raise "Define let(:command) in the spec" }
         let(:cmd_output) { @op }
       end
     end
-    
+
     # Convenience method for actually running a knife command in our
     # testing repository.  Returns the Mixlib::Shellout object ready for
     # inspection.

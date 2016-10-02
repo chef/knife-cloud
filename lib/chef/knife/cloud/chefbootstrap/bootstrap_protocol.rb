@@ -17,8 +17,8 @@
 # limitations under the License.
 #
 
-require 'chef/knife/core/ui'
-require 'chef/knife/cloud/helpers'
+require "chef/knife/core/ui"
+require "chef/knife/cloud/helpers"
 
 class Chef
   class Knife
@@ -35,7 +35,7 @@ class Chef
         end
 
         def wait_for_server_ready
-          raise Chef::Exceptions::Override, "You must override wait_for_server_ready in #{self.to_s}"
+          raise Chef::Exceptions::Override, "You must override wait_for_server_ready in #{self}"
         end
 
         def send_bootstrap_command
@@ -60,8 +60,8 @@ class Chef
           bootstrap.config[:first_boot_attributes] = locate_config_value(:first_boot_attributes)
           bootstrap.config[:secret] = locate_config_value(:secret)
           bootstrap.config[:secret_file] = locate_config_value(:secret_file)
-          bootstrap.config[:template_file] =  locate_config_value(:template_file)
-          bootstrap.config[:bootstrap_template] =  locate_config_value(:bootstrap_template)
+          bootstrap.config[:template_file] = locate_config_value(:template_file)
+          bootstrap.config[:bootstrap_template] = locate_config_value(:bootstrap_template)
           bootstrap.config[:node_ssl_verify_mode] = locate_config_value(:node_ssl_verify_mode)
           bootstrap.config[:node_verify_api_cert] = locate_config_value(:node_verify_api_cert)
           bootstrap.config[:bootstrap_no_proxy] = locate_config_value(:bootstrap_no_proxy)
