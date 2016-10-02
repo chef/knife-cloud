@@ -1,4 +1,4 @@
-# Copyright: Copyright (c) 2012 Opscode, Inc.
+# Copyright: Copyright (c) 2012-2016 Chef Software, Inc.
 # License: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,4 +53,4 @@ module KnifeTestBed
 	def get_windows_shell_template_file_path
 		"#{temp_dir}/" + "windows-shell.erb"
 	end
-end 
+end

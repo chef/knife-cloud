@@ -1,7 +1,7 @@
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
 # Author:: Prabhu Das (<prabhu.das@clogeny.com>)
 #
-# Copyright:: Copyright (c) 2013 Opscode, Inc.
+# Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -98,7 +98,7 @@ class Chef
 
             option :bootstrap_no_proxy,
               :long => "--bootstrap-no-proxy [NO_PROXY_URL|NO_PROXY_IP]",
-              :description => "Do not proxy locations for the node being bootstrapped; this option is used internally by Opscode",
+              :description => "Do not proxy locations for the node being bootstrapped; this option is used internally by Chef",
               :proc => Proc.new { |np| Chef::Config[:knife][:bootstrap_no_proxy] = np }
 
             option :distro,
@@ -233,7 +233,7 @@ class Chef
               :long => "--msi-url URL",
               :description => "Location of the Chef Client MSI. The default templates will prefer to download from this location. The MSI will be downloaded from chef.io if not provided.",
               :default => ''
-            
+
             option :install_as_service,
               :long => "--install-as-service",
               :description => "Install chef-client as service in windows machine",
