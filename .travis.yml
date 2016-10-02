@@ -1,10 +1,10 @@
 language: ruby
 cache: bundler
 sudo: false
-
 rvm:
   - 2.2.5
   - 2.3.1
-
-gemfile: ci.gemfile
+branches:
+  only:
+  - master
 script: bundle exec rake spec
