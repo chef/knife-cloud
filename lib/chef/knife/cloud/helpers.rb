@@ -1,5 +1,5 @@
 #
-# Copyright:: Copyright (c) 2013 Opscode, Inc.
+# Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,7 @@ class Chef
       module Helpers
 
         # Additional helpers
-        def msg_pair(label, value, color=:cyan)
+        def msg_pair(label, value, color = :cyan)
           if value && !value.to_s.empty?
             puts "#{ui.color(label, color)}: #{value}"
           end
@@ -36,4 +36,3 @@ class Chef
     end
   end
 end
-

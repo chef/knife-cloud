@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife/cloud/server/delete_command'
+require "chef/knife/cloud/server/delete_command"
 
 shared_examples_for Chef::Knife::Cloud::ServerDeleteCommand do |instance|
   describe "#delete_from_chef" do
@@ -47,7 +47,7 @@ shared_examples_for Chef::Knife::Cloud::ServerDeleteCommand do |instance|
 
   describe "#execute_command" do
     it "execute with correct method calls" do
-      instance::name_args = ["testserver"]
+      instance.name_args = ["testserver"]
       instance.service = double
       expect(instance.service).to receive(:delete_server).ordered
       expect(instance).to receive(:delete_from_chef).ordered
@@ -73,5 +73,5 @@ shared_examples_for Chef::Knife::Cloud::ServerDeleteCommand do |instance|
       expect(instance.ui).to receive(:warn).with("Deleted client #{client_name}")
       instance.destroy_item(Chef::ApiClient, client_name, "client")
     end
-  end  
+  end
 end

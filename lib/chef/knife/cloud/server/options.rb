@@ -1,6 +1,6 @@
 #
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
-# Copyright:: Copyright (c) 2013 Opscode, Inc.
+# Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,7 @@ class Chef
             option :custom_attributes,
               :long => "--custom-attributes CUSTOM_ATTRIBUTES",
               :description => "Custom attributes to be passed to Fog.",
-              :proc => Proc.new {|args| Chef::Config[:knife][:custom_attributes] =  args.split(';').map{|keys| keys.split('=')}.map{|j| Hash[*j.map{|k| k.strip}]}}  
+              :proc => Proc.new { |args| Chef::Config[:knife][:custom_attributes] = args.split(";").map { |keys| keys.split("=") }.map { |j| Hash[*j.map { |k| k.strip }] } }
           end
         end
       end

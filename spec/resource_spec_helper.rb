@@ -15,8 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-$:.unshift File.expand_path('../../lib', __FILE__)
-require 'json'
+$:.unshift File.expand_path("../../lib", __FILE__)
+require "json"
 
 # Creates a resource class that can dynamically add attributes to
 # instances and set the values
@@ -28,7 +28,8 @@ module JSONModule
     end
     hash.to_json
   end
-  def from_json! string
+
+  def from_json!(string)
     JSON.load(string).each do |var, val|
       self.instance_variable_set var, val
     end

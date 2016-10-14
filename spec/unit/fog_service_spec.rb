@@ -16,15 +16,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require 'chef/knife/cloud/fog/service'
-require 'support/shared_examples_for_service'
+require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
+require "chef/knife/cloud/fog/service"
+require "support/shared_examples_for_service"
 
 describe Chef::Knife::Cloud::FogService do
 
   it_behaves_like Chef::Knife::Cloud::Service, Chef::Knife::Cloud::FogService.new
 
-  let (:instance) { Chef::Knife::Cloud::FogService.new({:auth_params => {:provider => 'Any Cloud Provider'}}) }
+  let (:instance) { Chef::Knife::Cloud::FogService.new({ :auth_params => { :provider => "Any Cloud Provider" } }) }
 
   context "connection" do
     before do
@@ -33,14 +33,14 @@ describe Chef::Knife::Cloud::FogService do
 
     it "creates a connection to fog service with the provided auth params." do
       expect(instance).to receive(:add_api_endpoint)
-      expect(Fog::Compute).to receive(:new).with({:provider => 'Any Cloud Provider'})
+      expect(Fog::Compute).to receive(:new).with({ :provider => "Any Cloud Provider" })
       instance.connection
     end
   end
 
   context "network" do
     it "creates a connection to fog network with the provided auth params." do
-      expect(Fog::Network).to receive(:new).with({:provider => 'Any Cloud Provider'})
+      expect(Fog::Network).to receive(:new).with({ :provider => "Any Cloud Provider" })
       instance.network
     end
 
@@ -52,27 +52,27 @@ describe Chef::Knife::Cloud::FogService do
       end
 
       it "handles Unauthorized exception." do
-        expect(Fog::Network).to receive(:new).with({:provider => 'Any Cloud Provider'}).and_raise Excon::Error::Unauthorized.new("Unauthorized")
-        expect {instance.network}.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServiceConnectionError)
+        expect(Fog::Network).to receive(:new).with({ :provider => "Any Cloud Provider" }).and_raise Excon::Error::Unauthorized.new("Unauthorized")
+        expect { instance.network }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServiceConnectionError)
       end
 
       it "handles SocketError or any other connection exception." do
         socket_error = Excon::Error::SocketError.new(Exception.new "Mock Error")
-        expect(Fog::Network).to receive(:new).with({:provider => 'Any Cloud Provider'}).and_raise socket_error
-        expect {instance.network}.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServiceConnectionError)
+        expect(Fog::Network).to receive(:new).with({ :provider => "Any Cloud Provider" }).and_raise socket_error
+        expect { instance.network }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServiceConnectionError)
       end
 
       it "handles NetworkNotFoundError exception." do
-        expect(Fog::Network).to receive(:new).with({:provider => 'Any Cloud Provider'}).and_raise Fog::Errors::NotFound.new("NotFound")
-        expect {instance.network}.to raise_error(Chef::Knife::Cloud::CloudExceptions::NetworkNotFoundError)
+        expect(Fog::Network).to receive(:new).with({ :provider => "Any Cloud Provider" }).and_raise Fog::Errors::NotFound.new("NotFound")
+        expect { instance.network }.to raise_error(Chef::Knife::Cloud::CloudExceptions::NetworkNotFoundError)
       end
     end
   end
 
   context "add_custom_attributes" do
     before(:each) do
-      Chef::Config[:knife][:custom_attributes] = [{"state"=>"Inactive"}]
-      @server_def = {:name=>"vm-1", :image_ref=>"123",:flavor_ref=>"2", :key_name=>"key"}
+      Chef::Config[:knife][:custom_attributes] = [{ "state" => "Inactive" }]
+      @server_def = { :name => "vm-1", :image_ref => "123", :flavor_ref => "2", :key_name => "key" }
       instance.add_custom_attributes(@server_def)
     end
 
@@ -85,7 +85,7 @@ describe Chef::Knife::Cloud::FogService do
     end
   end
 
-  ["servers", "images", "networks"].each do |resource_type|
+  %w{servers images networks}.each do |resource_type|
     resource =  case resource_type
                 when "networks"
                   :network
@@ -103,15 +103,15 @@ describe Chef::Knife::Cloud::FogService do
         allow(instance).to receive(:ui).and_return(Object.new)
         allow(instance.ui).to receive(:fatal)
         allow(instance).to receive_message_chain(resource.to_sym, "#{resource_type}".to_sym, :all).and_raise Excon::Error::BadRequest.new("Invalid Resource")
-        expect {instance.method("list_#{resource_type}").call}.to raise_error(Chef::Knife::Cloud::CloudExceptions::CloudAPIException)
+        expect { instance.method("list_#{resource_type}").call }.to raise_error(Chef::Knife::Cloud::CloudExceptions::CloudAPIException)
       end
     end
   end
 
   context "#delete_server" do
     before(:each) do
-      @server = TestResource.new({:id => "test-server1"})
-      @server.define_singleton_method(:destroy){}
+      @server = TestResource.new({ :id => "test-server1" })
+      @server.define_singleton_method(:destroy) {}
     end
 
     it "delete instance successfully" do
@@ -136,25 +136,25 @@ describe Chef::Knife::Cloud::FogService do
     end
   end
 
-  context '#release_address' do
+  context "#release_address" do
     before(:each) do
       allow(instance).to receive(:add_api_endpoint)
-      allow(Fog::Compute).to receive(:new).with({:provider => 'Any Cloud Provider'})
+      allow(Fog::Compute).to receive(:new).with({ :provider => "Any Cloud Provider" })
     end
 
-    it 'releases address successfully' do
-      address_id = 'test-addres-id'
-      @address = TestResource.new('body' => { 'floating_ip' =>
-                                            { 'instance_id' => nil,
-                                              'ip' => '127.0.0.1',
-                                              'fixed_ip' => nil,
-                                              'id' => 'test-addres-id',
-                                              'pool' => 'public-110'
-                                            }
+    it "releases address successfully" do
+      address_id = "test-addres-id"
+      @address = TestResource.new("body" => { "floating_ip" =>
+                                            { "instance_id" => nil,
+                                              "ip" => "127.0.0.1",
+                                              "fixed_ip" => nil,
+                                              "id" => "test-addres-id",
+                                              "pool" => "public-110",
+                                            },
                                           })
       instance.ui = double
       expect(instance).to receive(:get_address).and_return(@address)
-      expect(instance).to receive(:msg_pair).with('IP address', '127.0.0.1')
+      expect(instance).to receive(:msg_pair).with("IP address", "127.0.0.1")
       expect(instance.ui).to receive(:confirm)
       allow(instance.connection).to receive(:release_address)
       instance.release_address(address_id)

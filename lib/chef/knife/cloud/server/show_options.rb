@@ -1,5 +1,5 @@
 #
-# Copyright:: Copyright (c) 2013 Opscode, Inc.
+# Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,11 +26,10 @@ class Chef
               :long => "--instance-id INSTANCE_ID",
               :description => "Required. Instance Id of Server",
               :proc => Proc.new { |i| Chef::Config[:knife][:instance_id] = i }
-              
+
           end
         end
       end
     end
   end
 end
-

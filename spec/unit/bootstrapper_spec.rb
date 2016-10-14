@@ -16,23 +16,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'spec_helper'
-require 'chef/knife/cloud/chefbootstrap/bootstrapper'
-require 'chef/knife/bootstrap_windows_ssh'
+require "spec_helper"
+require "chef/knife/cloud/chefbootstrap/bootstrapper"
+require "chef/knife/bootstrap_windows_ssh"
 
 describe Chef::Knife::Cloud::Bootstrapper do
   before(:each) do
-    @config = {:bootstrap_protocol => 'ssh'}
+    @config = { :bootstrap_protocol => "ssh" }
     @instance = Chef::Knife::Cloud::Bootstrapper.new(@config)
   end
 
   context "Bootstrapper initializer" do
     it "asks for compulsory properties while creating instance" do
-      expect {Chef::Knife::Cloud::Bootstrapper.new}.to raise_error(ArgumentError)
+      expect { Chef::Knife::Cloud::Bootstrapper.new }.to raise_error(ArgumentError)
     end
 
     it "creating instance" do
-      expect {Chef::Knife::Cloud::Bootstrapper.new(@config)}.to_not raise_error
+      expect { Chef::Knife::Cloud::Bootstrapper.new(@config) }.to_not raise_error
       expect(Chef::Knife::Cloud::Bootstrapper.new(@config).class).to eq(Chef::Knife::Cloud::Bootstrapper)
     end
   end
@@ -62,53 +62,52 @@ describe Chef::Knife::Cloud::Bootstrapper do
   end
 
   describe "#create_bootstrap_distribution" do
-      context "when image_os_type set to windows" do
-        before(:each) do
-          @config[:image_os_type] = "windows"
-        end
-
-        it "instantiates Windows Distribution class." do
-          expect(Chef::Knife::Cloud::WindowsDistribution).to receive(:new).with(@config)
-          @instance.create_bootstrap_distribution
-        end
-
-        it "doesn't instantiate Unix Distribution class." do
-          expect(Chef::Knife::Cloud::UnixDistribution).to_not receive(:new)
-          @instance.create_bootstrap_distribution
-        end
-
+    context "when image_os_type set to windows" do
+      before(:each) do
+        @config[:image_os_type] = "windows"
       end
 
-      context "when image_os_type set to linux" do
-        before(:each) do
-          @config[:image_os_type] = "linux"
-        end
-
-        it "instantiates Unix Distribution class." do
-          expect(Chef::Knife::Cloud::UnixDistribution).to receive(:new).with(@config)
-          @instance.create_bootstrap_distribution
-        end
-
-        it "doesn't instantiate Windows Distribution class." do
-          expect(Chef::Knife::Cloud::WindowsDistribution).to_not receive(:new)
-          @instance.create_bootstrap_distribution
-        end
+      it "instantiates Windows Distribution class." do
+        expect(Chef::Knife::Cloud::WindowsDistribution).to receive(:new).with(@config)
+        @instance.create_bootstrap_distribution
       end
 
-      context "when image_os_type set to invalid" do
-        before(:each) do
-          @config[:image_os_type] = "invalid"
-        end
+      it "doesn't instantiate Unix Distribution class." do
+        expect(Chef::Knife::Cloud::UnixDistribution).to_not receive(:new)
+        @instance.create_bootstrap_distribution
+      end
 
-        it "raise bootstrap error" do
-          ui = double()
-          expect(@instance).to receive(:ui).and_return(ui)
-          allow(ui).to receive(:fatal)
-          expect { @instance.create_bootstrap_distribution }.to raise_error(Chef::Knife::Cloud::CloudExceptions::BootstrapError, "Invalid bootstrap distribution. image_os_type should be either windows or linux.")
-        end
-      end      
     end
 
+    context "when image_os_type set to linux" do
+      before(:each) do
+        @config[:image_os_type] = "linux"
+      end
+
+      it "instantiates Unix Distribution class." do
+        expect(Chef::Knife::Cloud::UnixDistribution).to receive(:new).with(@config)
+        @instance.create_bootstrap_distribution
+      end
+
+      it "doesn't instantiate Windows Distribution class." do
+        expect(Chef::Knife::Cloud::WindowsDistribution).to_not receive(:new)
+        @instance.create_bootstrap_distribution
+      end
+    end
+
+    context "when image_os_type set to invalid" do
+      before(:each) do
+        @config[:image_os_type] = "invalid"
+      end
+
+      it "raise bootstrap error" do
+        ui = double()
+        expect(@instance).to receive(:ui).and_return(ui)
+        allow(ui).to receive(:fatal)
+        expect { @instance.create_bootstrap_distribution }.to raise_error(Chef::Knife::Cloud::CloudExceptions::BootstrapError, "Invalid bootstrap distribution. image_os_type should be either windows or linux.")
+      end
+    end
+  end
 
   describe "#create_bootstrap_protocol" do
     context "when bootstrap_protocol set to ssh" do
@@ -166,6 +165,6 @@ describe Chef::Knife::Cloud::Bootstrapper do
         allow(ui).to receive(:fatal)
         expect { @instance.create_bootstrap_protocol }.to raise_error(Chef::Knife::Cloud::CloudExceptions::BootstrapError, "Invalid bootstrap protocol.")
       end
-    end    
+    end
   end
 end

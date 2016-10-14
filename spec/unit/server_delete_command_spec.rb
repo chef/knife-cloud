@@ -15,9 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'spec_helper'
-require 'support/shared_examples_for_command'
-require 'support/shared_examples_for_serverdeletecommand'
+require "spec_helper"
+require "support/shared_examples_for_command"
+require "support/shared_examples_for_serverdeletecommand"
 
 describe Chef::Knife::Cloud::ServerDeleteCommand do
   it_behaves_like Chef::Knife::Cloud::Command, Chef::Knife::Cloud::ServerDeleteCommand.new

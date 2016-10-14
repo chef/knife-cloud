@@ -1,7 +1,7 @@
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
 # Author:: Prabhu Das (<prabhu.das@clogeny.com>)
 #
-# Copyright:: Copyright (c) 2013 Opscode, Inc.
+# Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,10 +17,9 @@
 # limitations under the License.
 #
 
-require 'chef/knife/cloud/chefbootstrap/bootstrap_protocol'
-require 'chef/knife/core/windows_bootstrap_context'
-require 'chef/knife/bootstrap'
-
+require "chef/knife/cloud/chefbootstrap/bootstrap_protocol"
+require "chef/knife/core/windows_bootstrap_context"
+require "chef/knife/bootstrap"
 
 class Chef
   class Knife
@@ -28,7 +27,7 @@ class Chef
       class SshBootstrapProtocol < BootstrapProtocol
 
         def initialize(config)
-          @bootstrap = (config[:image_os_type] == 'linux') ? Chef::Knife::Bootstrap.new : Chef::Knife::BootstrapWindowsSsh.new
+          @bootstrap = (config[:image_os_type] == "linux") ? Chef::Knife::Bootstrap.new : Chef::Knife::BootstrapWindowsSsh.new
           super
         end
 
@@ -38,8 +37,8 @@ class Chef
           bootstrap.config[:ssh_port] = locate_config_value(:ssh_port)
           bootstrap.config[:identity_file] = @config[:identity_file]
           bootstrap.config[:host_key_verify] = @config[:host_key_verify]
-          bootstrap.config[:use_sudo] = true unless @config[:ssh_user] == 'root'
-          bootstrap.config[:template_file] =  @config[:template_file]
+          bootstrap.config[:use_sudo] = true unless @config[:ssh_user] == "root"
+          bootstrap.config[:template_file] = @config[:template_file]
           bootstrap.config[:ssh_gateway] = locate_config_value(:ssh_gateway)
           bootstrap.config[:forward_agent] = locate_config_value(:forward_agent)
           bootstrap.config[:use_sudo_password] = locate_config_value(:use_sudo_password)
@@ -53,17 +52,17 @@ class Chef
 
           # The ssh_gateway & subnet_id are currently supported only in EC2.
           if ssh_gateway
-            print(".") until tunnel_test_ssh(ssh_gateway, @config[:bootstrap_ip_address]) {
+            print(".") until tunnel_test_ssh(ssh_gateway, @config[:bootstrap_ip_address]) do
               @initial_sleep_delay = !!locate_config_value(:subnet_id) ? 40 : 10
               sleep @initial_sleep_delay
               puts("done")
-            }
+            end
           else
-            print(".") until tcp_test_ssh(@config[:bootstrap_ip_address], locate_config_value(:ssh_port)) {
+            print(".") until tcp_test_ssh(@config[:bootstrap_ip_address], locate_config_value(:ssh_port)) do
               @initial_sleep_delay = !!locate_config_value(:subnet_id) ? 40 : 10
               sleep @initial_sleep_delay
               puts("done")
-            }
+            end
           end
         end
 
@@ -104,7 +103,7 @@ class Chef
             readable = IO.select([tcp_socket], nil, nil, 5)
             if readable
               ssh_banner = tcp_socket.gets
-              if ssh_banner.nil? or ssh_banner.empty?
+              if ssh_banner.nil? || ssh_banner.empty?
                 false
               else
                 Chef::Log.debug("ssh accepting connections on #{hostname}, banner is #{tcp_socket.gets}")
@@ -123,7 +122,7 @@ class Chef
             false
            # This happens on some mobile phone networks
           rescue Errno::ECONNRESET
-             Chef::Log.debug("ssh reset its connection: #{hostname}")
+            Chef::Log.debug("ssh reset its connection: #{hostname}")
             sleep 2
             false
           ensure
@@ -136,7 +135,7 @@ class Chef
             status = false
             gateway = configure_ssh_gateway(ssh_gateway)
             gateway.open(hostname, locate_config_value(:ssh_port)) do |local_tunnel_port|
-              status = tcp_test_ssh('localhost', local_tunnel_port, &block)
+              status = tcp_test_ssh("localhost", local_tunnel_port, &block)
             end
             status
           rescue SocketError, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::ENETUNREACH, IOError
@@ -148,8 +147,8 @@ class Chef
         end
 
         def configure_ssh_gateway(ssh_gateway)
-          gw_host, gw_user = ssh_gateway.split('@').reverse
-          gw_host, gw_port = gw_host.split(':')
+          gw_host, gw_user = ssh_gateway.split("@").reverse
+          gw_host, gw_port = gw_host.split(":")
           gateway_options = { :port => gw_port || 22 }
 
           # Load the SSH config for the SSH gateway host.
@@ -160,7 +159,7 @@ class Chef
           gw_user ||= ssh_gateway_config[:user]
 
           # Always use the gateway keys from the SSH Config
-          gateway_keys = ssh_gateway_config[:keys]        
+          gateway_keys = ssh_gateway_config[:keys]
 
           # Use the keys specificed on the command line if available (overrides SSH Config)
           if locate_config_value(:ssh_gateway_identity)

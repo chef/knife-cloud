@@ -1,6 +1,6 @@
 #
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
-# Copyright:: Copyright (c) 2013 Opscode, Inc.
+# Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-require 'chef/knife/cloud/exceptions'
+require "chef/knife/cloud/exceptions"
 require "chef/knife/cloud/helpers"
 
 class Chef
@@ -32,7 +32,7 @@ class Chef
 
         def connection
           # Fog or cloud specific connection object must be created in derived.
-          raise Chef::Exceptions::Override, "You must override connection in #{self.to_s}"
+          raise Chef::Exceptions::Override, "You must override connection in #{self}"
         end
 
         # override in cloud specific derived classes
@@ -48,44 +48,43 @@ class Chef
         end
 
         def delete_server_on_failure(server = nil)
-          raise Chef::Exceptions::Override, "You must override delete_server_on_failure in #{self.to_s} to delete server"
+          raise Chef::Exceptions::Override, "You must override delete_server_on_failure in #{self} to delete server"
         end
 
         # cloud server specific implementation methods for commands.
         def create_server(options = {})
-          raise Chef::Exceptions::Override, "You must override create_server in #{self.to_s}"
+          raise Chef::Exceptions::Override, "You must override create_server in #{self}"
         end
 
         def delete_server(server_name)
-          raise Chef::Exceptions::Override, "You must override delete_server in #{self.to_s}"
+          raise Chef::Exceptions::Override, "You must override delete_server in #{self}"
         end
 
         def list_servers
-          raise Chef::Exceptions::Override, "You must override list_servers in #{self.to_s}"
+          raise Chef::Exceptions::Override, "You must override list_servers in #{self}"
         end
 
         def list_images(image_filters)
-          raise Chef::Exceptions::Override, "You must override list_images in #{self.to_s}"
+          raise Chef::Exceptions::Override, "You must override list_images in #{self}"
         end
 
         def list_resource_configurations
-          raise Chef::Exceptions::Override, "You must override list_resource_configurations in #{self.to_s}"
+          raise Chef::Exceptions::Override, "You must override list_resource_configurations in #{self}"
         end
 
         def get_server(server_name)
-          raise Chef::Exceptions::Override, "You must override get_server in #{self.to_s}"
+          raise Chef::Exceptions::Override, "You must override get_server in #{self}"
         end
 
         def server_summary(server, columns_with_info = [])
-          raise Chef::Exceptions::Override, "You must override server_summary in #{self.to_s}"
+          raise Chef::Exceptions::Override, "You must override server_summary in #{self}"
         end
 
         def add_custom_attributes(server_def)
-          Chef::Config[:knife][:custom_attributes].map{|args| args.map{|k,v| server_def.merge!(k.to_sym => v)}} unless Chef::Config[:knife][:custom_attributes].nil?
+          Chef::Config[:knife][:custom_attributes].map { |args| args.map { |k, v| server_def.merge!(k.to_sym => v) } } unless Chef::Config[:knife][:custom_attributes].nil?
         end
 
       end # class service
     end
   end
 end
-

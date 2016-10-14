@@ -16,8 +16,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'chef/knife/cloud/command'
-require 'chef/knife/cloud/service'
+require "chef/knife/cloud/command"
+require "chef/knife/cloud/service"
 
 shared_examples_for Chef::Knife::Cloud::Command do |instance|
   it "runs with correct method calls" do

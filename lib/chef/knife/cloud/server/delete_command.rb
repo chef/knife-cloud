@@ -1,6 +1,6 @@
 #
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
-# Copyright:: Copyright (c) 2013 Opscode, Inc.
+# Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,10 +16,10 @@
 # limitations under the License.
 #
 
-require 'chef/knife/cloud/command'
+require "chef/knife/cloud/command"
 # These two are needed for the '--purge' deletion case
-require 'chef/node'
-require 'chef/api_client'
+require "chef/node"
+require "chef/api_client"
 
 class Chef
   class Knife
@@ -41,7 +41,7 @@ class Chef
             destroy_item(Chef::ApiClient, thing_to_delete, "client")
           else
             ui.warn("Corresponding node and client for the #{server_name} server were not deleted and remain registered with the Chef Server")
-            end
+          end
         end
 
         # Extracted from Chef::Knife.delete_object, because it has a
@@ -65,4 +65,3 @@ class Chef
     end
   end
 end
-

@@ -1,5 +1,5 @@
 #
-# Copyright:: Copyright (c) 2013 Opscode, Inc.
+# Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,15 +15,15 @@
 # limitations under the License.
 #
 
-require 'chef/knife/cloud/command'
-require 'chef/knife/cloud/exceptions'
+require "chef/knife/cloud/command"
+require "chef/knife/cloud/exceptions"
 
 class Chef
   class Knife
     class Cloud
       class ServerShowCommand < Command
 
-        def initialize(argv=[])
+        def initialize(argv = [])
           super argv
           # columns_with_info is array of hash with label, key and attribute extraction callback, ex [{:label => "Label text", :key => 'key', value_callback => callback_method to extract/format the required value}, ...]
           @columns_with_info = []
@@ -36,7 +36,7 @@ class Chef
             errors << "You must provide a valid Instance Id"
           end
           error_message = ""
-          raise CloudExceptions::ValidationError, error_message if errors.each{|e| ui.error(e); error_message = "#{error_message} #{e}."}.any?
+          raise CloudExceptions::ValidationError, error_message if errors.each { |e| ui.error(e); error_message = "#{error_message} #{e}." }.any?
         end
 
         def execute_command

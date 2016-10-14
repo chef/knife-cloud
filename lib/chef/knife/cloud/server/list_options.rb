@@ -1,6 +1,6 @@
 #
 # Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
-# Copyright:: Copyright (c) 2013 Opscode, Inc.
+# Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,11 +33,10 @@ class Chef
               :long => "--chef-node-attribute CHEF_NODE_ATTRIBUTE_NAME",
               :description => "Used with --chef-data option. It display node attributes details by adding new column in server list display.",
               :proc => Proc.new { |i| Chef::Config[:knife][:chef_node_attribute] = i }
-              
+
           end
         end
       end
     end
   end
 end
-

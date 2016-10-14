@@ -15,32 +15,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-require 'chef/knife/cloud/service'
-
+require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
+require "chef/knife/cloud/service"
 
 describe Chef::Knife::Cloud::Service do
 
- let (:instance) { Chef::Knife::Cloud::Service.new }
+  let (:instance) { Chef::Knife::Cloud::Service.new }
 
- it { expect {instance}.to_not raise_error }
+  it { expect { instance }.to_not raise_error }
 
- it { expect {instance.connection}.to raise_error(Chef::Exceptions::Override, "You must override connection in #{instance.to_s}") }
+  it { expect { instance.connection }.to raise_error(Chef::Exceptions::Override, "You must override connection in #{instance}") }
 
- it { expect {instance.create_server}.to raise_error(Chef::Exceptions::Override, "You must override create_server in #{instance.to_s}") }
+  it { expect { instance.create_server }.to raise_error(Chef::Exceptions::Override, "You must override create_server in #{instance}") }
 
- it { expect {instance.delete_server(:server_name)}.to raise_error(Chef::Exceptions::Override, "You must override delete_server in #{instance.to_s}") }
+  it { expect { instance.delete_server(:server_name) }.to raise_error(Chef::Exceptions::Override, "You must override delete_server in #{instance}") }
 
- it { expect {instance.delete_server}.to raise_error(ArgumentError) }
+  it { expect { instance.delete_server }.to raise_error(ArgumentError) }
 
- it { expect {instance.list_servers}.to raise_error(Chef::Exceptions::Override, "You must override list_servers in #{instance.to_s}") }
+  it { expect { instance.list_servers }.to raise_error(Chef::Exceptions::Override, "You must override list_servers in #{instance}") }
 
- it { expect {instance.list_images}.to raise_error(ArgumentError) }
+  it { expect { instance.list_images }.to raise_error(ArgumentError) }
 
- it { expect {instance.list_images(:image_filters)}.to raise_error(Chef::Exceptions::Override, "You must override list_images in #{instance.to_s}") }
+  it { expect { instance.list_images(:image_filters) }.to raise_error(Chef::Exceptions::Override, "You must override list_images in #{instance}") }
 
-it { expect {instance.list_resource_configurations()}.to raise_error(Chef::Exceptions::Override, "You must override list_resource_configurations in #{instance.to_s}") }
+  it { expect { instance.list_resource_configurations() }.to raise_error(Chef::Exceptions::Override, "You must override list_resource_configurations in #{instance}") }
 
- it { expect { Chef::Knife::Cloud::Service.new({:auth_params => {:provider => 'Any Cloud Provider'}}) }.to_not raise_error }
+  it { expect { Chef::Knife::Cloud::Service.new({ :auth_params => { :provider => "Any Cloud Provider" } }) }.to_not raise_error }
 
 end

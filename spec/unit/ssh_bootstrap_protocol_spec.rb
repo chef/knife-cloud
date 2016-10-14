@@ -15,13 +15,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'spec_helper'
-require 'chef/knife/cloud/chefbootstrap/ssh_bootstrap_protocol'
-require 'chef/knife/bootstrap_windows_ssh'
+require "spec_helper"
+require "chef/knife/cloud/chefbootstrap/ssh_bootstrap_protocol"
+require "chef/knife/bootstrap_windows_ssh"
 
 describe Chef::Knife::Cloud::SshBootstrapProtocol do
   before do
-    @config = {:bootstrap_protocol => 'ssh'}
+    @config = { :bootstrap_protocol => "ssh" }
     @instance = Chef::Knife::Cloud::SshBootstrapProtocol.new(@config)
     allow(@instance).to receive(:sleep).and_return(0)
     allow(@instance).to receive(:print)
@@ -29,17 +29,17 @@ describe Chef::Knife::Cloud::SshBootstrapProtocol do
 
   context "Create instance" do
     it "asks for compulsory properties" do
-      expect {Chef::Knife::Cloud::SshBootstrapProtocol.new}.to raise_error(ArgumentError)
+      expect { Chef::Knife::Cloud::SshBootstrapProtocol.new }.to raise_error(ArgumentError)
     end
 
     it "non windows image" do
-      @config[:image_os_type] = 'linux'
+      @config[:image_os_type] = "linux"
       ssh_bootstrap_protocol = Chef::Knife::Cloud::SshBootstrapProtocol.new(@config)
       expect(ssh_bootstrap_protocol.bootstrap.class).to eq(Chef::Knife::Bootstrap)
     end
 
     it "windows image" do
-      @config[:image_os_type] = 'windows'
+      @config[:image_os_type] = "windows"
       ssh_bootstrap_protocol = Chef::Knife::Cloud::SshBootstrapProtocol.new(@config)
       expect(ssh_bootstrap_protocol.bootstrap.class).to eq(Chef::Knife::BootstrapWindowsSsh)
     end
@@ -85,32 +85,32 @@ describe Chef::Knife::Cloud::SshBootstrapProtocol do
       allow(IO).to receive(:select).and_return(true)
       allow(tcpSocket.gets).to receive(:nil?).and_return(false)
       allow(tcpSocket.gets).to receive(:empty?).and_return(false)
-      expect(@instance.tcp_test_ssh("localhost","22"){}).to be(true)
+      expect(@instance.tcp_test_ssh("localhost", "22") {}).to be(true)
     end
 
     it "raise ETIMEDOUT error" do
       allow(TCPSocket).to receive(:new).and_raise(Errno::ETIMEDOUT)
-      expect(@instance.tcp_test_ssh("localhost","22"){}).to be(false)
+      expect(@instance.tcp_test_ssh("localhost", "22") {}).to be(false)
     end
 
     it "raise EPERM error" do
       allow(TCPSocket).to receive(:new).and_raise(Errno::EPERM)
-      expect(@instance.tcp_test_ssh("localhost","22"){}).to be(false)
+      expect(@instance.tcp_test_ssh("localhost", "22") {}).to be(false)
     end
 
     it "raise ECONNREFUSED error" do
       allow(TCPSocket).to receive(:new).and_raise(Errno::ECONNREFUSED)
-      expect(@instance.tcp_test_ssh("localhost","22"){}).to be(false)
+      expect(@instance.tcp_test_ssh("localhost", "22") {}).to be(false)
     end
 
     it "raise EHOSTUNREACH error" do
       allow(TCPSocket).to receive(:new).and_raise(Errno::EHOSTUNREACH)
-      expect(@instance.tcp_test_ssh("localhost","22"){}).to be(false)
+      expect(@instance.tcp_test_ssh("localhost", "22") {}).to be(false)
     end
 
     it "raise ENETUNREACH error" do
       allow(TCPSocket).to receive(:new).and_raise(Errno::ENETUNREACH)
-      expect(@instance.tcp_test_ssh("localhost","22"){}).to be(false)
+      expect(@instance.tcp_test_ssh("localhost", "22") {}).to be(false)
     end
   end
 end

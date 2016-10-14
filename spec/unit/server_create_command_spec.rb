@@ -16,10 +16,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'support/shared_examples_for_command'
-require 'support/shared_examples_for_servercreatecommand'
-require 'net/ssh'
-require 'chef/knife/cloud/server/create_options'
+require "support/shared_examples_for_command"
+require "support/shared_examples_for_servercreatecommand"
+require "net/ssh"
+require "chef/knife/cloud/server/create_options"
 
 describe Chef::Knife::Cloud::ServerCreateCommand do
   it_behaves_like Chef::Knife::Cloud::Command, Chef::Knife::Cloud::ServerCreateCommand.new
@@ -100,9 +100,9 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
   describe "#set_default_config" do
     it "set valid image os type" do
       instance = Chef::Knife::Cloud::ServerCreateCommand.new
-      instance.config[:bootstrap_protocol] = 'winrm'
+      instance.config[:bootstrap_protocol] = "winrm"
       instance.set_default_config
-      expect(instance.config[:image_os_type]).to eq('windows')
+      expect(instance.config[:image_os_type]).to eq("windows")
     end
   end
 
@@ -133,7 +133,7 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
       expect(Chef::Config[:knife][:bootstrap_curl_options]).to eq(bootstrap_curl_options)
 
       instance.options[:bootstrap_no_proxy][:proc].call bootstrap_no_proxy
-      expect(Chef::Config[:knife][:bootstrap_no_proxy]).to eq(bootstrap_no_proxy)      
+      expect(Chef::Config[:knife][:bootstrap_no_proxy]).to eq(bootstrap_no_proxy)
 
       expect(instance.options[:auth_timeout][:default]).to eq(25)
     end
@@ -144,8 +144,8 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
     before(:all) { @instance = ServerCreate.new }
 
     context "bootstrap_protocol shh" do
-      before {@instance.config[:bootstrap_protocol] = "ssh"}
-      
+      before { @instance.config[:bootstrap_protocol] = "ssh" }
+
       it "set ssh_user value by using -x option for ssh bootstrap protocol or linux image" do
         # Currently -x option set config[:winrm_user]
         # default value of config[:ssh_user] is root
@@ -170,7 +170,7 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
         # Currently -p option set config[:winrm_port]
         # default value of config[:ssh_port] is 22
         @instance.config[:winrm_port] = "1234"
-        @instance.config[:ssh_port] =  "22"
+        @instance.config[:ssh_port] = "22"
 
         @instance.before_bootstrap
         expect(@instance.config[:ssh_port]).to eq("1234")

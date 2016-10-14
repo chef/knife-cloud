@@ -1,11 +1,11 @@
-require 'chef/knife/cloud/list_resource_command'
-require 'chef/knife/cloud/exceptions'
+require "chef/knife/cloud/list_resource_command"
+require "chef/knife/cloud/exceptions"
 
 class Chef
   class Knife
     class Cloud
       class ServerListCommand < ResourceListCommand
-        
+
         def before_exec_command
           if config[:chef_data]
             begin
@@ -16,18 +16,18 @@ class Chef
               ui.warn(error_message)
               raise CloudExceptions::ChefServerError, error_message
             end
-            
+
             @chef_data_col_info = [
-              {:label => 'Chef Node Name', :key => 'name'},
-              {:label => 'Environment', :key => 'chef_environment'},
-              {:label => 'FQDN', :key => 'fqdn'},
-              {:label => 'Runlist', :key => 'run_list'},
-              {:label => 'Tags', :key => 'tags'},
-              {:label => 'Platform', :key => 'platform'},
+              { :label => "Chef Node Name", :key => "name" },
+              { :label => "Environment", :key => "chef_environment" },
+              { :label => "FQDN", :key => "fqdn" },
+              { :label => "Runlist", :key => "run_list" },
+              { :label => "Tags", :key => "tags" },
+              { :label => "Platform", :key => "platform" },
             ]
 
             if config[:chef_node_attribute]
-              @chef_data_col_info << {:label => "#{config[:chef_node_attribute]}", :key => "#{config[:chef_node_attribute]}"}
+              @chef_data_col_info << { :label => "#{config[:chef_node_attribute]}", :key => "#{config[:chef_node_attribute]}" }
             end
             @columns_with_info.concat(@chef_data_col_info)
           end
@@ -40,7 +40,7 @@ class Chef
             if config[:chef_data] && @chef_data_col_info.include?(col_info)
               server_name = service.get_server_name(server)
               if @node_list.include?(server_name)
-                node =  @node_list[server_name]
+                node = @node_list[server_name]
                 # Raise serverlisting error on invalid chef_node_attribute.
                 if col_info[:key] == config[:chef_node_attribute] && ! node.attribute?(col_info[:key])
                   error_message = "The Node does not have a #{col_info[:key]} attribute."
@@ -66,16 +66,16 @@ class Chef
         end
 
         def format_server_state(state)
-           state = state.to_s.downcase
-           state_color =  case state
-                          when 'shutting-down','terminated','stopping','stopped','error','shutoff'
-                            :red
-                          when 'pending','build','paused','suspended','hard_reboot'
-                            :yellow
-                          else
-                            :green
-                          end
-            ui.color(state, state_color)              
+          state = state.to_s.downcase
+          state_color =  case state
+                         when "shutting-down", "terminated", "stopping", "stopped", "error", "shutoff"
+                           :red
+                         when "pending", "build", "paused", "suspended", "hard_reboot"
+                           :yellow
+                         else
+                           :green
+                         end
+          ui.color(state, state_color)
         end
 
       end # class ServerListCommand
