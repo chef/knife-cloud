@@ -29,33 +29,31 @@ class Chef
         attr_accessor :service, :custom_arguments
 
         def run
-          begin
             # Set dafult config
-            set_default_config
+          set_default_config
 
-            # validate compulsory params
-            validate!
+          # validate compulsory params
+          validate!
 
-            # validate command pre-requisites (cli options)
-            validate_params!
+          # validate command pre-requisites (cli options)
+          validate_params!
 
-            # setup the service
-            @service = create_service_instance
+          # setup the service
+          @service = create_service_instance
 
-            service.ui = ui # for interactive user prompts/messages
+          service.ui = ui # for interactive user prompts/messages
 
-            # Perform any steps before handling the command
-            before_exec_command
+          # Perform any steps before handling the command
+          before_exec_command
 
-            # exec the actual cmd
-            execute_command
+          # exec the actual cmd
+          execute_command
 
-            # Perform any steps after handling the command
-            after_exec_command
-          rescue CloudExceptions::KnifeCloudError => e
-            Chef::Log.debug(e.message)
-            exit 1
-          end
+          # Perform any steps after handling the command
+          after_exec_command
+        rescue CloudExceptions::KnifeCloudError => e
+          Chef::Log.debug(e.message)
+          exit 1
         end
 
         def create_service_instance

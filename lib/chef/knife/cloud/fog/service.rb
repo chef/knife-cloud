@@ -18,15 +18,13 @@ class Chef
         end
 
         def load_fog_gem
-          begin
             # Load specific version of fog. Any other classes/modules using fog are loaded after this.
-            gem "fog", Chef::Config[:knife][:cloud_fog_version]
-            require "fog"
-            Chef::Log.debug("Using fog version: #{Gem.loaded_specs["fog"].version}")
-          rescue Exception => e
-            Chef::Log.error "Error loading fog gem."
-            exit 1
-          end
+          gem "fog", Chef::Config[:knife][:cloud_fog_version]
+          require "fog"
+          Chef::Log.debug("Using fog version: #{Gem.loaded_specs["fog"].version}")
+        rescue Exception => e
+          Chef::Log.error "Error loading fog gem."
+          exit 1
         end
 
         def connection
@@ -91,23 +89,21 @@ class Chef
         end
 
         def delete_server(server_name)
-          begin
-            server = get_server(server_name)
-            msg_pair("Instance Name", get_server_name(server))
-            msg_pair("Instance ID", server.id)
+          server = get_server(server_name)
+          msg_pair("Instance Name", get_server_name(server))
+          msg_pair("Instance ID", server.id)
 
-            puts "\n"
-            ui.confirm("Do you really want to delete this server")
+          puts "\n"
+          ui.confirm("Do you really want to delete this server")
 
-            # delete the server
-            server.destroy
-          rescue NoMethodError
-            error_message = "Could not locate server '#{server_name}'."
-            ui.error(error_message)
-            raise CloudExceptions::ServerDeleteError, error_message
-          rescue Excon::Error::BadRequest => e
-            handle_excon_exception(CloudExceptions::ServerDeleteError, e)
-          end
+          # delete the server
+          server.destroy
+        rescue NoMethodError
+          error_message = "Could not locate server '#{server_name}'."
+          ui.error(error_message)
+          raise CloudExceptions::ServerDeleteError, error_message
+        rescue Excon::Error::BadRequest => e
+          handle_excon_exception(CloudExceptions::ServerDeleteError, e)
         end
 
         %w{servers images networks}.each do |resource_type|
@@ -137,11 +133,9 @@ class Chef
         end
 
         def list_resource_configurations
-          begin
-            connection.flavors.all
-          rescue Excon::Error::BadRequest => e
-            handle_excon_exception(CloudExceptions::CloudAPIException, e)
-          end
+          connection.flavors.all
+        rescue Excon::Error::BadRequest => e
+          handle_excon_exception(CloudExceptions::CloudAPIException, e)
         end
 
         def list_addresses

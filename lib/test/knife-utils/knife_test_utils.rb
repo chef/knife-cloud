@@ -20,7 +20,7 @@ module RSpec
       shell_out.timeout = 3000
       shell_out.tap(&:run_command)
       @op = shell_out.exitstatus == 1 ? shell_out.stderr : shell_out.stdout
-      return shell_out
+      shell_out
     end
 
     def knife(knife_command)
