@@ -50,15 +50,13 @@ class Chef
         # the user is already making their intent known.  It is not
         # necessary to make them confirm two more times.
         def destroy_item(klass, name, type_name)
-          begin
-            object = klass.load(name)
-            object.destroy
-            ui.warn("Deleted #{type_name} #{name}")
-          rescue Net::HTTPServerException => e
-            error_message = "#{e.message}. Could not find a #{type_name} named #{name} to delete!"
-            ui.warn(error_message)
-            raise CloudExceptions::ServerDeleteError, error_message
-          end
+          object = klass.load(name)
+          object.destroy
+          ui.warn("Deleted #{type_name} #{name}")
+        rescue Net::HTTPServerException => e
+          error_message = "#{e.message}. Could not find a #{type_name} named #{name} to delete!"
+          ui.warn(error_message)
+          raise CloudExceptions::ServerDeleteError, error_message
         end
 
       end # class ServerDeleteCommand

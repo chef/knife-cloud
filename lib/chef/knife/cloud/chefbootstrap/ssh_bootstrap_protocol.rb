@@ -98,52 +98,48 @@ class Chef
         end
 
         def tcp_test_ssh(hostname, ssh_port)
-          begin
-            tcp_socket = TCPSocket.new(hostname, ssh_port)
-            readable = IO.select([tcp_socket], nil, nil, 5)
-            if readable
-              ssh_banner = tcp_socket.gets
-              if ssh_banner.nil? || ssh_banner.empty?
-                false
-              else
-                Chef::Log.debug("ssh accepting connections on #{hostname}, banner is #{tcp_socket.gets}")
-                yield
-                true
-              end
-            else
+          tcp_socket = TCPSocket.new(hostname, ssh_port)
+          readable = IO.select([tcp_socket], nil, nil, 5)
+          if readable
+            ssh_banner = tcp_socket.gets
+            if ssh_banner.nil? || ssh_banner.empty?
               false
+            else
+              Chef::Log.debug("ssh accepting connections on #{hostname}, banner is #{tcp_socket.gets}")
+              yield
+              true
             end
-          rescue Errno::EPERM, Errno::ETIMEDOUT
-            Chef::Log.debug("ssh timed out: #{hostname}")
+          else
             false
-          rescue SocketError, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::ENETUNREACH, IOError
-            Chef::Log.debug("ssh failed to connect: #{hostname}")
-            sleep 2
-            false
-           # This happens on some mobile phone networks
-          rescue Errno::ECONNRESET
-            Chef::Log.debug("ssh reset its connection: #{hostname}")
-            sleep 2
-            false
-          ensure
-            tcp_socket && tcp_socket.close
           end
+        rescue Errno::EPERM, Errno::ETIMEDOUT
+          Chef::Log.debug("ssh timed out: #{hostname}")
+          false
+        rescue SocketError, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::ENETUNREACH, IOError
+          Chef::Log.debug("ssh failed to connect: #{hostname}")
+          sleep 2
+          false
+         # This happens on some mobile phone networks
+        rescue Errno::ECONNRESET
+          Chef::Log.debug("ssh reset its connection: #{hostname}")
+          sleep 2
+          false
+        ensure
+          tcp_socket && tcp_socket.close
         end
 
         def tunnel_test_ssh(ssh_gateway, hostname, &block)
-          begin
-            status = false
-            gateway = configure_ssh_gateway(ssh_gateway)
-            gateway.open(hostname, locate_config_value(:ssh_port)) do |local_tunnel_port|
-              status = tcp_test_ssh("localhost", local_tunnel_port, &block)
-            end
-            status
-          rescue SocketError, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::ENETUNREACH, IOError
-            sleep 2
-            false
-          rescue Errno::EPERM, Errno::ETIMEDOUT
-            false
+          status = false
+          gateway = configure_ssh_gateway(ssh_gateway)
+          gateway.open(hostname, locate_config_value(:ssh_port)) do |local_tunnel_port|
+            status = tcp_test_ssh("localhost", local_tunnel_port, &block)
           end
+          status
+        rescue SocketError, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::ENETUNREACH, IOError
+          sleep 2
+          false
+        rescue Errno::EPERM, Errno::ETIMEDOUT
+          false
         end
 
         def configure_ssh_gateway(ssh_gateway)

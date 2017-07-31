@@ -53,14 +53,12 @@ class Chef
         end
 
         def before_exec_command
-          begin
-            post_connection_validations
-            service.create_server_dependencies
-          rescue CloudExceptions::ServerCreateDependenciesError => e
-            ui.fatal(e.message)
-            service.delete_server_dependencies
-            raise e
-          end
+          post_connection_validations
+          service.create_server_dependencies
+        rescue CloudExceptions::ServerCreateDependenciesError => e
+          ui.fatal(e.message)
+          service.delete_server_dependencies
+          raise e
         end
 
         def execute_command
@@ -77,19 +75,17 @@ class Chef
 
         # Derived classes can override after_exec_command and also call cleanup_on_failure if any exception occured.
         def after_exec_command
-          begin
             # bootstrap the server
-            bootstrap
-          rescue CloudExceptions::BootstrapError => e
-            ui.fatal(e.message)
-            cleanup_on_failure
-            raise e
-          rescue => e
-            error_message = "Check if --bootstrap-protocol and --image-os-type is correct. #{e.message}"
-            ui.fatal(error_message)
-            cleanup_on_failure
-            raise e, error_message
-          end
+          bootstrap
+        rescue CloudExceptions::BootstrapError => e
+          ui.fatal(e.message)
+          cleanup_on_failure
+          raise e
+        rescue => e
+          error_message = "Check if --bootstrap-protocol and --image-os-type is correct. #{e.message}"
+          ui.fatal(error_message)
+          cleanup_on_failure
+          raise e, error_message
         end
 
         def cleanup_on_failure
