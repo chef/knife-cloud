@@ -57,7 +57,7 @@ class Chef
 
         def tcp_test_winrm(hostname, port)
           tcp_socket = TCPSocket.new(hostname, port)
-          return true
+          true
         rescue SocketError
           sleep 2
           false

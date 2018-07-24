@@ -1,4 +1,13 @@
-Style/VariableName:
+Lint/ParenthesesAsGroupedExpression:
+  Exclude:
+    - 'spec/unit/*'
+
+Naming/VariableName:
   Exclude:
     - 'spec/unit/ssh_bootstrap_protocol_spec.rb'
     - 'spec/unit/winrm_bootstrap_protocol_spec.rb'
+
+Security/Eval:
+  Exclude:
+    - 'Rakefile'
+    - 'spec/resource_spec_helper.rb'

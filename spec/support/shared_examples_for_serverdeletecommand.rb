@@ -36,7 +36,6 @@ shared_examples_for Chef::Knife::Cloud::ServerDeleteCommand do |instance|
 
     it "deletes chef node specified with node-name option overriding the instance server_name" do
       instance.config[:purge] = true
-      server_name = "testserver"
       chef_node_name = "testnode"
       instance.config[:chef_node_name] = chef_node_name
       expect(instance).to receive(:destroy_item).with(Chef::Node, chef_node_name, "node").ordered
