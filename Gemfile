@@ -3,7 +3,13 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in knife-cloud.gemspec
 gemspec
 
-group :development do
+group :docs do
+  gem "yard"
+  gem "redcarpet"
+  gem "github-markup"
+end
+
+group :test do
   gem "rake"
   gem "rspec-core"
   gem "rspec-expectations"
@@ -11,4 +17,5 @@ group :development do
   gem "rspec_junit_formatter"
   gem "fog"
   gem "chefstyle"
+  gem "chef"
 end
