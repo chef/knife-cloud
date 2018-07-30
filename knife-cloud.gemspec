@@ -5,7 +5,6 @@ require "knife-cloud/version"
 Gem::Specification.new do |s|
   s.name        = "knife-cloud"
   s.version     = Knife::Cloud::VERSION
-  s.platform    = Gem::Platform::RUBY
   s.extra_rdoc_files = ["README.md", "LICENSE"]
   s.authors     = ["Kaustubh Deorukhkar", "Ameya Varade"]
   s.email       = ["dev@chef.io"]
