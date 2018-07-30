@@ -37,10 +37,18 @@ begin
   require "chefstyle"
   require "rubocop/rake_task"
   RuboCop::RakeTask.new(:style) do |task|
-    task.options << "--display-cop-names"
+    task.options += ["--display-cop-names", "--no-color"]
   end
 rescue LoadError
-  STDERR.puts "\n*** chefstyle not available. (sudo) gem install chefstyle to run unit tests. ***\n\n"
+  puts "chefstyle/rubocop is not available. bundle install first to make sure all dependencies are installed."
 end
+
+begin
+  require "yard"
+  YARD::Rake::YardocTask.new(:docs)
+rescue LoadError
+  puts "yard is not available. bundle install first to make sure all dependencies are installed."
+end
+
 
 task default: [:spec, :style]
