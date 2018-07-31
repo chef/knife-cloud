@@ -1,4 +1,13 @@
-# Change Log
+# knife-cloud Change Log
+
+<!-- latest_release -->
+<!-- latest_release -->
+
+<!-- release_rollup -->
+<!-- release_rollup -->
+
+<!-- latest_stable_release -->
+<!-- latest_stable_release -->
 
 ## [v1.2.1](https://github.com/chef/knife-cloud/tree/v1.2.1) (2016-02-24)
 
