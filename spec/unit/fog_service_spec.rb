@@ -57,7 +57,7 @@ describe Chef::Knife::Cloud::FogService do
       end
 
       it "handles SocketError or any other connection exception." do
-        socket_error = Excon::Error::SocketError.new(Exception.new "Mock Error")
+        socket_error = Excon::Error::Socket.new(Exception.new "Mock Error")
         expect(Fog::Network).to receive(:new).with({ :provider => "Any Cloud Provider" }).and_raise socket_error
         expect { instance.network }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServiceConnectionError)
       end
