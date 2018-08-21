@@ -31,7 +31,6 @@ class Chef
             deps do
               require "chef/json_compat"
               require "tempfile"
-              require "highline"
               require "net/ssh"
               require "chef/knife/ssh"
               Chef::Knife::Ssh.load_deps
@@ -101,15 +100,6 @@ class Chef
               :description => "Do not proxy locations for the node being bootstrapped; this option is used internally by Chef",
               :proc => Proc.new { |np| Chef::Config[:knife][:bootstrap_no_proxy] = np }
 
-            option :distro,
-              :short => "-d DISTRO",
-              :long => "--distro DISTRO",
-              :description => "Bootstrap a distro using a template. [DEPRECATED] Use -t / --template option instead.",
-              :proc => Proc.new { |t|
-                Chef::Log.warn("[DEPRECATED] -d / --distro option is deprecated. Use -t / --template option instead.")
-                Chef::Config[:knife][:bootstrap_template] = t
-              }
-
             option :bootstrap_template,
               :short => "-t TEMPLATE",
               :long => "--bootstrap-template TEMPLATE",
@@ -124,14 +114,6 @@ class Chef
               :long => "--use-sudo-password",
               :description => "Execute the bootstrap via sudo with password",
               :boolean => false
-
-            option :template_file,
-              :long => "--template-file TEMPLATE",
-              :description => "Full path to location of template to use. [DEPRECATED] Use -t / --bootstrap-template option instead.",
-              :proc        => Proc.new { |v|
-                Chef::Log.warn("[DEPRECATED] --template-file option is deprecated. Use -t / --bootstrap-template option instead.")
-                v
-              }
 
             option :run_list,
               :short => "-r RUN_LIST",

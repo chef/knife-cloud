@@ -22,7 +22,7 @@ class Chef
           gem "fog", Chef::Config[:knife][:cloud_fog_version]
           require "fog"
           Chef::Log.debug("Using fog version: #{Gem.loaded_specs["fog"].version}")
-        rescue Exception => e
+        rescue Exception
           Chef::Log.error "Error loading fog gem."
           exit 1
         end
@@ -30,7 +30,7 @@ class Chef
         def connection
           add_api_endpoint
           @connection ||= begin
-                            connection = Fog::Compute.new(@auth_params)
+                            Fog::Compute.new(@auth_params)
                           rescue Excon::Error::Unauthorized => e
                             error_message = "Connection failure, please check your username and password."
                             ui.fatal(error_message)
@@ -44,7 +44,7 @@ class Chef
 
         def network
           @network ||= begin
-                        network = Fog::Network.new(@auth_params)
+                        Fog::Network.new(@auth_params)
                       rescue Excon::Error::Unauthorized => e
                         error_message = "Connection failure, please check your username and password."
                         ui.fatal(error_message)
