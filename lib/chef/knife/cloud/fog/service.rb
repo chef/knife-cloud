@@ -35,7 +35,7 @@ class Chef
                             error_message = "Connection failure, please check your username and password."
                             ui.fatal(error_message)
                             raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
-                          rescue Excon::Error::SocketError => e
+                          rescue Excon::Error::Socket => e
                             error_message = "Connection failure, please check your authentication URL."
                             ui.fatal(error_message)
                             raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
@@ -49,7 +49,7 @@ class Chef
                         error_message = "Connection failure, please check your username and password."
                         ui.fatal(error_message)
                         raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
-                      rescue Excon::Error::SocketError => e
+                      rescue Excon::Error::Socket => e
                         error_message = "Connection failure, please check your authentication URL."
                         ui.fatal(error_message)
                         raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
