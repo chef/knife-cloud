@@ -21,7 +21,7 @@ require "chef/knife/bootstrap"
 
 describe Chef::Knife::Cloud::BootstrapProtocol do
   before do
-    @config = { :bootstrap_protocol => "ssh" }
+    @config = { bootstrap_protocol: "ssh" }
     @instance = Chef::Knife::Cloud::BootstrapProtocol.new(@config)
   end
 

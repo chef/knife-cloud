@@ -29,7 +29,7 @@ describe Chef::Knife::Cloud::ServerListCommand do
       instance = Chef::Knife::Cloud::ServerListCommand.new
       instance.config[:chef_data] = true
       expect(Chef::Node).to receive(:list).with(true)
-      expect(instance.before_exec_command).to include({ :label => "Chef Node Name", :key => "name" })
+      expect(instance.before_exec_command).to include({ label: "Chef Node Name", key: "name" })
     end
 
     it "set chef data columns info on chef-data and chef-node-attribute options" do
@@ -38,7 +38,7 @@ describe Chef::Knife::Cloud::ServerListCommand do
       instance.config[:chef_data] = true
       instance.config[:chef_node_attribute] = chef_node_attribute
       expect(Chef::Node).to receive(:list).with(true)
-      expect(instance.before_exec_command).to include({ :label => chef_node_attribute, :key => chef_node_attribute })
+      expect(instance.before_exec_command).to include({ label: chef_node_attribute, key: chef_node_attribute })
     end
 
     it "not set chef data columns info if chef-data option is not set" do
@@ -56,15 +56,15 @@ describe Chef::Knife::Cloud::ServerListCommand do
   end
 
   describe "#get_resource_col_val" do
-    let (:resources) { [ TestResource.new({ :id => "server-1", :name => "server-1", :os => "ubuntu" })] }
+    let (:resources) { [ TestResource.new({ id: "server-1", name: "server-1", os: "ubuntu" })] }
     before do
       class DerivedServerList < Chef::Knife::Cloud::ServerListCommand
         attr_accessor :node
         def before_exec_command
-          @columns_with_info = [ { :key => "id", :label => "Instance ID" }, { :label => "Environment", :key => "chef_environment" }, { :label => "platform_family", :key => "platform_family" } ]
-          @chef_data_col_info = [ { :label => "Environment", :key => "chef_environment" }, { :label => "platform_family", :key => "platform_family" } ]
-          @node = TestResource.new({ :id => "server-1", :name => "server-1",
-                                     :chef_environment => "_default", :platform_family => "debian" })
+          @columns_with_info = [ { key: "id", label: "Instance ID" }, { label: "Environment", key: "chef_environment" }, { label: "platform_family", key: "platform_family" } ]
+          @chef_data_col_info = [ { label: "Environment", key: "chef_environment" }, { label: "platform_family", key: "platform_family" } ]
+          @node = TestResource.new({ id: "server-1", name: "server-1",
+                                     chef_environment: "_default", platform_family: "debian" })
           @node.define_singleton_method(:attribute?) do |attribute|
           end
           @node_list = { "server-1" => @node }

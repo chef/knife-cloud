@@ -20,8 +20,8 @@ require "chef/knife/cloud/chefbootstrap/winrm_bootstrap_protocol"
 
 describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
   before do
-    @config = { :bootstrap_protocol => "winrm" }
-    @config = { :image_os_type => "windows" }
+    @config = { bootstrap_protocol: "winrm" }
+    @config = { image_os_type: "windows" }
     @instance = Chef::Knife::Cloud::WinrmBootstrapProtocol.new(@config)
     allow(@instance).to receive(:sleep).and_return(0)
     allow(@instance).to receive(:print)

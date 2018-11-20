@@ -24,7 +24,7 @@ describe Chef::Knife::Cloud::FogService do
 
   it_behaves_like Chef::Knife::Cloud::Service, Chef::Knife::Cloud::FogService.new
 
-  let (:instance) { Chef::Knife::Cloud::FogService.new({ :auth_params => { :provider => "Any Cloud Provider" } }) }
+  let (:instance) { Chef::Knife::Cloud::FogService.new({ auth_params: { provider: "Any Cloud Provider" } }) }
 
   context "connection" do
     before do
@@ -33,14 +33,14 @@ describe Chef::Knife::Cloud::FogService do
 
     it "creates a connection to fog service with the provided auth params." do
       expect(instance).to receive(:add_api_endpoint)
-      expect(Fog::Compute).to receive(:new).with({ :provider => "Any Cloud Provider" })
+      expect(Fog::Compute).to receive(:new).with({ provider: "Any Cloud Provider" })
       instance.connection
     end
   end
 
   context "network" do
     it "creates a connection to fog network with the provided auth params." do
-      expect(Fog::Network).to receive(:new).with({ :provider => "Any Cloud Provider" })
+      expect(Fog::Network).to receive(:new).with({ provider: "Any Cloud Provider" })
       instance.network
     end
 
@@ -52,18 +52,18 @@ describe Chef::Knife::Cloud::FogService do
       end
 
       it "handles Unauthorized exception." do
-        expect(Fog::Network).to receive(:new).with({ :provider => "Any Cloud Provider" }).and_raise Excon::Error::Unauthorized.new("Unauthorized")
+        expect(Fog::Network).to receive(:new).with({ provider: "Any Cloud Provider" }).and_raise Excon::Error::Unauthorized.new("Unauthorized")
         expect { instance.network }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServiceConnectionError)
       end
 
       it "handles SocketError or any other connection exception." do
         socket_error = Excon::Error::Socket.new(Exception.new "Mock Error")
-        expect(Fog::Network).to receive(:new).with({ :provider => "Any Cloud Provider" }).and_raise socket_error
+        expect(Fog::Network).to receive(:new).with({ provider: "Any Cloud Provider" }).and_raise socket_error
         expect { instance.network }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ServiceConnectionError)
       end
 
       it "handles NetworkNotFoundError exception." do
-        expect(Fog::Network).to receive(:new).with({ :provider => "Any Cloud Provider" }).and_raise Fog::Errors::NotFound.new("NotFound")
+        expect(Fog::Network).to receive(:new).with({ provider: "Any Cloud Provider" }).and_raise Fog::Errors::NotFound.new("NotFound")
         expect { instance.network }.to raise_error(Chef::Knife::Cloud::CloudExceptions::NetworkNotFoundError)
       end
     end
@@ -72,7 +72,7 @@ describe Chef::Knife::Cloud::FogService do
   context "add_custom_attributes" do
     before(:each) do
       Chef::Config[:knife][:custom_attributes] = [{ "state" => "Inactive" }]
-      @server_def = { :name => "vm-1", :image_ref => "123", :flavor_ref => "2", :key_name => "key" }
+      @server_def = { name: "vm-1", image_ref: "123", flavor_ref: "2", key_name: "key" }
       instance.add_custom_attributes(@server_def)
     end
 
@@ -110,7 +110,7 @@ describe Chef::Knife::Cloud::FogService do
 
   context "#delete_server" do
     before(:each) do
-      @server = TestResource.new({ :id => "test-server1" })
+      @server = TestResource.new({ id: "test-server1" })
       @server.define_singleton_method(:destroy) {}
     end
 
@@ -139,7 +139,7 @@ describe Chef::Knife::Cloud::FogService do
   context "#release_address" do
     before(:each) do
       allow(instance).to receive(:add_api_endpoint)
-      allow(Fog::Compute).to receive(:new).with({ :provider => "Any Cloud Provider" })
+      allow(Fog::Compute).to receive(:new).with({ provider: "Any Cloud Provider" })
     end
 
     it "releases address successfully" do

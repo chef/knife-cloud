@@ -23,9 +23,9 @@ class Chef
           includer.class_eval do
 
             option :instance_id,
-              :long => "--instance-id INSTANCE_ID",
-              :description => "Required. Instance Id of Server",
-              :proc => Proc.new { |i| Chef::Config[:knife][:instance_id] = i }
+              long: "--instance-id INSTANCE_ID",
+              description: "Required. Instance Id of Server",
+              proc: Proc.new { |i| Chef::Config[:knife][:instance_id] = i }
 
           end
         end

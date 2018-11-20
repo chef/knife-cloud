@@ -27,8 +27,8 @@ describe Chef::Knife::Cloud::ResourceListCommand do
 
   let (:instance) { Chef::Knife::Cloud::ResourceListCommand.new }
   let (:resources) do
-    [ TestResource.new({ :id => "resource-1", :os => "ubuntu" }),
-                   TestResource.new({ :id => "resource-2", :os => "windows" })] end
+    [ TestResource.new({ id: "resource-1", os: "ubuntu" }),
+                   TestResource.new({ id: "resource-2", os: "windows" })] end
 
   context "Basic tests:" do
     it "raises exception to override #query_resource method" do
@@ -82,8 +82,8 @@ describe Chef::Knife::Cloud::ResourceListCommand do
         class Derived < Chef::Knife::Cloud::ResourceListCommand
           attr_accessor :resource_filters
           def before_exec_command
-            @columns_with_info = [ { :key => "id", :label => "Instance ID" },
-                                 { :key => "os", :label => "Operating system" } ]
+            @columns_with_info = [ { key: "id", label: "Instance ID" },
+                                 { key: "os", label: "Operating system" } ]
           end
         end
 
@@ -100,14 +100,14 @@ describe Chef::Knife::Cloud::ResourceListCommand do
       end
 
       it "excludes resource when filter is specified" do
-        @derived_instance.resource_filters = [{ :attribute => "id", :regex => /^resource-1$/ }]
+        @derived_instance.resource_filters = [{ attribute: "id", regex: /^resource-1$/ }]
         expect(@derived_instance.ui).to receive(:list).with(["Instance ID", "Operating system", "resource-2", "windows"], :uneven_columns_across, 2)
         @derived_instance.run
       end
 
       it "lists all resources when disable filter" do
         @derived_instance.config[:disable_filter] = true
-        @derived_instance.resource_filters = [{ :attribute => "id", :regex => /^resource-1$/ }]
+        @derived_instance.resource_filters = [{ attribute: "id", regex: /^resource-1$/ }]
         expect(@derived_instance.ui).to receive(:list).with(["Instance ID", "Operating system", "resource-1", "ubuntu", "resource-2", "windows"], :uneven_columns_across, 2)
         @derived_instance.run
       end
@@ -117,8 +117,8 @@ describe Chef::Knife::Cloud::ResourceListCommand do
         class Derived < Chef::Knife::Cloud::ResourceListCommand
           attr_accessor :resource_filters
           def before_exec_command
-            @columns_with_info = [ { :key => "id", :label => "Instance ID" },
-                               { :key => "os", :label => "Operating system", :value_callback => method(:format_os) } ]
+            @columns_with_info = [ { key: "id", label: "Instance ID" },
+                               { key: "os", label: "Operating system", value_callback: method(:format_os) } ]
           end
 
           def format_os(os)

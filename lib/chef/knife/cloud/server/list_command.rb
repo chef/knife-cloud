@@ -18,16 +18,16 @@ class Chef
             end
 
             @chef_data_col_info = [
-              { :label => "Chef Node Name", :key => "name" },
-              { :label => "Environment", :key => "chef_environment" },
-              { :label => "FQDN", :key => "fqdn" },
-              { :label => "Runlist", :key => "run_list" },
-              { :label => "Tags", :key => "tags" },
-              { :label => "Platform", :key => "platform" },
+              { label: "Chef Node Name", key: "name" },
+              { label: "Environment", key: "chef_environment" },
+              { label: "FQDN", key: "fqdn" },
+              { label: "Runlist", key: "run_list" },
+              { label: "Tags", key: "tags" },
+              { label: "Platform", key: "platform" },
             ]
 
             if config[:chef_node_attribute]
-              @chef_data_col_info << { :label => "#{config[:chef_node_attribute]}", :key => "#{config[:chef_node_attribute]}" }
+              @chef_data_col_info << { label: "#{config[:chef_node_attribute]}", key: "#{config[:chef_node_attribute]}" }
             end
             @columns_with_info.concat(@chef_data_col_info)
           end

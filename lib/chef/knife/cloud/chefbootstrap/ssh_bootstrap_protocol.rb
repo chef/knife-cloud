@@ -145,7 +145,7 @@ class Chef
         def configure_ssh_gateway(ssh_gateway)
           gw_host, gw_user = ssh_gateway.split("@").reverse
           gw_host, gw_port = gw_host.split(":")
-          gateway_options = { :port => gw_port || 22 }
+          gateway_options = { port: gw_port || 22 }
 
           # Load the SSH config for the SSH gateway host.
           # Set the gateway user if it was not part of the
