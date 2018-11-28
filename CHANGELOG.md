@@ -1,9 +1,17 @@
 # knife-cloud Change Log
 
-<!-- latest_release -->
+<!-- latest_release 1.2.3 -->
+## [v1.2.3](https://github.com/chef/knife-cloud/tree/v1.2.3) (2018-11-28)
+
+#### Merged Pull Requests
+- Slim down the files we ship in the gem [#112](https://github.com/chef/knife-cloud/pull/112) ([tas50](https://github.com/tas50))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=1.2.1 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Slim down the files we ship in the gem [#112](https://github.com/chef/knife-cloud/pull/112) ([tas50](https://github.com/tas50)) <!-- 1.2.3 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
