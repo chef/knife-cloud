@@ -119,10 +119,10 @@ class Chef
           config[:image_os_type] = "windows" if config[:bootstrap_protocol] == "winrm"
         end
 
-        #generate a random name if chef_node_name is empty
+        # generate a random name if chef_node_name is empty
         def get_node_name(chef_node_name, prefix)
           return chef_node_name unless chef_node_name.nil?
-          #lazy uuids, 15 chars cause windows has limits
+          # lazy uuids, 15 chars cause windows has limits
           ("#{prefix}-" + rand.to_s.split(".")[1]).slice(0, 14)
         end
 

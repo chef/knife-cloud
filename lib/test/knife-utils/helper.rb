@@ -12,18 +12,18 @@ module KnifeTestHelper
 
   def match_status(test_run_expect)
     if "#{test_run_expect}" == "should fail"
-      should_not have_outcome :status => 0
+      should_not have_outcome status: 0
     elsif "#{test_run_expect}" == "should succeed"
-      should have_outcome :status => 0
+      should have_outcome status: 0
     elsif "#{test_run_expect}" == "should return empty list"
-      should have_outcome :status => 0
+      should have_outcome status: 0
     else
-      should have_outcome :status => 0
+      should have_outcome status: 0
     end
   end
 
   def match_stdout(test_run_expect)
-    should have_outcome :stdout => test_run_expect
+    should have_outcome stdout: test_run_expect
   end
 
   def create_file(file_dir, file_name, data_to_write_file_path)

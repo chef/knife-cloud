@@ -54,9 +54,8 @@ Sample gemspec:
 	  s.summary     = %q{TODO}
 	  s.description = %q{TODO}
 
-	  s.files         = `git ls-files`.split("\n")
+	  s.files         = %w{LICENSE} + Dir.glob("lib/**/*")
 	  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-	  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
 	  s.require_paths = ["lib"]
 
 	  s.add_dependency "knife-cloud"

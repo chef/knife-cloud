@@ -21,7 +21,7 @@ require "chef/knife/cloud/chefbootstrap/unix_distribution"
 describe Chef::Knife::Cloud::UnixDistribution do
 
   before do
-    @config = { :bootstrap_protocol => "ssh" }
+    @config = { bootstrap_protocol: "ssh" }
   end
 
   context "Unix Distribution initializer" do

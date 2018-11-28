@@ -22,7 +22,7 @@ require "chef/knife/bootstrap_windows_ssh"
 
 describe Chef::Knife::Cloud::Bootstrapper do
   before(:each) do
-    @config = { :bootstrap_protocol => "ssh" }
+    @config = { bootstrap_protocol: "ssh" }
     @instance = Chef::Knife::Cloud::Bootstrapper.new(@config)
   end
 

@@ -24,15 +24,15 @@ class Chef
           includer.class_eval do
 
             option :chef_data,
-              :long => "--chef-data",
-              :boolean => true,
-              :default => false,
-              :description => "Display chef node data which include chef node name, environment name, fqdn, platform, runlist and tags."
+              long: "--chef-data",
+              boolean: true,
+              default: false,
+              description: "Display chef node data which include chef node name, environment name, fqdn, platform, runlist and tags."
 
             option :chef_node_attribute,
-              :long => "--chef-node-attribute CHEF_NODE_ATTRIBUTE_NAME",
-              :description => "Used with --chef-data option. It display node attributes details by adding new column in server list display.",
-              :proc => Proc.new { |i| Chef::Config[:knife][:chef_node_attribute] = i }
+              long: "--chef-node-attribute CHEF_NODE_ATTRIBUTE_NAME",
+              description: "Used with --chef-data option. It display node attributes details by adding new column in server list display.",
+              proc: Proc.new { |i| Chef::Config[:knife][:chef_node_attribute] = i }
 
           end
         end

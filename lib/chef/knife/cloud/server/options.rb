@@ -23,14 +23,14 @@ class Chef
         def self.included(includer)
           includer.class_eval do
             option :chef_node_name,
-              :short => "-N NAME",
-              :long => "--node-name NAME",
-              :description => "The name of the node and client to delete, if it differs from the server name. Only has meaning when used with the '--purge' option."
+              short: "-N NAME",
+              long: "--node-name NAME",
+              description: "The name of the node and client to delete, if it differs from the server name. Only has meaning when used with the '--purge' option."
 
             option :custom_attributes,
-              :long => "--custom-attributes CUSTOM_ATTRIBUTES",
-              :description => "Custom attributes to be passed to Fog.",
-              :proc => Proc.new { |args| Chef::Config[:knife][:custom_attributes] = args.split(";").map { |keys| keys.split("=") }.map { |j| Hash[*j.map { |k| k.strip }] } }
+              long: "--custom-attributes CUSTOM_ATTRIBUTES",
+              description: "Custom attributes to be passed to Fog.",
+              proc: Proc.new { |args| Chef::Config[:knife][:custom_attributes] = args.split(";").map { |keys| keys.split("=") }.map { |j| Hash[*j.map { |k| k.strip }] } }
           end
         end
       end

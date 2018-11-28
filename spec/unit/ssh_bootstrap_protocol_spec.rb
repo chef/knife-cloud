@@ -21,7 +21,7 @@ require "chef/knife/bootstrap_windows_ssh"
 
 describe Chef::Knife::Cloud::SshBootstrapProtocol do
   before do
-    @config = { :bootstrap_protocol => "ssh" }
+    @config = { bootstrap_protocol: "ssh" }
     @instance = Chef::Knife::Cloud::SshBootstrapProtocol.new(@config)
     allow(@instance).to receive(:sleep).and_return(0)
     allow(@instance).to receive(:print)

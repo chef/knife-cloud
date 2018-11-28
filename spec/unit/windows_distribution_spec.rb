@@ -21,7 +21,7 @@ require "chef/knife/cloud/chefbootstrap/windows_distribution"
 describe Chef::Knife::Cloud::WindowsDistribution do
 
   before do
-    @config = { :bootstrap_protocol => "winrm" }
+    @config = { bootstrap_protocol: "winrm" }
   end
 
   context "Windows Distribution initializer" do
