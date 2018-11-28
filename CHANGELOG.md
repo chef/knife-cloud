@@ -1,25 +1,22 @@
 # knife-cloud Change Log
 
-<!-- latest_release 1.2.3 -->
+<!-- latest_release -->
+<!-- latest_release -->
+
+<!-- release_rollup -->
+<!-- release_rollup -->
+
+<!-- latest_stable_release -->
 ## [v1.2.3](https://github.com/chef/knife-cloud/tree/v1.2.3) (2018-11-28)
 
 #### Merged Pull Requests
 - Slim down the files we ship in the gem [#112](https://github.com/chef/knife-cloud/pull/112) ([tas50](https://github.com/tas50))
-<!-- latest_release -->
-
-<!-- release_rollup since=1.2.1 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Slim down the files we ship in the gem [#112](https://github.com/chef/knife-cloud/pull/112) ([tas50](https://github.com/tas50)) <!-- 1.2.3 -->
-<!-- release_rollup -->
-
 <!-- latest_stable_release -->
+
 ## [v1.2.2](https://github.com/chef/knife-cloud/tree/v1.2.2) (2018-08-21)
 
 #### Merged Pull Requests
 - Rescue the right Excon Socket error [#111](https://github.com/chef/knife-cloud/pull/111) ([tas50](https://github.com/tas50))
-<!-- latest_stable_release -->
 
 
 
