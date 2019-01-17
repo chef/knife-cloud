@@ -45,18 +45,18 @@ class Chef
         def network
           @network ||= begin
                         Fog::Network.new(@auth_params)
-                      rescue Excon::Error::Unauthorized => e
-                        error_message = "Connection failure, please check your username and password."
-                        ui.fatal(error_message)
-                        raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
-                      rescue Excon::Error::Socket => e
-                        error_message = "Connection failure, please check your authentication URL."
-                        ui.fatal(error_message)
-                        raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
-                      rescue Fog::Errors::NotFound => e
-                        error_message = "No Network service found. This command is unavailable with current cloud."
-                        ui.fatal(error_message)
-                        raise CloudExceptions::NetworkNotFoundError, "#{e.message}. #{error_message}"
+                       rescue Excon::Error::Unauthorized => e
+                         error_message = "Connection failure, please check your username and password."
+                         ui.fatal(error_message)
+                         raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
+                       rescue Excon::Error::Socket => e
+                         error_message = "Connection failure, please check your authentication URL."
+                         ui.fatal(error_message)
+                         raise CloudExceptions::ServiceConnectionError, "#{e.message}. #{error_message}"
+                       rescue Fog::Errors::NotFound => e
+                         error_message = "No Network service found. This command is unavailable with current cloud."
+                         ui.fatal(error_message)
+                         raise CloudExceptions::NetworkNotFoundError, "#{e.message}. #{error_message}"
                       end
         end
 
