@@ -1,9 +1,17 @@
 # knife-cloud Change Log
 
-<!-- latest_release -->
+<!-- latest_release 1.2.4 -->
+## [v1.2.4](https://github.com/chef/knife-cloud/tree/v1.2.4) (2019-01-17)
+
+#### Merged Pull Requests
+- Chefstyle fixes [#113](https://github.com/chef/knife-cloud/pull/113) ([tas50](https://github.com/tas50))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=1.2.3 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Chefstyle fixes [#113](https://github.com/chef/knife-cloud/pull/113) ([tas50](https://github.com/tas50)) <!-- 1.2.4 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
