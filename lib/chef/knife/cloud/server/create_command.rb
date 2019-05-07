@@ -24,6 +24,8 @@ class Chef
       class ServerCreateCommand < Command
         attr_accessor :server, :create_options
 
+        Chef::Knife::Bootstrap.load_deps
+
         def initialize(argv = [])
           super argv
           # columns_with_info is array of hash with label, key and attribute extraction callback, ex [{:label => "Label text", :key => 'key', value_callback => callback_method to extract/format the required value}, ...]
