@@ -51,7 +51,6 @@ class Chef
           bootstrap.config[:run_list] = locate_config_value(:run_list)
           bootstrap.config[:prerelease] = locate_config_value(:prerelease)
           bootstrap.config[:bootstrap_version] = locate_config_value(:bootstrap_version)
-          bootstrap.config[:distro] = locate_config_value(:distro)
           bootstrap.config[:bootstrap_proxy] = locate_config_value(:bootstrap_proxy)
           bootstrap.config[:environment] = locate_config_value(:environment)
           # see chef/knife/bootstrap.rb #warn_chef_config_secret_key.
@@ -60,7 +59,6 @@ class Chef
           bootstrap.config[:first_boot_attributes] = locate_config_value(:first_boot_attributes)
           bootstrap.config[:secret] = locate_config_value(:secret)
           bootstrap.config[:secret_file] = locate_config_value(:secret_file)
-          bootstrap.config[:template_file] = locate_config_value(:template_file)
           bootstrap.config[:bootstrap_template] = locate_config_value(:bootstrap_template)
           bootstrap.config[:node_ssl_verify_mode] = locate_config_value(:node_ssl_verify_mode)
           bootstrap.config[:node_verify_api_cert] = locate_config_value(:node_verify_api_cert)

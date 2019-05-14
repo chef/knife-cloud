@@ -101,7 +101,7 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
   describe "#get_node_name" do
     it "auto generates chef_node_name" do
       instance.config[:bootstrap_protocol] = "ssh"
-      instance.config[:ssh_password] = "password"
+      instance.config[:connection_password] = "password"
       instance.config[:image_os_type] = "linux"
       instance.config[:chef_node_name_prefix] = "os"
       expect(instance).to receive(:get_node_name).and_call_original
@@ -112,7 +112,7 @@ shared_examples_for Chef::Knife::Cloud::ServerCreateCommand do |instance|
     it "auto generates unique chef_node_name" do
       node_names = []
       instance.config[:bootstrap_protocol] = "ssh"
-      instance.config[:ssh_password] = "password"
+      instance.config[:connection_password] = "password"
       instance.config[:image_os_type] = "linux"
       instance.config[:chef_node_name_prefix] = "os"
       5.times do

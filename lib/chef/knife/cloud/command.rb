@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-require "chef/knife"
+require "chef/knife/bootstrap"
 require "chef/knife/cloud/helpers"
 require "chef/knife/cloud/exceptions"
 
@@ -24,7 +24,7 @@ class Chef
   class Knife
 
     class Cloud
-      class Command < Chef::Knife
+      class Command < Chef::Knife::Bootstrap
         include Cloud::Helpers
         attr_accessor :service, :custom_arguments
 

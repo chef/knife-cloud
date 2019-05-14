@@ -20,8 +20,7 @@
 require "chef/knife/core/ui"
 require "chef/knife/cloud/chefbootstrap/ssh_bootstrap_protocol"
 require "chef/knife/cloud/chefbootstrap/winrm_bootstrap_protocol"
-require "chef/knife/cloud/chefbootstrap/windows_distribution"
-require "chef/knife/cloud/chefbootstrap/unix_distribution"
+require "chef/knife/cloud/chefbootstrap/bootstrap_distribution"
 require "chef/knife/cloud/exceptions"
 
 class Chef
@@ -36,6 +35,7 @@ class Chef
 
         def bootstrap
           # uses BootstrapDistribution and BootstrapProtocol to perform bootstrap
+          byebug
           @protocol = create_bootstrap_protocol
           @distribution = create_bootstrap_distribution
           begin
@@ -47,6 +47,7 @@ class Chef
         end
 
         def create_bootstrap_protocol
+          byebug
           if @config[:bootstrap_protocol].nil? || @config[:bootstrap_protocol] == "ssh"
             SshBootstrapProtocol.new(@config)
           elsif @config[:bootstrap_protocol] == "winrm"
@@ -60,10 +61,8 @@ class Chef
         end
 
         def create_bootstrap_distribution
-          if @config[:image_os_type] == "windows"
-            Chef::Knife::Cloud::WindowsDistribution.new(@config)
-          elsif @config[:image_os_type] == "linux"
-            Chef::Knife::Cloud::UnixDistribution.new(@config)
+          if @config[:image_os_type] == "windows" || @config[:image_os_type] == "linux"
+            Chef::Knife::Cloud::BootstrapDistribution.new(@config)
           else
             # raise an exception, invalid bootstrap distribution.
             error_message = "Invalid bootstrap distribution. image_os_type should be either windows or linux."

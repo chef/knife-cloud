@@ -18,7 +18,7 @@
 
 require "spec_helper"
 require "chef/knife/cloud/chefbootstrap/bootstrapper"
-require "chef/knife/bootstrap_windows_ssh"
+#require "chef/knife/bootstrap_windows_ssh"
 
 describe Chef::Knife::Cloud::Bootstrapper do
   before(:each) do
