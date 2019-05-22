@@ -17,5 +17,5 @@ group :test do
   gem "rspec_junit_formatter"
   gem "fog"
   gem "chefstyle"
-  gem "chef"
+  gem "chef", ">= 15.0"
 end

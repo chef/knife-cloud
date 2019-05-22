@@ -107,7 +107,6 @@ class Chef
 
         # any cloud specific initializations/cleanup we want to do around bootstrap.
         def before_bootstrap
-          ssh_override_winrm if locate_config_value(:bootstrap_protocol) == "ssh"
         end
 
         def after_bootstrap

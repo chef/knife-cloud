@@ -16,7 +16,6 @@
 # limitations under the License.
 #
 require "chef/knife/cloud/chefbootstrap/bootstrap_distribution"
-require "chef/knife/bootstrap_windows_base"
 
 class Chef
   class Knife

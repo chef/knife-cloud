@@ -17,7 +17,6 @@
 
 require "spec_helper"
 require "chef/knife/cloud/chefbootstrap/ssh_bootstrap_protocol"
-require "chef/knife/bootstrap_windows_ssh"
 
 describe Chef::Knife::Cloud::SshBootstrapProtocol do
   before do
