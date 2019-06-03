@@ -35,7 +35,6 @@ class Chef
 
         def bootstrap
           # uses BootstrapDistribution and BootstrapProtocol to perform bootstrap
-          byebug
           @protocol = create_bootstrap_protocol
           @distribution = create_bootstrap_distribution
           begin
@@ -47,7 +46,6 @@ class Chef
         end
 
         def create_bootstrap_protocol
-          byebug
           if @config[:bootstrap_protocol].nil? || @config[:bootstrap_protocol] == "ssh"
             SshBootstrapProtocol.new(@config)
           elsif @config[:bootstrap_protocol] == "winrm"

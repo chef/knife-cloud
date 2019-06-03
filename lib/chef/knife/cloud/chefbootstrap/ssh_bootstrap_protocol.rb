@@ -57,7 +57,7 @@ class Chef
               puts("done")
             end
           else
-            print(".") until tcp_test_ssh(@config[:bootstrap_ip_address], locate_config_value(:ssh_port)) do
+            print(".") until tcp_test_ssh(@config[:bootstrap_ip_address], locate_config_value(:connection_port) || Chef::Config[:knife][:ssh_port] ) do
               @initial_sleep_delay = !!locate_config_value(:subnet_id) ? 40 : 10
               sleep @initial_sleep_delay
               puts("done")

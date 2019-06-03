@@ -14,14 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-require "chef/knife/cloud/command"
+require "chef/knife/cloud/command_bootstrap"
 require "chef/knife/cloud/exceptions"
 require "chef/knife/cloud/chefbootstrap/bootstrapper"
 
 class Chef
   class Knife
     class Cloud
-      class ServerCreateCommand < Command
+      class ServerCreateCommand < BootstrapCommand
         attr_accessor :server, :create_options
         Chef::Knife::Bootstrap.load_deps
 
