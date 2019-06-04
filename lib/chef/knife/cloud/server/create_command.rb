@@ -127,9 +127,6 @@ class Chef
 
         def post_connection_validations
         end
-
-        private
-
       end # class ServerCreateCommand
     end
   end
