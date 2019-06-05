@@ -26,30 +26,30 @@ class Chef
 
         def initialize(config)
           load_winrm_deps
-          @bootstrap = Chef::Knife::BootstrapWindowsWinrm.new
+          @bootstrap = Chef::Knife::Bootstrap.new
           super
         end
 
         def load_winrm_deps
           require "winrm"
-          require "chef/knife/bootstrap_windows_winrm"
           require "chef/knife/core/windows_bootstrap_context"
-          require "chef/knife/winrm"
         end
 
         def init_bootstrap_options
-          bootstrap.config[:winrm_user] = @config[:winrm_user] || "Administrator"
-          bootstrap.config[:winrm_password] = @config[:winrm_password]
-          bootstrap.config[:winrm_transport] = @config[:winrm_transport]
-          bootstrap.config[:winrm_port] = @config[:winrm_port]
+          bootstrap.config[:connection_user] = @config[:connection_user] || "Administrator"
+          bootstrap.config[:connection_password] = @config[:connection_password]
+          bootstrap.config[:winrm_ssl] = @config[:winrm_ssl]
+          bootstrap.config[:connection_port] = @config[:connection_port]
           bootstrap.config[:auth_timeout] = @config[:auth_timeout]
           bootstrap.config[:winrm_ssl_verify_mode] = @config[:winrm_ssl_verify_mode]
+          bootstrap.config[:connection_protocol] = @config[:bootstrap_protocol]
+          bootstrap.config[:channel] = @config[:channel]
           super
         end
 
         def wait_for_server_ready
           print "\n#{ui.color("Waiting for winrm to host (#{@config[:bootstrap_ip_address]})", :magenta)}"
-          print(".") until tcp_test_winrm(@config[:bootstrap_ip_address], @config[:winrm_port]) do
+          print(".") until tcp_test_winrm(@config[:bootstrap_ip_address], @config[:connection_port]) do
             sleep @initial_sleep_delay ||= 10
             puts("done")
           end
