@@ -33,14 +33,14 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
       Chef::Config[:knife][:ssh_identity_file] = "ssh_identity_file"
       Chef::Config[:knife][:connection_password] = "connection_password"
       Chef::Config[:knife][:chef_node_name] = "chef_node_name"
-      Chef::Config[:knife][:winrm_password] = "winrm_password"
+      Chef::Config[:knife][:connection_password] = "connection_password"
     end
     after(:all) do
       Chef::Config[:knife].delete(:bootstrap_protocol)
       Chef::Config[:knife].delete(:ssh_identity_file)
       Chef::Config[:knife].delete(:chef_node_name)
       Chef::Config[:knife].delete(:connection_password)
-      Chef::Config[:knife].delete(:winrm_password)
+      Chef::Config[:knife].delete(:connection_password)
     end
 
     it "run sucessfully on all params exist" do
@@ -57,9 +57,9 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
     end
 
     context "when bootstrap_protocol winrm" do
-      it "raise error on winrm_password is missing" do
+      it "raise error on connection_password is missing" do
         Chef::Config[:knife][:bootstrap_protocol] = "winrm"
-        Chef::Config[:knife].delete(:winrm_password)
+        Chef::Config[:knife].delete(:connection_password)
         expect { @instance.validate_params! }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ValidationError, " You must provide Winrm Password..")
       end
     end

@@ -35,15 +35,15 @@ class Chef
           # set param vm_name to a random value if the name is not set by the user (plugin)
           config[:chef_node_name] = get_node_name(locate_config_value(:chef_node_name), locate_config_value(:chef_node_name_prefix))
 
-          # validate connection_user, connection_password, ssh_identity_file for ssh bootstrap protocol and winrm_password for winrm bootstrap protocol
+          # validate ssh_identity_file for ssh bootstrap protocol and connection_user, connection_password for both ssh bootstrap protocol and winrm bootstrap protocol
           errors = []
           if locate_config_value(:bootstrap_protocol) == "ssh"
             if locate_config_value(:ssh_identity_file).nil? && locate_config_value(:connection_password).nil?
               errors << "You must provide either Identity file or SSH Password."
             end
           elsif locate_config_value(:bootstrap_protocol) == "winrm"
-            if locate_config_value(:winrm_password).nil?
-              errors << "You must provide Winrm Password."
+            if locate_config_value(:connection_password).nil?
+              errors << "You must provide Connection Password."
             end
           else
             errors << "You must provide a valid bootstrap protocol. options [ssh/winrm]. For linux type images, options [ssh]"
