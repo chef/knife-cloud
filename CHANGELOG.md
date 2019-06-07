@@ -1,16 +1,17 @@
 # knife-cloud Change Log
 
-<!-- latest_release 1.2.4 -->
-## [v1.2.4](https://github.com/chef/knife-cloud/tree/v1.2.4) (2019-01-17)
+<!-- latest_release 2.0.0 -->
+## [v2.0.0](https://github.com/chef/knife-cloud/tree/v2.0.0) (2019-06-07)
 
 #### Merged Pull Requests
-- Chefstyle fixes [#113](https://github.com/chef/knife-cloud/pull/113) ([tas50](https://github.com/tas50))
+- Bump major to v2, as we require Chef 15 now [#118](https://github.com/chef/knife-cloud/pull/118) ([btm](https://github.com/btm))
 <!-- latest_release -->
 
 <!-- release_rollup since=1.2.3 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Bump major to v2, as we require Chef 15 now [#118](https://github.com/chef/knife-cloud/pull/118) ([btm](https://github.com/btm)) <!-- 2.0.0 -->
 - Chefstyle fixes [#113](https://github.com/chef/knife-cloud/pull/113) ([tas50](https://github.com/tas50)) <!-- 1.2.4 -->
 <!-- release_rollup -->
 
