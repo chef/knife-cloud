@@ -1,5 +1,5 @@
 #
-# Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
+# Author:: Ashwini Nehate (<ashwini.nehate@msystechnologies.com>)
 # Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-require "chef/knife"
+require "chef/knife/bootstrap"
 require "chef/knife/cloud/helpers"
 require "chef/knife/cloud/exceptions"
 
@@ -24,7 +24,7 @@ class Chef
   class Knife
 
     class Cloud
-      class Command < Chef::Knife
+      class BootstrapCommand < Chef::Knife::Bootstrap
         include Cloud::Helpers
         attr_accessor :service, :custom_arguments
 
@@ -55,6 +55,7 @@ class Chef
           Chef::Log.debug(e.message)
           exit 1
         end
+
       end # class Command
     end
   end

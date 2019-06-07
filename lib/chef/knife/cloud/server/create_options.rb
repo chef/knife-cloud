@@ -46,11 +46,14 @@ class Chef
               description: "The flavor name or ID of server",
               proc: Proc.new { |f| Chef::Config[:knife][:flavor] = f }
 
+            # The Deprecation part will be removed once we can call `verify_deprecated_flags!` function from Chef::Knife::Bootstrap
             option :bootstrap_protocol,
               long: "--bootstrap-protocol protocol",
-              description: "Protocol to bootstrap servers. options: winrm/ssh. For linux servers always use ssh.",
-              default: "ssh",
-              proc: Proc.new { |b| Chef::Config[:knife][:bootstrap_protocol] = b }
+              description: "This flag is deprecated. [DEPRECATED] Use --connection-protocol option instead.",
+              proc: Proc.new { |v|
+                Chef::Log.warn("[DEPRECATED] --bootstrap-protocol option is deprecated. Use --connection-protocol option instead.")
+                v
+              }
 
             option :server_create_timeout,
               long: "--server-create-timeout timeout",

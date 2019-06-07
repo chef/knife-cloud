@@ -32,13 +32,12 @@ class Chef
         end
 
         def init_bootstrap_options
-          bootstrap.config[:ssh_user] = @config[:ssh_user]
-          bootstrap.config[:ssh_password] = @config[:ssh_password]
-          bootstrap.config[:ssh_port] = locate_config_value(:ssh_port)
-          bootstrap.config[:identity_file] = @config[:identity_file]
-          bootstrap.config[:host_key_verify] = @config[:host_key_verify]
-          bootstrap.config[:use_sudo] = true unless @config[:ssh_user] == "root"
-          bootstrap.config[:template_file] = @config[:template_file]
+          bootstrap.config[:connection_user] = @config[:connection_user]
+          bootstrap.config[:connection_password] = @config[:connection_password]
+          bootstrap.config[:connection_port] = locate_config_value(:connection_port)
+          bootstrap.config[:ssh_identity_file] = @config[:ssh_identity_file]
+          bootstrap.config[:ssh_verify_host_key] = @config[:ssh_verify_host_key]
+          bootstrap.config[:use_sudo] = true unless @config[:connection_user] == "root"
           bootstrap.config[:ssh_gateway] = locate_config_value(:ssh_gateway)
           bootstrap.config[:forward_agent] = locate_config_value(:forward_agent)
           bootstrap.config[:use_sudo_password] = locate_config_value(:use_sudo_password)
@@ -58,7 +57,7 @@ class Chef
               puts("done")
             end
           else
-            print(".") until tcp_test_ssh(@config[:bootstrap_ip_address], locate_config_value(:ssh_port)) do
+            print(".") until tcp_test_ssh(@config[:bootstrap_ip_address], locate_config_value(:connection_port) || Chef::Config[:knife][:ssh_port] ) do
               @initial_sleep_delay = !!locate_config_value(:subnet_id) ? 40 : 10
               sleep @initial_sleep_delay
               puts("done")

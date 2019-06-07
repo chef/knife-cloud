@@ -14,15 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-require "chef/knife/cloud/command"
+require "chef/knife/cloud/command_bootstrap"
 require "chef/knife/cloud/exceptions"
 require "chef/knife/cloud/chefbootstrap/bootstrapper"
 
 class Chef
   class Knife
     class Cloud
-      class ServerCreateCommand < Command
+      class ServerCreateCommand < BootstrapCommand
         attr_accessor :server, :create_options
+        Chef::Knife::Bootstrap.load_deps
 
         def initialize(argv = [])
           super argv
@@ -34,19 +35,18 @@ class Chef
           # set param vm_name to a random value if the name is not set by the user (plugin)
           config[:chef_node_name] = get_node_name(locate_config_value(:chef_node_name), locate_config_value(:chef_node_name_prefix))
 
-          # validate ssh_user, ssh_password, identity_file for ssh bootstrap protocol and winrm_password for winrm bootstrap protocol
+          # validate ssh_identity_file for connection protocol and connection_user, connection_password for both ssh bootstrap protocol and winrm bootstrap protocol
           errors = []
-
-          if locate_config_value(:bootstrap_protocol) == "ssh"
-            if locate_config_value(:identity_file).nil? && locate_config_value(:ssh_password).nil?
+          if locate_config_value(:connection_protocol) == "ssh"
+            if locate_config_value(:ssh_identity_file).nil? && locate_config_value(:connection_password).nil?
               errors << "You must provide either Identity file or SSH Password."
             end
-          elsif locate_config_value(:bootstrap_protocol) == "winrm"
-            if locate_config_value(:winrm_password).nil?
-              errors << "You must provide Winrm Password."
+          elsif locate_config_value(:connection_protocol) == "winrm"
+            if locate_config_value(:connection_password).nil?
+              errors << "You must provide Connection Password."
             end
           else
-            errors << "You must provide a valid bootstrap protocol. options [ssh/winrm]. For linux type images, options [ssh]"
+            errors << "You must provide a valid connection protocol. options [ssh/winrm]. For linux type images, options [ssh]"
           end
           error_message = ""
           raise CloudExceptions::ValidationError, error_message if errors.each { |e| ui.error(e); error_message = "#{error_message} #{e}." }.any?
@@ -100,14 +100,13 @@ class Chef
           before_bootstrap
           @bootstrapper = Bootstrapper.new(config)
           Chef::Log.debug("Bootstrapping the server...")
-          ui.info("Bootstrapping the server by using #{ui.color("bootstrap_protocol", :cyan)}: #{config[:bootstrap_protocol]} and #{ui.color("image_os_type", :cyan)}: #{config[:image_os_type]}")
+          ui.info("Bootstrapping the server by using #{ui.color("connection_protocol", :cyan)}: #{config[:connection_protocol]} and #{ui.color("image_os_type", :cyan)}: #{config[:image_os_type]}")
           @bootstrapper.bootstrap
           after_bootstrap
         end
 
         # any cloud specific initializations/cleanup we want to do around bootstrap.
         def before_bootstrap
-          ssh_override_winrm if locate_config_value(:bootstrap_protocol) == "ssh"
         end
 
         def after_bootstrap
@@ -116,7 +115,7 @@ class Chef
 
         # knife-plugin can override set_default_config to set default config by using their own mechanism.
         def set_default_config
-          config[:image_os_type] = "windows" if config[:bootstrap_protocol] == "winrm"
+          config[:image_os_type] = "windows" if config[:connection_protocol] == "winrm"
         end
 
         # generate a random name if chef_node_name is empty
@@ -127,32 +126,6 @@ class Chef
         end
 
         def post_connection_validations
-        end
-
-        private
-
-        # Here, ssh config override winrm config
-        def ssh_override_winrm
-          # unchanged ssh_user and changed winrm_user, override ssh_user
-          if locate_config_value(:ssh_user).eql?(options[:ssh_user][:default]) &&
-              !locate_config_value(:winrm_user).eql?(options[:winrm_user][:default])
-            config[:ssh_user] = locate_config_value(:winrm_user)
-          end
-          # unchanged ssh_port and changed winrm_port, override ssh_port
-          if locate_config_value(:ssh_port).eql?(options[:ssh_port][:default]) &&
-              !locate_config_value(:winrm_port).eql?(options[:winrm_port][:default])
-            config[:ssh_port] = locate_config_value(:winrm_port)
-          end
-          # unset ssh_password and set winrm_password, override ssh_password
-          if locate_config_value(:ssh_password).nil? &&
-              !locate_config_value(:winrm_password).nil?
-            config[:ssh_password] = locate_config_value(:winrm_password)
-          end
-          # unset identity_file and set kerberos_keytab_file, override identity_file
-          if locate_config_value(:identity_file).nil? &&
-              !locate_config_value(:kerberos_keytab_file).nil?
-            config[:identity_file] = locate_config_value(:kerberos_keytab_file)
-          end
         end
       end # class ServerCreateCommand
     end

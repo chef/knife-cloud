@@ -30,17 +30,17 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
       @instance = Chef::Knife::Cloud::ServerCreateCommand.new
       allow(@instance.ui).to receive(:error)
       Chef::Config[:knife][:bootstrap_protocol] = "ssh"
-      Chef::Config[:knife][:identity_file] = "identity_file"
-      Chef::Config[:knife][:ssh_password] = "ssh_password"
+      Chef::Config[:knife][:ssh_identity_file] = "ssh_identity_file"
+      Chef::Config[:knife][:connection_password] = "connection_password"
       Chef::Config[:knife][:chef_node_name] = "chef_node_name"
-      Chef::Config[:knife][:winrm_password] = "winrm_password"
+      Chef::Config[:knife][:connection_password] = "connection_password"
     end
     after(:all) do
       Chef::Config[:knife].delete(:bootstrap_protocol)
-      Chef::Config[:knife].delete(:identity_file)
+      Chef::Config[:knife].delete(:ssh_identity_file)
       Chef::Config[:knife].delete(:chef_node_name)
-      Chef::Config[:knife].delete(:ssh_password)
-      Chef::Config[:knife].delete(:winrm_password)
+      Chef::Config[:knife].delete(:connection_password)
+      Chef::Config[:knife].delete(:connection_password)
     end
 
     it "run sucessfully on all params exist" do
@@ -49,17 +49,17 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
     end
 
     context "when bootstrap_protocol ssh" do
-      it "raise error on ssh_password and identity_file are missing" do
-        Chef::Config[:knife].delete(:identity_file)
-        Chef::Config[:knife].delete(:ssh_password)
+      it "raise error on connection_password and ssh_identity_file are missing" do
+        Chef::Config[:knife].delete(:ssh_identity_file)
+        Chef::Config[:knife].delete(:connection_password)
         expect { @instance.validate_params! }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ValidationError, " You must provide either Identity file or SSH Password..")
       end
     end
 
     context "when bootstrap_protocol winrm" do
-      it "raise error on winrm_password is missing" do
+      it "raise error on connection_password is missing" do
         Chef::Config[:knife][:bootstrap_protocol] = "winrm"
-        Chef::Config[:knife].delete(:winrm_password)
+        Chef::Config[:knife].delete(:connection_password)
         expect { @instance.validate_params! }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ValidationError, " You must provide Winrm Password..")
       end
     end
@@ -146,24 +146,24 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
     context "bootstrap_protocol shh" do
       before { @instance.config[:bootstrap_protocol] = "ssh" }
 
-      it "set ssh_user value by using -x option for ssh bootstrap protocol or linux image" do
+      it "set connection_user value by using -x option for ssh bootstrap protocol or linux image" do
         # Currently -x option set config[:winrm_user]
-        # default value of config[:ssh_user] is root
+        # default value of config[:connection_user] is root
         @instance.config[:winrm_user] = "ubuntu"
-        @instance.config[:ssh_user] = "root"
+        @instance.config[:connection_user] = "root"
 
         @instance.before_bootstrap
-        expect(@instance.config[:ssh_user]).to eq("ubuntu")
+        expect(@instance.config[:connection_user]).to eq("ubuntu")
       end
 
-      it "set ssh_password value by using -P option for ssh bootstrap protocol or linux image" do
+      it "set connection_password value by using -P option for ssh bootstrap protocol or linux image" do
         # Currently -P option set config[:winrm_password]
-        # default value of config[:ssh_password] is nil
+        # default value of config[:connection_password] is nil
         @instance.config[:winrm_password] = "winrm_password"
-        @instance.config[:ssh_password] = nil
+        @instance.config[:connection_password] = nil
 
         @instance.before_bootstrap
-        expect(@instance.config[:ssh_password]).to eq("winrm_password")
+        expect(@instance.config[:connection_password]).to eq("winrm_password")
       end
 
       it "set ssh_port value by using -p option for ssh bootstrap protocol or linux image" do
@@ -176,14 +176,14 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
         expect(@instance.config[:ssh_port]).to eq("1234")
       end
 
-      it "set identity_file value by using -i option for ssh bootstrap protocol or linux image" do
+      it "set ssh_identity_file value by using -i option for ssh bootstrap protocol or linux image" do
         # Currently -i option set config[:kerberos_keytab_file]
-        # default value of config[:identity_file] is nil
+        # default value of config[:ssh_identity_file] is nil
         @instance.config[:kerberos_keytab_file] = "kerberos_keytab_file"
-        @instance.config[:identity_file] = nil
+        @instance.config[:ssh_identity_file] = nil
 
         @instance.before_bootstrap
-        expect(@instance.config[:identity_file]).to eq("kerberos_keytab_file")
+        expect(@instance.config[:ssh_identity_file]).to eq("kerberos_keytab_file")
       end
     end
 
