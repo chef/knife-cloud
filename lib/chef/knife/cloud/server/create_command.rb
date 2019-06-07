@@ -35,18 +35,18 @@ class Chef
           # set param vm_name to a random value if the name is not set by the user (plugin)
           config[:chef_node_name] = get_node_name(locate_config_value(:chef_node_name), locate_config_value(:chef_node_name_prefix))
 
-          # validate ssh_identity_file for ssh bootstrap protocol and connection_user, connection_password for both ssh bootstrap protocol and winrm bootstrap protocol
+          # validate ssh_identity_file for connection protocol and connection_user, connection_password for both ssh bootstrap protocol and winrm bootstrap protocol
           errors = []
-          if locate_config_value(:bootstrap_protocol) == "ssh"
+          if locate_config_value(:connection_protocol) == "ssh"
             if locate_config_value(:ssh_identity_file).nil? && locate_config_value(:connection_password).nil?
               errors << "You must provide either Identity file or SSH Password."
             end
-          elsif locate_config_value(:bootstrap_protocol) == "winrm"
+          elsif locate_config_value(:connection_protocol) == "winrm"
             if locate_config_value(:connection_password).nil?
               errors << "You must provide Connection Password."
             end
           else
-            errors << "You must provide a valid bootstrap protocol. options [ssh/winrm]. For linux type images, options [ssh]"
+            errors << "You must provide a valid connection protocol. options [ssh/winrm]. For linux type images, options [ssh]"
           end
           error_message = ""
           raise CloudExceptions::ValidationError, error_message if errors.each { |e| ui.error(e); error_message = "#{error_message} #{e}." }.any?
@@ -100,7 +100,7 @@ class Chef
           before_bootstrap
           @bootstrapper = Bootstrapper.new(config)
           Chef::Log.debug("Bootstrapping the server...")
-          ui.info("Bootstrapping the server by using #{ui.color("bootstrap_protocol", :cyan)}: #{config[:bootstrap_protocol]} and #{ui.color("image_os_type", :cyan)}: #{config[:image_os_type]}")
+          ui.info("Bootstrapping the server by using #{ui.color("connection_protocol", :cyan)}: #{config[:connection_protocol]} and #{ui.color("image_os_type", :cyan)}: #{config[:image_os_type]}")
           @bootstrapper.bootstrap
           after_bootstrap
         end
@@ -115,7 +115,7 @@ class Chef
 
         # knife-plugin can override set_default_config to set default config by using their own mechanism.
         def set_default_config
-          config[:image_os_type] = "windows" if config[:bootstrap_protocol] == "winrm"
+          config[:image_os_type] = "windows" if config[:connection_protocol] == "winrm"
         end
 
         # generate a random name if chef_node_name is empty

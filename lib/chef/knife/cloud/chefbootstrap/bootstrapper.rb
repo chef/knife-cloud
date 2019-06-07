@@ -46,9 +46,9 @@ class Chef
         end
 
         def create_bootstrap_protocol
-          if @config[:bootstrap_protocol].nil? || @config[:bootstrap_protocol] == "ssh"
+          if @config[:connection_protocol].nil? || @config[:connection_protocol] == "ssh"
             SshBootstrapProtocol.new(@config)
-          elsif @config[:bootstrap_protocol] == "winrm"
+          elsif @config[:connection_protocol] == "winrm"
             WinrmBootstrapProtocol.new(@config)
           else
             # raise an exception, invalid bootstrap protocol.
