@@ -21,7 +21,7 @@ require "chef/knife/bootstrap"
 
 describe Chef::Knife::Cloud::BootstrapProtocol do
   before do
-    @config = { bootstrap_protocol: "ssh" }
+    @config = { connection_protocol: "ssh" }
     @instance = Chef::Knife::Cloud::BootstrapProtocol.new(@config)
   end
 
@@ -54,7 +54,6 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
       @config[:first_boot_attributes] = "{\"foo\":\"bar\"}"
       @config[:secret] = "secret"
       @config[:secret_file] = "secret_file"
-      @config[:template_file] = "../template_file"
       @config[:bootstrap_vault_file] = "/foo/bar/baz"
       @config[:bootstrap_vault_json] = '{ "vault": "item1" }'
       @config[:bootstrap_vault_item] = { "vault" => "item1" }
@@ -78,7 +77,6 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
       expect(@instance.bootstrap.config[:first_boot_attributes]).to eq(@config[:first_boot_attributes])
       expect(@instance.bootstrap.config[:secret]).to eq(@config[:secret])
       expect(@instance.bootstrap.config[:secret_file]).to eq(@config[:secret_file])
-      expect(@instance.bootstrap.config[:template_file]).to eq(@config[:template_file])
       expect(@instance.bootstrap.config[:bootstrap_vault_file]).to eq(@config[:bootstrap_vault_file])
       expect(@instance.bootstrap.config[:bootstrap_vault_json]).to eq(@config[:bootstrap_vault_json])
       expect(@instance.bootstrap.config[:bootstrap_vault_item]).to eq(@config[:bootstrap_vault_item])

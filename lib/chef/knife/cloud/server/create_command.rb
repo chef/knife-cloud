@@ -39,7 +39,7 @@ class Chef
           errors = []
           if locate_config_value(:connection_protocol) == "ssh"
             if locate_config_value(:ssh_identity_file).nil? && locate_config_value(:connection_password).nil?
-              errors << "You must provide either Identity file or SSH Password."
+              errors << "You must provide either SSH Identity file or Connection Password."
             end
           elsif locate_config_value(:connection_protocol) == "winrm"
             if locate_config_value(:connection_password).nil?
@@ -82,7 +82,7 @@ class Chef
           cleanup_on_failure
           raise e
         rescue => e
-          error_message = "Check if --bootstrap-protocol and --image-os-type is correct. #{e.message}"
+          error_message = "Check if --connection-protocol and --image-os-type is correct. #{e.message}"
           ui.fatal(error_message)
           cleanup_on_failure
           raise e, error_message
