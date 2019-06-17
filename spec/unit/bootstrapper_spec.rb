@@ -40,9 +40,9 @@ describe Chef::Knife::Cloud::Bootstrapper do
     it "executes with correct method calls" do
       @ssh_bootstrap_protocol = Chef::Knife::Cloud::SshBootstrapProtocol.new(@config)
       allow(@instance).to receive(:create_bootstrap_protocol).and_return(@ssh_bootstrap_protocol)
-      @bootstrapdistribution = Chef::Knife::Cloud::BootstrapDistribution.new(@config)
+      @bootstrap_distribution = Chef::Knife::Cloud::BootstrapDistribution.new(@config)
       expect(@instance).to receive(:create_bootstrap_protocol).ordered
-      allow(@instance).to receive(:create_bootstrap_distribution).and_return(@bootstrapdistribution)
+      allow(@instance).to receive(:create_bootstrap_distribution).and_return(@bootstrap_distribution)
       expect(@ssh_bootstrap_protocol).to receive(:send_bootstrap_command).ordered
       @instance.bootstrap
     end
@@ -52,9 +52,9 @@ describe Chef::Knife::Cloud::Bootstrapper do
     it "executes with correct method calls" do
       @winrm_bootstrap_protocol = Chef::Knife::Cloud::WinrmBootstrapProtocol.new(@config)
       allow(@instance).to receive(:create_bootstrap_protocol).and_return(@winrm_bootstrap_protocol)
-      @bootstrapdistribution = Chef::Knife::Cloud::BootstrapDistribution.new(@config)
+      @bootstrap_distribution = Chef::Knife::Cloud::BootstrapDistribution.new(@config)
       expect(@instance).to receive(:create_bootstrap_protocol).ordered
-      allow(@instance).to receive(:create_bootstrap_distribution).and_return(@bootstrapdistribution)
+      allow(@instance).to receive(:create_bootstrap_distribution).and_return(@bootstrap_distribution)
       expect(@winrm_bootstrap_protocol).to receive(:send_bootstrap_command).ordered
       @instance.bootstrap
     end
@@ -66,7 +66,7 @@ describe Chef::Knife::Cloud::Bootstrapper do
         @config[:image_os_type] = "windows"
       end
 
-      it "instantiates Distribution class." do
+      it "instantiates the BootstrapDistribution class" do
         expect(Chef::Knife::Cloud::BootstrapDistribution).to receive(:new).with(@config)
         @instance.create_bootstrap_distribution
       end
@@ -78,7 +78,7 @@ describe Chef::Knife::Cloud::Bootstrapper do
         @config[:image_os_type] = "linux"
       end
 
-      it "instantiates Distribution class." do
+      it "instantiates the BootstrapDistribution class" do
         expect(Chef::Knife::Cloud::BootstrapDistribution).to receive(:new).with(@config)
         @instance.create_bootstrap_distribution
       end
@@ -110,7 +110,7 @@ describe Chef::Knife::Cloud::Bootstrapper do
         @instance.create_bootstrap_protocol
       end
 
-      it "doesn't instantiate Windows Distribution class." do
+      it "doesn't instantiate WinrmBootstrapProtocol class." do
         expect(Chef::Knife::Cloud::WinrmBootstrapProtocol).to_not receive(:new)
         @instance.create_bootstrap_protocol
       end
@@ -133,7 +133,7 @@ describe Chef::Knife::Cloud::Bootstrapper do
       end
     end
 
-    context "when connection_protocol set to nil." do
+    context "when connection_protocol set to nil" do
       before do
         @config[:connection_protocol] = nil
       end

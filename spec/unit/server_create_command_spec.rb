@@ -82,7 +82,7 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
       instance.after_exec_command
     end
 
-    # Currently the RangeError is occured when image_os_type is set to linux and --connection-protocol is set to ssh before windows server bootstrap.
+    # The RangeError is raised when image_os_type is set to linux and --connection-protocol is set to ssh before windows server bootstrap.
     it "raise error message when bootstrap fails due to image_os_type not exist" do
       instance = Chef::Knife::Cloud::ServerCreateCommand.new
       instance.service = Chef::Knife::Cloud::Service.new
@@ -108,13 +108,13 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
     include Chef::Knife::Cloud::ServerCreateOptions
   end
 
-  describe "Bootstrap Protocol option" do
+  describe "--bootstrap-protocol option" do
     it "not to be set in chef config knife options" do
       instance = ServerCreate.new
-      bootstrap_protocol = "bootstrap_protocol"
+      bootstrap_protocol = "nothing"
 
       instance.options[:bootstrap_protocol][:proc].call bootstrap_protocol
-      expect(Chef::Config[:knife][:bootstrap_protocol]).to eq(nil)
+      expect(Chef::Config[:knife][:bootstrap_protocol]).to be_nil
     end
   end
 end

@@ -1,7 +1,7 @@
 #
-# Author:: Mukta Aphale (<mukta.aphale@clogeny.com>)
-# Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
-# Copyright:: Copyright (c) 2013-2014 Chef Software, Inc.
+# Author:: Ashwini Nehate(<ashwini.nehate@msystechnologies.com>)
+# Author:: Kapil Chouhan (<kapil.chouhan@msystechnologies.com>)
+# Copyright:: Copyright (c) 2008-2019 Chef Software, Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
