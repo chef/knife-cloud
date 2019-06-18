@@ -36,26 +36,24 @@ describe Chef::Knife::Cloud::Bootstrapper do
     end
   end
 
-  describe "#bootstrap Linux machine with ssh" do
-    it "executes with correct method calls" do
-      @ssh_bootstrap_protocol = Chef::Knife::Cloud::SshBootstrapProtocol.new(@config)
-      allow(@instance).to receive(:create_bootstrap_protocol).and_return(@ssh_bootstrap_protocol)
-      @bootstrap_distribution = Chef::Knife::Cloud::BootstrapDistribution.new(@config)
+  describe "#bootstrap machine" do
+    let(:bootstrap_distribution) { Chef::Knife::Cloud::BootstrapDistribution.new(@config) }
+
+    it "executes with correct method calls with ssh" do
+      ssh_bootstrap_protocol = Chef::Knife::Cloud::SshBootstrapProtocol.new(@config)
+      allow(@instance).to receive(:create_bootstrap_protocol).and_return(ssh_bootstrap_protocol)
       expect(@instance).to receive(:create_bootstrap_protocol).ordered
-      allow(@instance).to receive(:create_bootstrap_distribution).and_return(@bootstrap_distribution)
-      expect(@ssh_bootstrap_protocol).to receive(:send_bootstrap_command).ordered
+      allow(@instance).to receive(:create_bootstrap_distribution).and_return(bootstrap_distribution)
+      expect(ssh_bootstrap_protocol).to receive(:send_bootstrap_command).ordered
       @instance.bootstrap
     end
-  end
 
-  describe "#bootstrap Windows machine with winrm" do
-    it "executes with correct method calls" do
-      @winrm_bootstrap_protocol = Chef::Knife::Cloud::WinrmBootstrapProtocol.new(@config)
-      allow(@instance).to receive(:create_bootstrap_protocol).and_return(@winrm_bootstrap_protocol)
-      @bootstrap_distribution = Chef::Knife::Cloud::BootstrapDistribution.new(@config)
+    it "executes with correct method calls with winrm" do
+      winrm_bootstrap_protocol = Chef::Knife::Cloud::WinrmBootstrapProtocol.new(@config)
+      allow(@instance).to receive(:create_bootstrap_protocol).and_return(winrm_bootstrap_protocol)
       expect(@instance).to receive(:create_bootstrap_protocol).ordered
-      allow(@instance).to receive(:create_bootstrap_distribution).and_return(@bootstrap_distribution)
-      expect(@winrm_bootstrap_protocol).to receive(:send_bootstrap_command).ordered
+      allow(@instance).to receive(:create_bootstrap_distribution).and_return(bootstrap_distribution)
+      expect(winrm_bootstrap_protocol).to receive(:send_bootstrap_command).ordered
       @instance.bootstrap
     end
   end
