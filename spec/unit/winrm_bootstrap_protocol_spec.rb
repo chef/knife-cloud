@@ -20,7 +20,7 @@ require "chef/knife/cloud/chefbootstrap/winrm_bootstrap_protocol"
 
 describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
   before do
-    @config = { bootstrap_protocol: "winrm" }
+    @config = { connection_protocol: "winrm" }
     @config = { image_os_type: "windows" }
     @instance = Chef::Knife::Cloud::WinrmBootstrapProtocol.new(@config)
     allow(@instance).to receive(:sleep).and_return(0)
@@ -35,7 +35,7 @@ describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
     it "windows image" do
       @config[:image_os_type] = "windows"
       winrm_bootstrap_protocol = Chef::Knife::Cloud::WinrmBootstrapProtocol.new(@config)
-      expect(winrm_bootstrap_protocol.bootstrap.class).to eq(Chef::Knife::BootstrapWindowsWinrm)
+      expect(winrm_bootstrap_protocol.bootstrap.class).to eq(Chef::Knife::Bootstrap)
     end
   end
 
@@ -53,7 +53,7 @@ describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
       @config[:bootstrap_ip_address] = "127.0.0.1"
       @config[:chef_node_name] = "testnode"
       @config[:environment] = "_default"
-      @config[:winrm_user] = "testuser"
+      @config[:connection_user] = "testuser"
       @config[:auth_timeout] = "100"
       @config[:winrm_ssl_verify_mode] = "verify_none"
       @instance.bootstrap = Chef::Knife::Bootstrap.new
@@ -61,7 +61,7 @@ describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
       expect(@instance.bootstrap.name_args).to eq([@config[:bootstrap_ip_address]])
       expect(@instance.bootstrap.config[:chef_node_name]).to eq(@config[:chef_node_name])
       expect(@instance.bootstrap.config[:environment]).to eq(@config[:environment])
-      expect(@instance.bootstrap.config[:winrm_user]).to eq(@config[:winrm_user])
+      expect(@instance.bootstrap.config[:connection_user]).to eq(@config[:connection_user])
       expect(@instance.bootstrap.config[:auth_timeout]).to eq(@config[:auth_timeout])
       expect(@instance.bootstrap.config[:winrm_ssl_verify_mode]).to eq(@config[:winrm_ssl_verify_mode])
     end

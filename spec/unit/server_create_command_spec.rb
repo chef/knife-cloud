@@ -16,30 +16,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require "support/shared_examples_for_command"
+require "support/shared_examples_for_command_bootstrap"
 require "support/shared_examples_for_servercreatecommand"
 require "net/ssh"
 require "chef/knife/cloud/server/create_options"
 
 describe Chef::Knife::Cloud::ServerCreateCommand do
-  it_behaves_like Chef::Knife::Cloud::Command, Chef::Knife::Cloud::ServerCreateCommand.new
+  it_behaves_like Chef::Knife::Cloud::BootstrapCommand, Chef::Knife::Cloud::ServerCreateCommand.new
   it_behaves_like Chef::Knife::Cloud::ServerCreateCommand, Chef::Knife::Cloud::ServerCreateCommand.new
 
   describe "#validate_params!" do
     before(:each) do
       @instance = Chef::Knife::Cloud::ServerCreateCommand.new
       allow(@instance.ui).to receive(:error)
-      Chef::Config[:knife][:bootstrap_protocol] = "ssh"
+      Chef::Config[:knife][:connection_protocol] = "ssh"
       Chef::Config[:knife][:ssh_identity_file] = "ssh_identity_file"
       Chef::Config[:knife][:connection_password] = "connection_password"
       Chef::Config[:knife][:chef_node_name] = "chef_node_name"
-      Chef::Config[:knife][:connection_password] = "connection_password"
     end
     after(:all) do
-      Chef::Config[:knife].delete(:bootstrap_protocol)
+      Chef::Config[:knife].delete(:connection_protocol)
       Chef::Config[:knife].delete(:ssh_identity_file)
       Chef::Config[:knife].delete(:chef_node_name)
-      Chef::Config[:knife].delete(:connection_password)
       Chef::Config[:knife].delete(:connection_password)
     end
 
@@ -48,19 +46,19 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
       expect(@instance.config[:chef_node_name]).to eq(Chef::Config[:knife][:chef_node_name])
     end
 
-    context "when bootstrap_protocol ssh" do
+    context "when connection_protocol ssh" do
       it "raise error on connection_password and ssh_identity_file are missing" do
         Chef::Config[:knife].delete(:ssh_identity_file)
         Chef::Config[:knife].delete(:connection_password)
-        expect { @instance.validate_params! }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ValidationError, " You must provide either Identity file or SSH Password..")
+        expect { @instance.validate_params! }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ValidationError, " You must provide either SSH Identity file or Connection Password..")
       end
     end
 
-    context "when bootstrap_protocol winrm" do
+    context "when connection_protocol winrm" do
       it "raise error on connection_password is missing" do
-        Chef::Config[:knife][:bootstrap_protocol] = "winrm"
+        Chef::Config[:knife][:connection_protocol] = "winrm"
         Chef::Config[:knife].delete(:connection_password)
-        expect { @instance.validate_params! }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ValidationError, " You must provide Winrm Password..")
+        expect { @instance.validate_params! }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ValidationError, " You must provide Connection Password..")
       end
     end
   end
@@ -84,7 +82,7 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
       instance.after_exec_command
     end
 
-    # Currently the RangeError is occured when image_os_type is set to linux and bootstrap-protocol is set to ssh before windows server bootstrap.
+    # The RangeError is raised when image_os_type is set to linux and --connection-protocol is set to ssh before windows server bootstrap.
     it "raise error message when bootstrap fails due to image_os_type not exist" do
       instance = Chef::Knife::Cloud::ServerCreateCommand.new
       instance.service = Chef::Knife::Cloud::Service.new
@@ -93,14 +91,14 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
       allow(instance).to receive(:bootstrap).and_raise(RangeError)
       expect(instance.service).to receive(:delete_server_dependencies)
       expect(instance.service).to receive(:delete_server_on_failure)
-      expect { instance.after_exec_command }.to raise_error(RangeError, "Check if --bootstrap-protocol and --image-os-type is correct. RangeError")
+      expect { instance.after_exec_command }.to raise_error(RangeError, "Check if --connection-protocol and --image-os-type is correct. RangeError")
     end
   end
 
   describe "#set_default_config" do
     it "set valid image os type" do
       instance = Chef::Knife::Cloud::ServerCreateCommand.new
-      instance.config[:bootstrap_protocol] = "winrm"
+      instance.config[:connection_protocol] = "winrm"
       instance.set_default_config
       expect(instance.config[:image_os_type]).to eq("windows")
     end
@@ -110,89 +108,13 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
     include Chef::Knife::Cloud::ServerCreateOptions
   end
 
-  describe "#bootstrap options" do
-
-    it "set chef config knife options" do
+  describe "--bootstrap-protocol option" do
+    it "not to be set in chef config knife options" do
       instance = ServerCreate.new
-      bootstrap_url = "bootstrap_url"
-      bootstrap_install_command = "bootstrap_install_command"
-      bootstrap_wget_options = "bootstrap_wget_options"
-      bootstrap_curl_options = "bootstrap_curl_options"
-      bootstrap_no_proxy = "bootstrap_no_proxy"
+      bootstrap_protocol = "nothing"
 
-      instance.options[:bootstrap_url][:proc].call bootstrap_url
-      expect(Chef::Config[:knife][:bootstrap_url]).to eq(bootstrap_url)
-
-      instance.options[:bootstrap_install_command][:proc].call bootstrap_install_command
-      expect(Chef::Config[:knife][:bootstrap_install_command]).to eq(bootstrap_install_command)
-
-      instance.options[:bootstrap_wget_options][:proc].call bootstrap_wget_options
-      expect(Chef::Config[:knife][:bootstrap_wget_options]).to eq(bootstrap_wget_options)
-
-      instance.options[:bootstrap_curl_options][:proc].call bootstrap_curl_options
-      expect(Chef::Config[:knife][:bootstrap_curl_options]).to eq(bootstrap_curl_options)
-
-      instance.options[:bootstrap_no_proxy][:proc].call bootstrap_no_proxy
-      expect(Chef::Config[:knife][:bootstrap_no_proxy]).to eq(bootstrap_no_proxy)
-
-      expect(instance.options[:auth_timeout][:default]).to eq(25)
-    end
-  end
-
-  describe "#before_bootstrap" do
-
-    before(:all) { @instance = ServerCreate.new }
-
-    context "bootstrap_protocol shh" do
-      before { @instance.config[:bootstrap_protocol] = "ssh" }
-
-      it "set connection_user value by using -x option for ssh bootstrap protocol or linux image" do
-        # Currently -x option set config[:winrm_user]
-        # default value of config[:connection_user] is root
-        @instance.config[:winrm_user] = "ubuntu"
-        @instance.config[:connection_user] = "root"
-
-        @instance.before_bootstrap
-        expect(@instance.config[:connection_user]).to eq("ubuntu")
-      end
-
-      it "set connection_password value by using -P option for ssh bootstrap protocol or linux image" do
-        # Currently -P option set config[:winrm_password]
-        # default value of config[:connection_password] is nil
-        @instance.config[:winrm_password] = "winrm_password"
-        @instance.config[:connection_password] = nil
-
-        @instance.before_bootstrap
-        expect(@instance.config[:connection_password]).to eq("winrm_password")
-      end
-
-      it "set ssh_port value by using -p option for ssh bootstrap protocol or linux image" do
-        # Currently -p option set config[:winrm_port]
-        # default value of config[:ssh_port] is 22
-        @instance.config[:winrm_port] = "1234"
-        @instance.config[:ssh_port] = "22"
-
-        @instance.before_bootstrap
-        expect(@instance.config[:ssh_port]).to eq("1234")
-      end
-
-      it "set ssh_identity_file value by using -i option for ssh bootstrap protocol or linux image" do
-        # Currently -i option set config[:kerberos_keytab_file]
-        # default value of config[:ssh_identity_file] is nil
-        @instance.config[:kerberos_keytab_file] = "kerberos_keytab_file"
-        @instance.config[:ssh_identity_file] = nil
-
-        @instance.before_bootstrap
-        expect(@instance.config[:ssh_identity_file]).to eq("kerberos_keytab_file")
-      end
-    end
-
-    context "bootstrap_protocol winrm" do
-      it "skip ssh_override_winrm" do
-        @instance.config[:bootstrap_protocol] = "winrm"
-        expect(@instance).to_not receive(:ssh_override_winrm)
-        @instance.before_bootstrap
-      end
+      instance.options[:bootstrap_protocol][:proc].call bootstrap_protocol
+      expect(Chef::Config[:knife][:bootstrap_protocol]).to be_nil
     end
   end
 end

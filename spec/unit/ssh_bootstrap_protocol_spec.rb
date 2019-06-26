@@ -20,7 +20,7 @@ require "chef/knife/cloud/chefbootstrap/ssh_bootstrap_protocol"
 
 describe Chef::Knife::Cloud::SshBootstrapProtocol do
   before do
-    @config = { bootstrap_protocol: "ssh" }
+    @config = { connection_protocol: "ssh" }
     @instance = Chef::Knife::Cloud::SshBootstrapProtocol.new(@config)
     allow(@instance).to receive(:sleep).and_return(0)
     allow(@instance).to receive(:print)
@@ -35,12 +35,6 @@ describe Chef::Knife::Cloud::SshBootstrapProtocol do
       @config[:image_os_type] = "linux"
       ssh_bootstrap_protocol = Chef::Knife::Cloud::SshBootstrapProtocol.new(@config)
       expect(ssh_bootstrap_protocol.bootstrap.class).to eq(Chef::Knife::Bootstrap)
-    end
-
-    it "windows image" do
-      @config[:image_os_type] = "windows"
-      ssh_bootstrap_protocol = Chef::Knife::Cloud::SshBootstrapProtocol.new(@config)
-      expect(ssh_bootstrap_protocol.bootstrap.class).to eq(Chef::Knife::BootstrapWindowsSsh)
     end
   end
 

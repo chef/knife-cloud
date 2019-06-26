@@ -27,7 +27,7 @@ class Chef
       class SshBootstrapProtocol < BootstrapProtocol
 
         def initialize(config)
-          @bootstrap = (config[:image_os_type] == "linux") ? Chef::Knife::Bootstrap.new : Chef::Knife::BootstrapWindowsSsh.new
+          @bootstrap = Chef::Knife::Bootstrap.new
           super
         end
 

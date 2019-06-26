@@ -21,7 +21,7 @@ require "chef/knife/cloud/chefbootstrap/bootstrapper"
 
 describe Chef::Knife::Cloud::Bootstrapper do
   before(:each) do
-    @config = { bootstrap_protocol: "ssh" }
+    @config = { connection_protocol: "ssh" }
     @instance = Chef::Knife::Cloud::Bootstrapper.new(@config)
   end
 
@@ -36,26 +36,24 @@ describe Chef::Knife::Cloud::Bootstrapper do
     end
   end
 
-  describe "#bootstrap Linux machine with ssh" do
-    it "executes with correct method calls" do
-      @ssh_bootstrap_protocol = Chef::Knife::Cloud::SshBootstrapProtocol.new(@config)
-      allow(@instance).to receive(:create_bootstrap_protocol).and_return(@ssh_bootstrap_protocol)
-      @unix_distribution = Chef::Knife::Cloud::UnixDistribution.new(@config)
+  describe "#bootstrap machine" do
+    let(:bootstrap_distribution) { Chef::Knife::Cloud::BootstrapDistribution.new(@config) }
+
+    it "executes with correct method calls with ssh" do
+      ssh_bootstrap_protocol = Chef::Knife::Cloud::SshBootstrapProtocol.new(@config)
+      allow(@instance).to receive(:create_bootstrap_protocol).and_return(ssh_bootstrap_protocol)
       expect(@instance).to receive(:create_bootstrap_protocol).ordered
-      allow(@instance).to receive(:create_bootstrap_distribution).and_return(@unix_distribution)
-      expect(@ssh_bootstrap_protocol).to receive(:send_bootstrap_command).ordered
+      allow(@instance).to receive(:create_bootstrap_distribution).and_return(bootstrap_distribution)
+      expect(ssh_bootstrap_protocol).to receive(:send_bootstrap_command).ordered
       @instance.bootstrap
     end
-  end
 
-  describe "#bootstrap Windows machine with winrm" do
-    it "executes with correct method calls" do
-      @winrm_bootstrap_protocol = Chef::Knife::Cloud::WinrmBootstrapProtocol.new(@config)
-      allow(@instance).to receive(:create_bootstrap_protocol).and_return(@winrm_bootstrap_protocol)
-      @windows_distribution = Chef::Knife::Cloud::WindowsDistribution.new(@config)
+    it "executes with correct method calls with winrm" do
+      winrm_bootstrap_protocol = Chef::Knife::Cloud::WinrmBootstrapProtocol.new(@config)
+      allow(@instance).to receive(:create_bootstrap_protocol).and_return(winrm_bootstrap_protocol)
       expect(@instance).to receive(:create_bootstrap_protocol).ordered
-      allow(@instance).to receive(:create_bootstrap_distribution).and_return(@windows_distribution)
-      expect(@winrm_bootstrap_protocol).to receive(:send_bootstrap_command).ordered
+      allow(@instance).to receive(:create_bootstrap_distribution).and_return(bootstrap_distribution)
+      expect(winrm_bootstrap_protocol).to receive(:send_bootstrap_command).ordered
       @instance.bootstrap
     end
   end
@@ -66,13 +64,8 @@ describe Chef::Knife::Cloud::Bootstrapper do
         @config[:image_os_type] = "windows"
       end
 
-      it "instantiates Windows Distribution class." do
-        expect(Chef::Knife::Cloud::WindowsDistribution).to receive(:new).with(@config)
-        @instance.create_bootstrap_distribution
-      end
-
-      it "doesn't instantiate Unix Distribution class." do
-        expect(Chef::Knife::Cloud::UnixDistribution).to_not receive(:new)
+      it "instantiates the BootstrapDistribution class" do
+        expect(Chef::Knife::Cloud::BootstrapDistribution).to receive(:new).with(@config)
         @instance.create_bootstrap_distribution
       end
 
@@ -83,15 +76,11 @@ describe Chef::Knife::Cloud::Bootstrapper do
         @config[:image_os_type] = "linux"
       end
 
-      it "instantiates Unix Distribution class." do
-        expect(Chef::Knife::Cloud::UnixDistribution).to receive(:new).with(@config)
+      it "instantiates the BootstrapDistribution class" do
+        expect(Chef::Knife::Cloud::BootstrapDistribution).to receive(:new).with(@config)
         @instance.create_bootstrap_distribution
       end
 
-      it "doesn't instantiate Windows Distribution class." do
-        expect(Chef::Knife::Cloud::WindowsDistribution).to_not receive(:new)
-        @instance.create_bootstrap_distribution
-      end
     end
 
     context "when image_os_type set to invalid" do
@@ -109,9 +98,9 @@ describe Chef::Knife::Cloud::Bootstrapper do
   end
 
   describe "#create_bootstrap_protocol" do
-    context "when bootstrap_protocol set to ssh" do
+    context "when connection_protocol set to ssh" do
       before(:each) do
-        @config[:bootstrap_protocol] = "ssh"
+        @config[:connection_protocol] = "ssh"
       end
 
       it "instantiates SshBootstrapProtocol class." do
@@ -119,16 +108,16 @@ describe Chef::Knife::Cloud::Bootstrapper do
         @instance.create_bootstrap_protocol
       end
 
-      it "doesn't instantiate Windows Distribution class." do
+      it "doesn't instantiate WinrmBootstrapProtocol class." do
         expect(Chef::Knife::Cloud::WinrmBootstrapProtocol).to_not receive(:new)
         @instance.create_bootstrap_protocol
       end
 
     end
 
-    context "when bootstrap_protocol set to winrm" do
+    context "when connection_protocol set to winrm" do
       before(:each) do
-        @config[:bootstrap_protocol] = "winrm"
+        @config[:connection_protocol] = "winrm"
       end
 
       it "instantiates WinrmBootstrapProtocol class." do
@@ -142,9 +131,9 @@ describe Chef::Knife::Cloud::Bootstrapper do
       end
     end
 
-    context "when bootstrap_protocol set to nil." do
+    context "when connection_protocol set to nil" do
       before do
-        @config[:bootstrap_protocol] = nil
+        @config[:connection_protocol] = nil
       end
 
       it "instantiates SshBootstrapProtocol class." do
@@ -153,9 +142,9 @@ describe Chef::Knife::Cloud::Bootstrapper do
       end
     end
 
-    context "when bootstrap_protocol set to invalid." do
+    context "when connection_protocol set to invalid." do
       before do
-        @config[:bootstrap_protocol] = "invalid"
+        @config[:connection_protocol] = "invalid"
       end
 
       it "instantiates SshBootstrapProtocol class." do
