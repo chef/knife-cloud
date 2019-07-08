@@ -74,6 +74,7 @@ class Chef
           bootstrap.config[:msi_url] = locate_config_value(:msi_url)
           bootstrap.config[:install_as_service] = locate_config_value(:install_as_service)
           bootstrap.config[:session_timeout] = locate_config_value(:session_timeout)
+          bootstrap.config[:channel] = locate_config_value(:channel)
         end
 
       end
