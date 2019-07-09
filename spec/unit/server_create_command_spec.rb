@@ -109,12 +109,10 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
   end
 
   describe "--bootstrap-protocol option" do
-    it "not to be set in chef config knife options" do
+    it "This flag is deprecated" do
       instance = ServerCreate.new
-      bootstrap_protocol = "nothing"
-
-      instance.options[:bootstrap_protocol][:proc].call bootstrap_protocol
-      expect(Chef::Config[:knife][:bootstrap_protocol]).to be_nil
+      description = instance.options[:bootstrap_protocol][:description]
+      expect(description).to eq("This flag is deprecated. Use -o/--connection-protocol instead.")
     end
   end
 end
