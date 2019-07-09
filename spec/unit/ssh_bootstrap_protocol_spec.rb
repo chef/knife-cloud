@@ -71,7 +71,7 @@ describe Chef::Knife::Cloud::SshBootstrapProtocol do
   describe "#tcp_test_ssh" do
 
     it "return true" do
-      tcpSocket = double()
+      tcpSocket = double
       allow(tcpSocket).to receive(:close).and_return(true)
       allow(tcpSocket).to receive(:gets).and_return(true)
       allow(TCPSocket).to receive(:new).and_return(tcpSocket)

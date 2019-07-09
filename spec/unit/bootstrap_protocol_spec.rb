@@ -36,7 +36,7 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
 
   describe "#send_bootstrap_command" do
     it "execute with correct method calls" do
-      instance.bootstrap = double()
+      instance.bootstrap = double
       expect(instance).to receive(:wait_for_server_ready).ordered
       expect(instance).to receive(:init_bootstrap_options).ordered
       expect(instance.bootstrap).to receive(:run)

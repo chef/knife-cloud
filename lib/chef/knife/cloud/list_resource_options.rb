@@ -8,10 +8,10 @@ class Chef
           includer.class_eval do
 
             option :disable_filter,
-            long: "--disable-filter",
-            description: "Disable filtering of the current resource listing.",
-            boolean: true,
-            default: false
+              long: "--disable-filter",
+              description: "Disable filtering of the current resource listing.",
+              boolean: true,
+              default: false
           end
         end
 

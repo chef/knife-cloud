@@ -30,7 +30,7 @@ shared_examples_for Chef::Knife::Cloud::Service do |instance|
 
   describe "#delete_server" do
     it "deletes the server." do
-      server = double()
+      server = double
       allow(instance).to receive(:puts)
       allow(instance).to receive_message_chain(:connection, :servers, :get).and_return(server)
       expect(server).to receive(:name).ordered
@@ -56,7 +56,7 @@ shared_examples_for Chef::Knife::Cloud::Service do |instance|
     end
 
     it "creates the server." do
-      server = double()
+      server = double
       allow(instance).to receive_message_chain(:connection, :servers, :create).and_return(server)
       allow(instance).to receive_message_chain(:ui, :color)
       expect(server).to receive(:wait_for)
@@ -66,7 +66,7 @@ shared_examples_for Chef::Knife::Cloud::Service do |instance|
 
   describe "#get_server" do
     it "return server." do
-      server = double()
+      server = double
       allow(instance).to receive_message_chain(:connection, :servers, :create).and_return(server)
       expect(instance.connection.servers).to receive(:get)
       instance.get_server("instance_id")
@@ -75,8 +75,8 @@ shared_examples_for Chef::Knife::Cloud::Service do |instance|
 
   describe "#server_summary" do
     it "show server details." do
-      server = double()
-      instance.ui = double()
+      server = double
+      instance.ui = double
       expect(instance.ui).to receive(:list)
       expect(server).to receive(:id)
       instance.server_summary(server, [{ label: "Instance ID", key: "id" }])

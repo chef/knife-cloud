@@ -41,14 +41,11 @@ class Chef
         end
 
         # Derived classes can override before_exec_command and after_exec_command
-        def before_exec_command
-        end
+        def before_exec_command; end
 
-        def after_exec_command
-        end
+        def after_exec_command; end
 
-        def set_default_config
-        end
+        def set_default_config; end
 
         def validate!(*keys)
           # validates necessary options/params to carry out the command.
@@ -61,8 +58,7 @@ class Chef
           raise CloudExceptions::ValidationError, error_message if errors.each { |e| ui.error(e); error_message = "#{error_message} #{e}." }.any?
         end
 
-        def validate_params!
-        end
+        def validate_params!; end
 
         def pretty_key(key)
           key.to_s.tr("_", " ").gsub(/\w+/) { |w| (w =~ /(ssh)|(aws)/i) ? w.upcase : w.capitalize }
