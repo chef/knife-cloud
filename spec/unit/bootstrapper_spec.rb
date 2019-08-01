@@ -89,7 +89,7 @@ describe Chef::Knife::Cloud::Bootstrapper do
       end
 
       it "raise bootstrap error" do
-        ui = double()
+        ui = double
         expect(@instance).to receive(:ui).and_return(ui)
         allow(ui).to receive(:fatal)
         expect { @instance.create_bootstrap_distribution }.to raise_error(Chef::Knife::Cloud::CloudExceptions::BootstrapError, "Invalid bootstrap distribution. image_os_type should be either windows or linux.")
@@ -148,7 +148,7 @@ describe Chef::Knife::Cloud::Bootstrapper do
       end
 
       it "instantiates SshBootstrapProtocol class." do
-        ui = double()
+        ui = double
         expect(@instance).to receive(:ui).and_return(ui)
         allow(ui).to receive(:fatal)
         expect { @instance.create_bootstrap_protocol }.to raise_error(Chef::Knife::Cloud::CloudExceptions::BootstrapError, "Invalid bootstrap protocol.")

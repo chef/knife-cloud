@@ -106,8 +106,7 @@ class Chef
         end
 
         # any cloud specific initializations/cleanup we want to do around bootstrap.
-        def before_bootstrap
-        end
+        def before_bootstrap; end
 
         def after_bootstrap
           service.server_summary(@server, @columns_with_info)
@@ -121,12 +120,12 @@ class Chef
         # generate a random name if chef_node_name is empty
         def get_node_name(chef_node_name, prefix)
           return chef_node_name unless chef_node_name.nil?
+
           # lazy uuids, 15 chars cause windows has limits
           ("#{prefix}-" + rand.to_s.split(".")[1]).slice(0, 14)
         end
 
-        def post_connection_validations
-        end
+        def post_connection_validations; end
       end # class ServerCreateCommand
     end
   end

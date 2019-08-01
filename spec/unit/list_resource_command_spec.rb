@@ -28,7 +28,8 @@ describe Chef::Knife::Cloud::ResourceListCommand do
   let (:instance) { Chef::Knife::Cloud::ResourceListCommand.new }
   let (:resources) do
     [ TestResource.new({ id: "resource-1", os: "ubuntu" }),
-                   TestResource.new({ id: "resource-2", os: "windows" })] end
+                   TestResource.new({ id: "resource-2", os: "windows" })]
+  end
 
   context "Basic tests:" do
     it "raises exception to override #query_resource method" do

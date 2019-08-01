@@ -43,7 +43,6 @@ class Chef
           bootstrap.config[:auth_timeout] = @config[:auth_timeout]
           bootstrap.config[:winrm_ssl_verify_mode] = @config[:winrm_ssl_verify_mode]
           bootstrap.config[:connection_protocol] = @config[:connection_protocol]
-          bootstrap.config[:channel] = @config[:channel]
           super
         end
 

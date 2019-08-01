@@ -36,16 +36,13 @@ class Chef
         end
 
         # override in cloud specific derived classes
-        def list_resource_allocations
-        end
+        def list_resource_allocations; end
 
         # Do nothing or override in cloud specific derived classes for pre-vm-creation setup steps
-        def create_server_dependencies
-        end
+        def create_server_dependencies; end
 
         # Do nothing or override in cloud specific derived classes for pre-vm-creation setup steps
-        def delete_server_dependencies
-        end
+        def delete_server_dependencies; end
 
         def delete_server_on_failure(server = nil)
           raise Chef::Exceptions::Override, "You must override delete_server_on_failure in #{self} to delete server"

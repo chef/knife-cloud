@@ -69,7 +69,7 @@ describe Chef::Knife::Cloud::WinrmBootstrapProtocol do
 
   describe "#tcp_test_winrm" do
     it "return true" do
-      tcpSocket = double()
+      tcpSocket = double
       allow(tcpSocket).to receive(:close).and_return(true)
       allow(TCPSocket).to receive(:new).and_return(tcpSocket)
       expect(@instance.tcp_test_winrm("localhost", "5989")).to be(true)

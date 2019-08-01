@@ -68,10 +68,10 @@ class Chef
           rescue Excon::Error::BadRequest => e
             response = Chef::JSONCompat.from_json(e.response.body)
             if response["badRequest"]["code"] == 400
-              message = "Bad request (400): #{response['badRequest']['message']}"
+              message = "Bad request (400): #{response["badRequest"]["message"]}"
               ui.fatal(message)
             else
-              message = "Unknown server error (#{response['badRequest']['code']}): #{response['badRequest']['message']}"
+              message = "Unknown server error (#{response["badRequest"]["code"]}): #{response["badRequest"]["message"]}"
               ui.fatal(message)
             end
             raise CloudExceptions::ServerCreateError, message
@@ -124,7 +124,7 @@ class Chef
         def handle_excon_exception(exception_class, e)
           error_message = if e.response
                             response = Chef::JSONCompat.from_json(e.response.body)
-                            "Unknown server error (#{response[response.keys[0]]['code']}): #{response[response.keys[0]]['message']}"
+                            "Unknown server error (#{response[response.keys[0]]["code"]}): #{response[response.keys[0]]["message"]}"
                           else
                             "Unknown server error : #{e.message}"
                           end
@@ -233,7 +233,7 @@ class Chef
                     else
                       col_info[:value]
                     end
-            if !(value.nil? || value.empty?)
+            unless value.nil? || value.empty?
               list << ui.color(col_info[:label], :bold)
               list << value
             end

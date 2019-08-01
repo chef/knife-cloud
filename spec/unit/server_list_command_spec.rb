@@ -80,7 +80,7 @@ describe Chef::Knife::Cloud::ServerListCommand do
 
     it "return columns_with_info values" do
       expect(@derived_instance.node).to receive(:attribute?).with("platform_family").and_return(true)
-      expect(@derived_instance.get_resource_col_val(resources.first)).to eq(["server-1", "_default", "debian"])
+      expect(@derived_instance.get_resource_col_val(resources.first)).to eq(%w{server-1 _default debian})
     end
 
     it "raise error on invalide chef_node_attribute" do

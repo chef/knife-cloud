@@ -37,7 +37,6 @@ class Chef
               short: "-T IMAGE_OS_TYPE",
               long: "--image-os-type IMAGE_OS_TYPE",
               description: "The image os type. options [windows/linux]. Only required when cloud does not provide a way to identify image os",
-              default: "linux",
               proc: Proc.new { |i| Chef::Config[:knife][:image_os_type] = i }
 
             option :flavor,
@@ -46,14 +45,9 @@ class Chef
               description: "The flavor name or ID of server",
               proc: Proc.new { |f| Chef::Config[:knife][:flavor] = f }
 
-            # The Deprecation part will be removed once we can call `verify_deprecated_flags!` function from Chef::Knife::Bootstrap
-            option :bootstrap_protocol,
-              long: "--bootstrap-protocol protocol",
-              description: "This flag is deprecated. [DEPRECATED] Use --connection-protocol option instead.",
-              proc: Proc.new { |v|
-                Chef::Log.warn("[DEPRECATED] --bootstrap-protocol option is deprecated. Use --connection-protocol option instead.")
-                v
-              }
+            deprecated_option :bootstrap_protocol,
+              replacement: :connection_protocol,
+              long: "--bootstrap-protocol PROTOCOL"
 
             option :server_create_timeout,
               long: "--server-create-timeout timeout",
@@ -72,7 +66,6 @@ class Chef
               description: "The prefix for chef node name",
               default: includer.snake_case_name.split("_").first,
               proc: Proc.new { |key| Chef::Config[:knife][:chef_node_name_prefix] = key }
-
           end
         end
 
