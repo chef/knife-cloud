@@ -2,6 +2,14 @@
 
 [![Gem Version](https://badge.fury.io/rb/knife-cloud.svg)](https://rubygems.org/gems/knife-cloud) [![Build Status](https://travis-ci.org/chef/knife-cloud.svg?branch=master)](https://travis-ci.org/chef/knife-cloud)
 
+* **Umbrella Project: [Knife](https://github.com/chef/chef-oss-practices/blob/master/projects/knife.md)**
+
+* **Project State [Active](https://github.com/chef/chef-oss-practices/blob/master/repo-management/repo-states.md#active)**
+
+* **Issues [Response Time Maximum](https://github.com/chef/chef-oss-practices/blob/master/repo-management/repo-states.md#what-is-the-response-time-maximum): 14 days**
+
+* **Pull Request [Response Time Maximum](https://github.com/chef/chef-oss-practices/blob/master/repo-management/repo-states.md#what-is-the-response-time-maximum): 14 days**
+
 ## Description
 
 `knife-cloud` is a library for implementing knife plugins that integrate cloud
