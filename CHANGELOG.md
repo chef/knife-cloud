@@ -1,28 +1,25 @@
 # knife-cloud Change Log
 
-<!-- latest_release 2.0.2 -->
-## [v2.0.2](https://github.com/chef/knife-cloud/tree/v2.0.2) (2019-08-20)
-
-#### Merged Pull Requests
-- MSYS-1073 Updated README.md as per Chef OSS practices [#121](https://github.com/chef/knife-cloud/pull/121) ([NAshwini](https://github.com/NAshwini))
+<!-- latest_release -->
 <!-- latest_release -->
 
-<!-- release_rollup since=1.2.3 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- MSYS-1073 Updated README.md as per Chef OSS practices [#121](https://github.com/chef/knife-cloud/pull/121) ([NAshwini](https://github.com/NAshwini)) <!-- 2.0.2 -->
-- [MSYS-1040] Remove default value of image_os_type option [#120](https://github.com/chef/knife-cloud/pull/120) ([kapilchouhan99](https://github.com/kapilchouhan99)) <!-- 2.0.1 -->
-- Bump major to v2, as we require Chef 15 now [#118](https://github.com/chef/knife-cloud/pull/118) ([btm](https://github.com/btm)) <!-- 2.0.0 -->
-- Chefstyle fixes [#113](https://github.com/chef/knife-cloud/pull/113) ([tas50](https://github.com/tas50)) <!-- 1.2.4 -->
+<!-- release_rollup -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
+## [v2.0.2](https://github.com/chef/knife-cloud/tree/v2.0.2) (2019-09-16)
+
+#### Merged Pull Requests
+- Chefstyle fixes [#113](https://github.com/chef/knife-cloud/pull/113) ([tas50](https://github.com/tas50))
+- Bump major to v2, as we require Chef 15 now [#118](https://github.com/chef/knife-cloud/pull/118) ([btm](https://github.com/btm))
+- [MSYS-1040] Remove default value of image_os_type option [#120](https://github.com/chef/knife-cloud/pull/120) ([kapilchouhan99](https://github.com/kapilchouhan99))
+- MSYS-1073 Updated README.md as per Chef OSS practices [#121](https://github.com/chef/knife-cloud/pull/121) ([NAshwini](https://github.com/NAshwini))
+<!-- latest_stable_release -->
+
 ## [v1.2.3](https://github.com/chef/knife-cloud/tree/v1.2.3) (2018-11-28)
 
 #### Merged Pull Requests
 - Slim down the files we ship in the gem [#112](https://github.com/chef/knife-cloud/pull/112) ([tas50](https://github.com/tas50))
-<!-- latest_stable_release -->
 
 ## [v1.2.2](https://github.com/chef/knife-cloud/tree/v1.2.2) (2018-08-21)
 
