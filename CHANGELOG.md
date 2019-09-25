@@ -1,20 +1,18 @@
 # knife-cloud Change Log
 
-<!-- latest_release 2.0.3 -->
+<!-- latest_release -->
+<!-- latest_release -->
+
+<!-- release_rollup -->
+<!-- release_rollup -->
+
+<!-- latest_stable_release -->
 ## [v2.0.3](https://github.com/chef/knife-cloud/tree/v2.0.3) (2019-09-25)
 
 #### Merged Pull Requests
 - Fix for create an image list command [#122](https://github.com/chef/knife-cloud/pull/122) ([kapilchouhan99](https://github.com/kapilchouhan99))
-<!-- latest_release -->
-
-<!-- release_rollup since=2.0.2 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Fix for create an image list command [#122](https://github.com/chef/knife-cloud/pull/122) ([kapilchouhan99](https://github.com/kapilchouhan99)) <!-- 2.0.3 -->
-<!-- release_rollup -->
-
 <!-- latest_stable_release -->
+
 ## [v2.0.2](https://github.com/chef/knife-cloud/tree/v2.0.2) (2019-09-16)
 
 #### Merged Pull Requests
@@ -22,7 +20,6 @@
 - Bump major to v2, as we require Chef 15 now [#118](https://github.com/chef/knife-cloud/pull/118) ([btm](https://github.com/btm))
 - [MSYS-1040] Remove default value of image_os_type option [#120](https://github.com/chef/knife-cloud/pull/120) ([kapilchouhan99](https://github.com/kapilchouhan99))
 - MSYS-1073 Updated README.md as per Chef OSS practices [#121](https://github.com/chef/knife-cloud/pull/121) ([NAshwini](https://github.com/NAshwini))
-<!-- latest_stable_release -->
 
 ## [v1.2.3](https://github.com/chef/knife-cloud/tree/v1.2.3) (2018-11-28)
 
