@@ -1,9 +1,17 @@
 # knife-cloud Change Log
 
-<!-- latest_release -->
+<!-- latest_release 2.0.3 -->
+## [v2.0.3](https://github.com/chef/knife-cloud/tree/v2.0.3) (2019-09-25)
+
+#### Merged Pull Requests
+- Fix for create an image list command [#122](https://github.com/chef/knife-cloud/pull/122) ([kapilchouhan99](https://github.com/kapilchouhan99))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=2.0.2 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Fix for create an image list command [#122](https://github.com/chef/knife-cloud/pull/122) ([kapilchouhan99](https://github.com/kapilchouhan99)) <!-- 2.0.3 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
