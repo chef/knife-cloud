@@ -75,7 +75,10 @@ class Chef
             # display column wise only if @columns_with_info is specified, else as a json for readable display.
             begin
               resource_list = @columns_with_info.map { |col_info| ui.color(col_info[:label], :bold) } if @columns_with_info.length > 0
-              resources.sort_by { |x| x.send(@sort_by_field).downcase }.each do |resource|
+              records = data_sort(resources)
+              records.each do |resource|
+                next if resource.respond_to?(:deprecated) && resource.deprecated
+
                 if @columns_with_info.length > 0
                   list = get_resource_col_val(resource)
                   resource_list.concat(list) unless list.nil?
@@ -93,6 +96,14 @@ class Chef
             puts ui.list(resource_list, :uneven_columns_across, @columns_with_info.length) if @columns_with_info.length > 0
           else
             output(format_for_display(resources))
+          end
+        end
+
+        def data_sort(resources)
+          if resources.length > 0
+            resources[0].respond_to?(:kind) && resources[0].kind == "compute#image" ? resources : resources.sort_by { |x| x.send(@sort_by_field).downcase }
+          else
+            []
           end
         end
 

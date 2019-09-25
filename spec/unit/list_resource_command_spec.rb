@@ -27,8 +27,10 @@ describe Chef::Knife::Cloud::ResourceListCommand do
 
   let (:instance) { Chef::Knife::Cloud::ResourceListCommand.new }
   let (:resources) do
-    [ TestResource.new({ id: "resource-1", os: "ubuntu" }),
-                   TestResource.new({ id: "resource-2", os: "windows" })]
+    [
+      TestResource.new({ id: "resource-1", os: "ubuntu", kind: "compute#zone" }),
+      TestResource.new({ id: "resource-2", os: "windows", kind: "compute#zone" }),
+    ]
   end
 
   context "Basic tests:" do
@@ -74,6 +76,25 @@ describe Chef::Knife::Cloud::ResourceListCommand do
       expect(instance).to receive(:puts).with(resources[1].to_json)
       expect(instance).to receive(:puts).with("\n").twice
       instance.run
+    end
+  end
+
+  context "#data_sort" do
+    let (:image_resources) do
+      [
+        TestResource.new({ id: "resource-1", os: "ubuntu", kind: "compute#image" }),
+        TestResource.new({ id: "resource-2", os: "windows", kind: "compute#image" }),
+      ]
+    end
+
+    it "when resources are not as a image resources, should be sort the resources" do
+      expect(resources).to receive(:sort_by)
+      instance.data_sort(resources)
+    end
+
+    it "when resources are as a image resources, should not be sort the resources" do
+      expect(image_resources).not_to receive(:sort_by)
+      instance.data_sort(image_resources)
     end
   end
 
