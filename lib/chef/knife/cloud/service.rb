@@ -16,8 +16,8 @@
 # limitations under the License.
 #
 
-require "chef/knife/cloud/exceptions"
-require "chef/knife/cloud/helpers"
+require_relative "exceptions"
+require_relative "helpers"
 
 class Chef
   class Knife

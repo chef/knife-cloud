@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-require "chef/knife/cloud/server/options"
+require_relative "options"
 
 class Chef
   class Knife

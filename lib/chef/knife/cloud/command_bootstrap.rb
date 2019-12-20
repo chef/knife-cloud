@@ -17,8 +17,8 @@
 #
 
 require "chef/knife/bootstrap"
-require "chef/knife/cloud/helpers"
-require "chef/knife/cloud/exceptions"
+require_relative "helpers"
+require_relative "exceptions"
 
 class Chef
   class Knife

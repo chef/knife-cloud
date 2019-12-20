@@ -14,9 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-require "chef/knife/cloud/command_bootstrap"
-require "chef/knife/cloud/exceptions"
-require "chef/knife/cloud/chefbootstrap/bootstrapper"
+require_relative "../command_bootstrap"
+require_relative "../exceptions"
+require_relative "../chefbootstrap/bootstrapper"
 
 class Chef
   class Knife
