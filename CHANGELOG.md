@@ -1,9 +1,17 @@
 # knife-cloud Change Log
 
-<!-- latest_release -->
+<!-- latest_release 2.0.4 -->
+## [v2.0.4](https://github.com/chef/knife-cloud/tree/v2.0.4) (2019-12-21)
+
+#### Merged Pull Requests
+- Migrate to Buildkite for testing [#124](https://github.com/chef/knife-cloud/pull/124) ([tas50](https://github.com/tas50))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=2.0.3 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Migrate to Buildkite for testing [#124](https://github.com/chef/knife-cloud/pull/124) ([tas50](https://github.com/tas50)) <!-- 2.0.4 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
