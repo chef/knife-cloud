@@ -18,7 +18,7 @@
 #
 
 require "chef/knife/core/ui"
-require "chef/knife/cloud/helpers"
+require_relative "../helpers"
 
 class Chef
   class Knife

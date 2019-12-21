@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-require "chef/knife/cloud/command"
+require_relative "command"
 
 class Chef
   class Knife

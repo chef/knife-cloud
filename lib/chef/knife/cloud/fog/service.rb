@@ -4,8 +4,8 @@
 # Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
 #
 
-require "chef/knife/cloud/service"
-require "chef/knife/cloud/exceptions"
+require_relative "../service"
+require_relative "../exceptions"
 
 class Chef
   class Knife

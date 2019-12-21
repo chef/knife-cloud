@@ -18,10 +18,10 @@
 #
 
 require "chef/knife/core/ui"
-require "chef/knife/cloud/chefbootstrap/ssh_bootstrap_protocol"
-require "chef/knife/cloud/chefbootstrap/winrm_bootstrap_protocol"
-require "chef/knife/cloud/chefbootstrap/bootstrap_distribution"
-require "chef/knife/cloud/exceptions"
+require_relative "ssh_bootstrap_protocol"
+require_relative "winrm_bootstrap_protocol"
+require_relative "bootstrap_distribution"
+require_relative "../exceptions"
 
 class Chef
   class Knife

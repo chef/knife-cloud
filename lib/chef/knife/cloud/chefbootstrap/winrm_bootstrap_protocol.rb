@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-require "chef/knife/cloud/chefbootstrap/bootstrap_protocol"
+require_relative "bootstrap_protocol"
 
 class Chef
   class Knife

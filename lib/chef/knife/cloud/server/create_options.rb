@@ -15,8 +15,8 @@
 # limitations under the License.
 #
 
-require "chef/knife/cloud/chefbootstrap/bootstrap_options"
-require "chef/knife/cloud/server/options"
+require_relative "../chefbootstrap/bootstrap_options"
+require_relative "options"
 
 class Chef
   class Knife

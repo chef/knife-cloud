@@ -1,5 +1,5 @@
-require "chef/knife/cloud/list_resource_command"
-require "chef/knife/cloud/exceptions"
+require_relative "../list_resource_command"
+require_relative "../exceptions"
 
 class Chef
   class Knife
