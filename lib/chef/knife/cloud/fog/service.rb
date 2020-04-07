@@ -18,12 +18,12 @@ class Chef
         end
 
         def load_fog_gem
-            # Load specific version of fog. Any other classes/modules using fog are loaded after this.
-          gem "fog", Chef::Config[:knife][:cloud_fog_version]
-          require "fog"
-          Chef::Log.debug("Using fog version: #{Gem.loaded_specs["fog"].version}")
+          # Load specific version of fog-core. Any other classes/modules using fog-core are loaded after this.
+          gem "fog-core", Chef::Config[:knife][:cloud_fog_version]
+          require "fog/core"
+          Chef::Log.debug("Using fog-core version: #{Gem.loaded_specs["fog-core"].version}")
         rescue Exception
-          Chef::Log.error "Error loading fog gem."
+          Chef::Log.error "Error loading fog-core gem."
           exit 1
         end
 
