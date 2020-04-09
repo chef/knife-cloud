@@ -1,9 +1,17 @@
 # knife-cloud Change Log
 
-<!-- latest_release -->
+<!-- latest_release 3.0.0 -->
+## [v3.0.0](https://github.com/chef/knife-cloud/tree/v3.0.0) (2020-04-09)
+
+#### Merged Pull Requests
+- Switch to fog-core for load_fog_gem function from fog [#126](https://github.com/chef/knife-cloud/pull/126) ([ramereth](https://github.com/ramereth))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=2.0.5 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Switch to fog-core for load_fog_gem function from fog [#126](https://github.com/chef/knife-cloud/pull/126) ([ramereth](https://github.com/ramereth)) <!-- 3.0.0 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
