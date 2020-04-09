@@ -15,7 +15,7 @@ group :test do
   gem "rspec-expectations"
   gem "rspec-mocks"
   gem "rspec_junit_formatter"
-  gem "fog"
+  gem "fog-core"
   gem "chefstyle"
   gem "chef", ">= 15.0"
 end
