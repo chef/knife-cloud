@@ -1,27 +1,24 @@
 # knife-cloud Change Log
 
-<!-- latest_release 3.0.1 -->
-## [v3.0.1](https://github.com/chef/knife-cloud/tree/v3.0.1) (2020-04-09)
-
-#### Merged Pull Requests
-- Cache gems in builds and resolve Ruby 2.5 test failures [#127](https://github.com/chef/knife-cloud/pull/127) ([tas50](https://github.com/tas50))
+<!-- latest_release -->
 <!-- latest_release -->
 
-<!-- release_rollup since=2.0.5 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Cache gems in builds and resolve Ruby 2.5 test failures [#127](https://github.com/chef/knife-cloud/pull/127) ([tas50](https://github.com/tas50)) <!-- 3.0.1 -->
-- Switch to fog-core for load_fog_gem function from fog [#126](https://github.com/chef/knife-cloud/pull/126) ([ramereth](https://github.com/ramereth)) <!-- 3.0.0 -->
+<!-- release_rollup -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
+## [v3.0.1](https://github.com/chef/knife-cloud/tree/v3.0.1) (2020-04-09)
+
+#### Merged Pull Requests
+- Switch to fog-core for load_fog_gem function from fog [#126](https://github.com/chef/knife-cloud/pull/126) ([ramereth](https://github.com/ramereth))
+- Cache gems in builds and resolve Ruby 2.5 test failures [#127](https://github.com/chef/knife-cloud/pull/127) ([tas50](https://github.com/tas50))
+<!-- latest_stable_release -->
+
 ## [v2.0.5](https://github.com/chef/knife-cloud/tree/v2.0.5) (2019-12-21)
 
 #### Merged Pull Requests
 - Migrate to Buildkite for testing [#124](https://github.com/chef/knife-cloud/pull/124) ([tas50](https://github.com/tas50))
 - Substitute require for require_relative [#123](https://github.com/chef/knife-cloud/pull/123) ([tas50](https://github.com/tas50))
-<!-- latest_stable_release -->
 
 ## [v2.0.3](https://github.com/chef/knife-cloud/tree/v2.0.3) (2019-09-25)
 
