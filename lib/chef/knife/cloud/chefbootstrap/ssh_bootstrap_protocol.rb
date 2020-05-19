@@ -118,7 +118,7 @@ class Chef
           Chef::Log.debug("ssh failed to connect: #{hostname}")
           sleep 2
           false
-         # This happens on some mobile phone networks
+        # This happens on some mobile phone networks
         rescue Errno::ECONNRESET
           Chef::Log.debug("ssh reset its connection: #{hostname}")
           sleep 2
