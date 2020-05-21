@@ -75,7 +75,7 @@ class Chef
 
         # Derived classes can override after_exec_command and also call cleanup_on_failure if any exception occured.
         def after_exec_command
-            # bootstrap the server
+          # bootstrap the server
           bootstrap
         rescue CloudExceptions::BootstrapError => e
           ui.fatal(e.message)

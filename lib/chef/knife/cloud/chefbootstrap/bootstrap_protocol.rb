@@ -75,6 +75,7 @@ class Chef
           bootstrap.config[:install_as_service] = locate_config_value(:install_as_service)
           bootstrap.config[:session_timeout] = locate_config_value(:session_timeout)
           bootstrap.config[:channel] = locate_config_value(:channel)
+          bootstrap.config[:bootstrap_product] = locate_config_value(:bootstrap_product)
         end
 
       end
