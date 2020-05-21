@@ -1,9 +1,17 @@
 # knife-cloud Change Log
 
-<!-- latest_release -->
+<!-- latest_release 3.0.2 -->
+## [v3.0.2](https://github.com/chef/knife-cloud/tree/v3.0.2) (2020-05-21)
+
+#### Merged Pull Requests
+- Added bootstrap_product option [#129](https://github.com/chef/knife-cloud/pull/129) ([kapilchouhan99](https://github.com/kapilchouhan99))
 <!-- latest_release -->
 
-<!-- release_rollup -->
+<!-- release_rollup since=3.0.1 -->
+### Changes not yet released to rubygems.org
+
+#### Merged Pull Requests
+- Added bootstrap_product option [#129](https://github.com/chef/knife-cloud/pull/129) ([kapilchouhan99](https://github.com/kapilchouhan99)) <!-- 3.0.2 -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
