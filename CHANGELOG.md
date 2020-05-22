@@ -1,26 +1,23 @@
 # knife-cloud Change Log
 
-<!-- latest_release 3.0.4 -->
+<!-- latest_release -->
+<!-- latest_release -->
+
+<!-- release_rollup -->
+<!-- release_rollup -->
+
+<!-- latest_stable_release -->
 ## [v3.0.4](https://github.com/chef/knife-cloud/tree/v3.0.4) (2020-05-22)
 
 #### Merged Pull Requests
 - Removed spec_dir from required_path [#131](https://github.com/chef/knife-cloud/pull/131) ([kapilchouhan99](https://github.com/kapilchouhan99))
-<!-- latest_release -->
-
-<!-- release_rollup since=3.0.3 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Removed spec_dir from required_path [#131](https://github.com/chef/knife-cloud/pull/131) ([kapilchouhan99](https://github.com/kapilchouhan99)) <!-- 3.0.4 -->
-<!-- release_rollup -->
-
 <!-- latest_stable_release -->
+
 ## [v3.0.3](https://github.com/chef/knife-cloud/tree/v3.0.3) (2020-05-21)
 
 #### Merged Pull Requests
 - Added bootstrap_product option [#129](https://github.com/chef/knife-cloud/pull/129) ([kapilchouhan99](https://github.com/kapilchouhan99))
 - Fix test failures on Ruby 2.5 and add Windows testing [#130](https://github.com/chef/knife-cloud/pull/130) ([tas50](https://github.com/tas50))
-<!-- latest_stable_release -->
 
 ## [v3.0.1](https://github.com/chef/knife-cloud/tree/v3.0.1) (2020-04-09)
 
