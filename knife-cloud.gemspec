@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
 
   s.files         = %w{LICENSE} + Dir.glob("lib/**/*")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.require_paths = %w{lib spec}
+  s.require_paths = %w{lib}
   s.required_ruby_version = ">= 2.2.5"
 
   s.add_dependency "chef", ">= 15.0"
