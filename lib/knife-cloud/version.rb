@@ -1,6 +1,6 @@
 module Knife
   module Cloud
-    VERSION = "3.0.3".freeze
+    VERSION = "3.0.4".freeze
     MAJOR, MINOR, TINY = VERSION.split(".")
   end
 end
