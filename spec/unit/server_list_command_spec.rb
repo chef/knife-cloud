@@ -1,7 +1,7 @@
 #
 # Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
 # Author:: Prabhu Das (<prabhu.das@clogeny.com>)
-# Copyright:: Copyright (c) 2013-2014 Chef Software, Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -74,7 +74,7 @@ describe Chef::Knife::Cloud::ServerListCommand do
       @derived_instance.config[:chef_data] = true
       @derived_instance.config[:chef_node_attribute] = "platform_family"
       @derived_instance.before_exec_command
-      @derived_instance.service = double Chef::Knife::Cloud::Service.new
+      @derived_instance.service = double Chef::Knife::Cloud::Service.new(config: @derived_instance.config)
       allow(@derived_instance.service).to receive(:get_server_name).with(resources.first).and_return("server-1")
     end
 

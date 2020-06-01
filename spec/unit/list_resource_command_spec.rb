@@ -2,7 +2,7 @@
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
 # Author:: Prabhu Das (<prabhu.das@clogeny.com>)
 # Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
-# Copyright:: Copyright (c) 2013-2014 Chef Software, Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ describe Chef::Knife::Cloud::ResourceListCommand do
 
   context "Basic tests:" do
     it "raises exception to override #query_resource method" do
-      allow(instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
+      allow(instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new(config: instance.config))
       expect { instance.run }.to raise_error(Chef::Exceptions::Override, "You must override query_resource in #{instance} to return resources.")
     end
 
@@ -66,7 +66,7 @@ describe Chef::Knife::Cloud::ResourceListCommand do
   context "Without columns_with_info parameter in #list:" do
     before do
       allow(instance).to receive(:query_resource).and_return(resources)
-      allow(instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
+      allow(instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new(config: instance.config))
       allow(instance).to receive(:puts)
       instance.config[:format] = "summary"
     end
@@ -112,7 +112,7 @@ describe Chef::Knife::Cloud::ResourceListCommand do
         @derived_instance = Derived.new
         allow(@derived_instance).to receive(:query_resource).and_return(resources)
         allow(@derived_instance).to receive(:puts)
-        allow(@derived_instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
+        allow(@derived_instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new(config: @derived_instance.config))
         @derived_instance.config[:format] = "summary"
       end
 
@@ -151,7 +151,7 @@ describe Chef::Knife::Cloud::ResourceListCommand do
         @derived_instance = Derived.new
         allow(@derived_instance).to receive(:query_resource).and_return(resources)
         allow(@derived_instance).to receive(:puts)
-        allow(@derived_instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
+        allow(@derived_instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new(config: @derived_instance.config))
         @derived_instance.config[:format] = "summary"
       end
 

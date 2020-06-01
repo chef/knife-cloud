@@ -1,6 +1,6 @@
 #
 # Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
-# Copyright:: Copyright (c) 2013-2014 Chef Software, Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,18 +22,12 @@ describe Chef::Knife::Cloud::Command do
 
   describe "validate!" do
     before(:each) do
-      # Here following options are used as a test data.
-      Chef::Config[:knife][:cloud_provider_username] = "cloud_provider_username"
-      Chef::Config[:knife][:cloud_provider_password] = "cloud_provider_password"
-      Chef::Config[:knife][:cloud_provider_auth_url] = "cloud_provider_auth_url"
       @instance = Chef::Knife::Cloud::Command.new
+      # Here following options are used as a test data.
+      @instance.config[:cloud_provider_username] = "cloud_provider_username"
+      @instance.config[:cloud_provider_password] = "cloud_provider_password"
+      @instance.config[:cloud_provider_auth_url] = "cloud_provider_auth_url"
       allow(@instance.ui).to receive(:error)
-    end
-
-    after(:all) do
-      Chef::Config[:knife].delete(:cloud_provider_username)
-      Chef::Config[:knife].delete(:cloud_provider_password)
-      Chef::Config[:knife].delete(:cloud_provider_auth_url)
     end
 
     it "execute with success" do
@@ -41,8 +35,7 @@ describe Chef::Knife::Cloud::Command do
     end
 
     it "raise_error on any mandatory option is missing" do
-      # delete cloud_provide_username option.
-      Chef::Config[:knife].delete(:cloud_provider_username)
+      @instance.config.delete(:cloud_provider_username)
       expect { @instance.validate!(:cloud_provider_username, :cloud_provider_password, :cloud_provider_auth_url) }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ValidationError, " You did not provide a valid 'Cloud Provider Username' value..")
     end
   end

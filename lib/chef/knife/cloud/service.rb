@@ -1,6 +1,6 @@
 #
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
-# Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,9 +25,11 @@ class Chef
       class Service
         include Cloud::Helpers
         attr_accessor :ui
+        attr_accessor :config
 
-        def initialize(options = {})
-          @auth_params = options[:auth_params]
+        def initialize(config:, auth_params: nil)
+          @config = config
+          @auth_params = auth_params
         end
 
         def connection
@@ -78,7 +80,7 @@ class Chef
         end
 
         def add_custom_attributes(server_def)
-          Chef::Config[:knife][:custom_attributes].map { |args| args.map { |k, v| server_def.merge!(k.to_sym => v) } } unless Chef::Config[:knife][:custom_attributes].nil?
+          config[:custom_attributes].map { |args| args.map { |k, v| server_def.merge!(k.to_sym => v) } } unless config[:custom_attributes].nil?
         end
 
       end # class service

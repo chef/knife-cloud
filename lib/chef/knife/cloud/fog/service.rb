@@ -1,7 +1,7 @@
 #
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
 # Author:: Prabhu Das (<prabhu.das@clogeny.com>)
-# Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 #
 
 require_relative "../service"
@@ -12,18 +12,18 @@ class Chef
     class Cloud
       class FogService < Service
 
-        def initialize(options = {})
-          load_fog_gem
+        def initialize(**kwargs)
           super
+          load_fog_gem
         end
 
         def load_fog_gem
           # Load specific version of fog-core. Any other classes/modules using fog-core are loaded after this.
-          gem "fog-core", Chef::Config[:knife][:cloud_fog_version]
+          gem "fog-core", config[:cloud_fog_version]
           require "fog/core"
           Chef::Log.debug("Using fog-core version: #{Gem.loaded_specs["fog-core"].version}")
-        rescue Exception
-          Chef::Log.error "Error loading fog-core gem."
+        rescue Exception => ex
+          Chef::Log.error "Error loading fog-core gem: #{ex}"
           exit 1
         end
 

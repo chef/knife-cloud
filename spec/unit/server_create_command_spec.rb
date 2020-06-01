@@ -1,7 +1,7 @@
 #
 # Author:: Mukta Aphale (<mukta.aphale@clogeny.com>)
 # Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
-# Copyright:: Copyright (c) 2013-2014 Chef Software, Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,35 +29,28 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
     before(:each) do
       @instance = Chef::Knife::Cloud::ServerCreateCommand.new
       allow(@instance.ui).to receive(:error)
-      Chef::Config[:knife][:connection_protocol] = "ssh"
-      Chef::Config[:knife][:ssh_identity_file] = "ssh_identity_file"
-      Chef::Config[:knife][:connection_password] = "connection_password"
-      Chef::Config[:knife][:chef_node_name] = "chef_node_name"
-    end
-    after(:all) do
-      Chef::Config[:knife].delete(:connection_protocol)
-      Chef::Config[:knife].delete(:ssh_identity_file)
-      Chef::Config[:knife].delete(:chef_node_name)
-      Chef::Config[:knife].delete(:connection_password)
+      @instance.config[:connection_protocol] = "ssh"
+      @instance.config[:ssh_identity_file] = "ssh_identity_file"
+      @instance.config[:connection_password] = "connection_password"
+      @instance.config[:chef_node_name] = "chef_node_name"
     end
 
     it "run sucessfully on all params exist" do
       expect { @instance.validate_params! }.to_not raise_error
-      expect(@instance.config[:chef_node_name]).to eq(Chef::Config[:knife][:chef_node_name])
     end
 
     context "when connection_protocol ssh" do
       it "raise error on connection_password and ssh_identity_file are missing" do
-        Chef::Config[:knife].delete(:ssh_identity_file)
-        Chef::Config[:knife].delete(:connection_password)
+        @instance.config.delete(:ssh_identity_file)
+        @instance.config.delete(:connection_password)
         expect { @instance.validate_params! }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ValidationError, " You must provide either SSH Identity file or Connection Password..")
       end
     end
 
     context "when connection_protocol winrm" do
       it "raise error on connection_password is missing" do
-        Chef::Config[:knife][:connection_protocol] = "winrm"
-        Chef::Config[:knife].delete(:connection_password)
+        @instance.config[:connection_protocol] = "winrm"
+        @instance.config.delete(:connection_password)
         expect { @instance.validate_params! }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ValidationError, " You must provide Connection Password..")
       end
     end
@@ -72,7 +65,7 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
 
     it "delete server on bootstrap failure" do
       instance = Chef::Knife::Cloud::ServerCreateCommand.new
-      instance.service = Chef::Knife::Cloud::Service.new
+      instance.service = Chef::Knife::Cloud::Service.new(config: instance.config)
       allow(instance).to receive(:raise)
       allow(instance.ui).to receive(:fatal)
       instance.config[:delete_server_on_failure] = true
@@ -85,7 +78,7 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
     # The RangeError is raised when image_os_type is set to linux and --connection-protocol is set to ssh before windows server bootstrap.
     it "raise error message when bootstrap fails due to image_os_type not exist" do
       instance = Chef::Knife::Cloud::ServerCreateCommand.new
-      instance.service = Chef::Knife::Cloud::Service.new
+      instance.service = Chef::Knife::Cloud::Service.new(config: instance.config)
       allow(instance.ui).to receive(:fatal)
       instance.config[:delete_server_on_failure] = true
       allow(instance).to receive(:bootstrap).and_raise(RangeError)

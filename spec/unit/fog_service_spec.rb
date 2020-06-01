@@ -1,7 +1,7 @@
 #
 # Author:: Prabhu Das (<prabhu.das@clogeny.com>)
 # Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
-# Copyright:: Copyright (c) 2013-2014 Chef Software, Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,9 +22,9 @@ require "support/shared_examples_for_service"
 
 describe Chef::Knife::Cloud::FogService do
 
-  it_behaves_like Chef::Knife::Cloud::Service, Chef::Knife::Cloud::FogService.new
+  it_behaves_like Chef::Knife::Cloud::Service, Chef::Knife::Cloud::FogService.new(config: {})
 
-  let (:instance) { Chef::Knife::Cloud::FogService.new({ auth_params: { provider: "Any Cloud Provider" } }) }
+  let (:instance) { Chef::Knife::Cloud::FogService.new(auth_params: { provider: "Any Cloud Provider" }, config: {}) }
 
   context "connection" do
     before do
@@ -71,7 +71,7 @@ describe Chef::Knife::Cloud::FogService do
 
   context "add_custom_attributes" do
     before(:each) do
-      Chef::Config[:knife][:custom_attributes] = [{ "state" => "Inactive" }]
+      instance.config[:custom_attributes] = [{ "state" => "Inactive" }]
       @server_def = { name: "vm-1", image_ref: "123", flavor_ref: "2", key_name: "key" }
       instance.add_custom_attributes(@server_def)
     end

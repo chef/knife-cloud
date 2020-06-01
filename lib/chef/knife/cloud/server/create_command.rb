@@ -1,5 +1,5 @@
 #
-# Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,16 +33,16 @@ class Chef
 
         def validate_params!
           # set param vm_name to a random value if the name is not set by the user (plugin)
-          config[:chef_node_name] = get_node_name(locate_config_value(:chef_node_name), locate_config_value(:chef_node_name_prefix))
+          config[:chef_node_name] = get_node_name(config[:chef_node_name], config[:chef_node_name_prefix])
 
           # validate ssh_identity_file for connection protocol and connection_user, connection_password for both ssh bootstrap protocol and winrm bootstrap protocol
           errors = []
-          if locate_config_value(:connection_protocol) == "ssh"
-            if locate_config_value(:ssh_identity_file).nil? && locate_config_value(:connection_password).nil?
+          if config[:connection_protocol] == "ssh"
+            if config[:ssh_identity_file].nil? && config[:connection_password].nil?
               errors << "You must provide either SSH Identity file or Connection Password."
             end
-          elsif locate_config_value(:connection_protocol) == "winrm"
-            if locate_config_value(:connection_password).nil?
+          elsif config[:connection_protocol] == "winrm"
+            if config[:connection_password].nil?
               errors << "You must provide Connection Password."
             end
           else
