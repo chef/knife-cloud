@@ -26,6 +26,7 @@ class Chef
         include Cloud::Helpers
         attr_accessor :ui
         attr_accessor :config
+        attr_reader :auth_params
 
         def initialize(config:, auth_params: nil)
           @config = config
