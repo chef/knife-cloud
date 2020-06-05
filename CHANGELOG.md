@@ -1,25 +1,22 @@
 # knife-cloud Change Log
 
-<!-- latest_release 4.0.0 -->
+<!-- latest_release -->
+<!-- latest_release -->
+
+<!-- release_rollup -->
+<!-- release_rollup -->
+
+<!-- latest_stable_release -->
 ## [v4.0.0](https://github.com/chef/knife-cloud/tree/v4.0.0) (2020-06-05)
 
 #### Merged Pull Requests
 - Chef-16 fixes. [#132](https://github.com/chef/knife-cloud/pull/132) ([lamont-granquist](https://github.com/lamont-granquist))
-<!-- latest_release -->
-
-<!-- release_rollup since=3.0.4 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Chef-16 fixes. [#132](https://github.com/chef/knife-cloud/pull/132) ([lamont-granquist](https://github.com/lamont-granquist)) <!-- 4.0.0 -->
-<!-- release_rollup -->
-
 <!-- latest_stable_release -->
+
 ## [v3.0.4](https://github.com/chef/knife-cloud/tree/v3.0.4) (2020-05-22)
 
 #### Merged Pull Requests
 - Removed spec_dir from required_path [#131](https://github.com/chef/knife-cloud/pull/131) ([kapilchouhan99](https://github.com/kapilchouhan99))
-<!-- latest_stable_release -->
 
 ## [v3.0.3](https://github.com/chef/knife-cloud/tree/v3.0.3) (2020-05-21)
 
