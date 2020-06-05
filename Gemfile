@@ -12,6 +12,12 @@ end
 group :test do
   gem "rake"
   gem "rspec-core"
+  if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("2.7")
+    gem "chef-zero", "~> 15"
+    gem "chef", "~> 15"
+  else
+    gem "chef", ">= 16.0"
+  end
   gem "rspec-expectations"
   gem "rspec-mocks"
   gem "rspec_junit_formatter"
