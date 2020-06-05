@@ -216,14 +216,14 @@ Following is the code template for the above methods
               :server_def => {
                 # servers require a name, knife-cloud generates the chef_node_name
                 :name => config[:chef_node_name],
-                :image_ref => locate_config_value(:image),
-                :flavor_ref => locate_config_value(:flavor),
+                :image_ref => config[:image],
+                :flavor_ref => config[:flavor],
                 #...
               },
-              :server_create_timeout => locate_config_value(:server_create_timeout)
+              :server_create_timeout => config[:server_create_timeout]
             }
 
-            @create_options[:server_def].merge!({:user_data => locate_config_value(:user_data)}) if locate_config_value(:user_data)
+            @create_options[:server_def].merge!({:user_data => config[:user_data]}) if config[:user_data]
 
             Chef::Log.debug("Create server params - server_def = #{@create_options[:server_def]}")
 

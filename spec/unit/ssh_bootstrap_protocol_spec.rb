@@ -1,6 +1,6 @@
 #
 # Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
-# Copyright:: Copyright (c) 2013-2014 Chef Software, Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -55,7 +55,6 @@ describe Chef::Knife::Cloud::SshBootstrapProtocol do
       @config[:ssh_gateway] = "ssh_gateway"
       @config[:forward_agent] = true
       @config[:use_sudo_password] = true
-      allow(@config).to receive(:locate_config_value).and_return({})
       @instance.bootstrap = Chef::Knife::Bootstrap.new
       @instance.init_bootstrap_options
       expect(@instance.bootstrap.name_args).to eq([@config[:bootstrap_ip_address]])

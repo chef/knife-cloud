@@ -1,6 +1,6 @@
 #
 # Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
-# Copyright:: Copyright (c) 2013-2014 Chef Software, Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -66,7 +66,6 @@ describe Chef::Knife::Cloud::BootstrapProtocol do
       config[:msi_url] = "https://opscode-omnibus-packages.s3.amazonaws.com/windows/2008r2/x86_64/chef-client-12.3.0-1.msi"
       config[:session_timeout] = "42"
       config[:install_as_service] = "true"
-      allow(config).to receive(:locate_config_value).and_return({})
       instance.bootstrap = Chef::Knife::Bootstrap.new
       instance.init_bootstrap_options
       expect(instance.bootstrap.name_args).to eq([config[:bootstrap_ip_address]])
