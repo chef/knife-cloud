@@ -1,7 +1,7 @@
 #
 # Author:: Mukta Aphale (<mukta.aphale@clogeny.com>)
 # Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
-# Copyright:: Copyright (c) 2013-2014 Chef Software, Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@ describe Chef::Knife::Cloud::Command do
   let (:instance) { Chef::Knife::Cloud::Command.new }
 
   it "overrides execute_command" do
-    allow(instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new)
+    allow(instance).to receive(:create_service_instance).and_return(Chef::Knife::Cloud::Service.new(config: instance.config))
     expect { instance.run }.to raise_error(Chef::Exceptions::Override, "You must override execute_command in #{instance}")
   end
 

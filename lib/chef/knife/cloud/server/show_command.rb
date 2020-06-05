@@ -1,5 +1,5 @@
 #
-# Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ class Chef
         def validate_params!
           errors = []
           config[:instance_id] = @name_args.first
-          if locate_config_value(:instance_id).nil?
+          if config[:instance_id].nil?
             errors << "You must provide a valid Instance Id"
           end
           error_message = ""
@@ -40,9 +40,9 @@ class Chef
         end
 
         def execute_command
-          server = service.get_server(locate_config_value(:instance_id))
+          server = service.get_server(config[:instance_id])
           if server.nil?
-            error_message = "Server doesn't exists for this #{locate_config_value(:instance_id)} instance id."
+            error_message = "Server doesn't exists for this #{config[:instance_id]} instance id."
             ui.error(error_message)
             raise CloudExceptions::ServerShowError, error_message
           else

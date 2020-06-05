@@ -1,7 +1,7 @@
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
 # Author:: Prabhu Das (<prabhu.das@clogeny.com>)
 #
-# Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,13 @@ class Chef
         def init_bootstrap_options
           bootstrap.config[:connection_user] = @config[:connection_user]
           bootstrap.config[:connection_password] = @config[:connection_password]
-          bootstrap.config[:connection_port] = locate_config_value(:connection_port)
+          bootstrap.config[:connection_port] = config[:connection_port]
           bootstrap.config[:ssh_identity_file] = @config[:ssh_identity_file]
           bootstrap.config[:ssh_verify_host_key] = @config[:ssh_verify_host_key]
           bootstrap.config[:use_sudo] = true unless @config[:connection_user] == "root"
-          bootstrap.config[:ssh_gateway] = locate_config_value(:ssh_gateway)
-          bootstrap.config[:forward_agent] = locate_config_value(:forward_agent)
-          bootstrap.config[:use_sudo_password] = locate_config_value(:use_sudo_password)
+          bootstrap.config[:ssh_gateway] = config[:ssh_gateway]
+          bootstrap.config[:forward_agent] = config[:forward_agent]
+          bootstrap.config[:use_sudo_password] = config[:use_sudo_password]
           super
         end
 
@@ -52,13 +52,13 @@ class Chef
           # The ssh_gateway & subnet_id are currently supported only in EC2.
           if ssh_gateway
             print(".") until tunnel_test_ssh(ssh_gateway, @config[:bootstrap_ip_address]) do
-              @initial_sleep_delay = !!locate_config_value(:subnet_id) ? 40 : 10
+              @initial_sleep_delay = !!config[:subnet_id] ? 40 : 10
               sleep @initial_sleep_delay
               puts("done")
             end
           else
-            print(".") until tcp_test_ssh(@config[:bootstrap_ip_address], locate_config_value(:connection_port) || Chef::Config[:knife][:ssh_port] ) do
-              @initial_sleep_delay = !!locate_config_value(:subnet_id) ? 40 : 10
+            print(".") until tcp_test_ssh(@config[:bootstrap_ip_address], config[:connection_port] || config[:ssh_port] ) do
+              @initial_sleep_delay = !!config[:subnet_id] ? 40 : 10
               sleep @initial_sleep_delay
               puts("done")
             end
@@ -66,11 +66,11 @@ class Chef
         end
 
         def get_ssh_gateway_for(hostname)
-          if locate_config_value(:ssh_gateway)
+          if config[:ssh_gateway]
             # The ssh_gateway specified in the knife config (if any) takes
             # precedence over anything in the SSH configuration
-            Chef::Log.debug("Using ssh gateway #{locate_config_value(:ssh_gateway)} from knife config")
-            locate_config_value(:ssh_gateway)
+            Chef::Log.debug("Using ssh gateway #{config[:ssh_gateway]} from knife config")
+            config[:ssh_gateway]
           else
             # Next, check if the SSH configuration has a ProxyCommand
             # directive for this host. If there is one, parse out the
@@ -130,7 +130,7 @@ class Chef
         def tunnel_test_ssh(ssh_gateway, hostname, &block)
           status = false
           gateway = configure_ssh_gateway(ssh_gateway)
-          gateway.open(hostname, locate_config_value(:ssh_port)) do |local_tunnel_port|
+          gateway.open(hostname, config[:ssh_port]) do |local_tunnel_port|
             status = tcp_test_ssh("localhost", local_tunnel_port, &block)
           end
           status
@@ -157,8 +157,8 @@ class Chef
           gateway_keys = ssh_gateway_config[:keys]
 
           # Use the keys specificed on the command line if available (overrides SSH Config)
-          if locate_config_value(:ssh_gateway_identity)
-            gateway_keys = Array(locate_config_value(:ssh_gateway_identity))
+          if config[:ssh_gateway_identity]
+            gateway_keys = Array(config[:ssh_gateway_identity])
           end
 
           unless gateway_keys.nil?

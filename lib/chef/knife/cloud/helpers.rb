@@ -1,5 +1,5 @@
 #
-# Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,11 +27,6 @@ class Chef
           end
         end
 
-        def locate_config_value(key)
-          key = key.to_sym
-          config[key] || Chef::Config[:knife][key]
-        end
-
         def create_service_instance
           raise Chef::Exceptions::Override, "You must override create_service_instance in #{self} to create cloud specific service"
         end
@@ -52,7 +47,7 @@ class Chef
           # subclasses to implement this.
           errors = []
           keys.each do |k|
-            errors << "You did not provide a valid '#{pretty_key(k)}' value." if locate_config_value(k).nil?
+            errors << "You did not provide a valid '#{pretty_key(k)}' value." if config[k].nil?
           end
           error_message = ""
           raise CloudExceptions::ValidationError, error_message if errors.each { |e| ui.error(e); error_message = "#{error_message} #{e}." }.any?

@@ -1,6 +1,6 @@
 #
 # Author:: Siddheshwar More (<siddheshwar.more@clogeny.com>)
-# Copyright:: Copyright (c) 2013-2014 Chef Software, Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,21 +22,15 @@ describe Chef::Knife::Cloud::ServerShowCommand do
   it_behaves_like Chef::Knife::Cloud::Command, Chef::Knife::Cloud::ServerShowCommand.new
 
   describe "#validate_params!" do
-    before(:each) do
-      @instance = Chef::Knife::Cloud::ServerShowCommand.new
-      allow(@instance.ui).to receive(:error)
-      Chef::Config[:knife][:instance_id] = "instance_id"
-    end
-    after(:all) do
-      Chef::Config[:knife].delete(:instance_id)
-    end
-
     it "run sucessfully on all params exist" do
+      @instance = Chef::Knife::Cloud::ServerShowCommand.new([ "instance_id" ])
+      allow(@instance.ui).to receive(:error)
       expect { @instance.validate_params! }.to_not raise_error
     end
 
     it "raise error on missing instance_id param" do
-      Chef::Config[:knife].delete(:instance_id)
+      @instance = Chef::Knife::Cloud::ServerShowCommand.new
+      allow(@instance.ui).to receive(:error)
       expect { @instance.validate_params! }.to raise_error(Chef::Knife::Cloud::CloudExceptions::ValidationError, " You must provide a valid Instance Id.")
     end
   end
@@ -44,7 +38,7 @@ describe Chef::Knife::Cloud::ServerShowCommand do
   describe "#execute_command" do
     it "show server summary" do
       instance = Chef::Knife::Cloud::ServerShowCommand.new
-      instance.service = Chef::Knife::Cloud::Service.new
+      instance.service = Chef::Knife::Cloud::Service.new(config: instance.config)
       server = Object.new
       expect(instance.service).to receive(:get_server).and_return(server)
       expect(instance.service).to receive(:server_summary)
@@ -52,9 +46,9 @@ describe Chef::Knife::Cloud::ServerShowCommand do
     end
 
     it "raise error on invalid instance id" do
-      instance = Chef::Knife::Cloud::ServerShowCommand.new
-      instance.service = Chef::Knife::Cloud::Service.new
-      Chef::Config[:knife][:instance_id] = "invalid_id"
+      instance = Chef::Knife::Cloud::ServerShowCommand.new([ "invalid_id" ])
+      instance.service = Chef::Knife::Cloud::Service.new(config: instance.config)
+      instance.validate_params!
       allow(instance.ui).to receive(:error)
       expect(instance.service).to receive(:get_server).and_return(nil)
       expect(instance.service).to_not receive(:server_summary)

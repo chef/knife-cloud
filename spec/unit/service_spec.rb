@@ -1,6 +1,6 @@
 #
 # Author:: Prabhu Das (<prabhu.das@clogeny.com>)
-# Copyright:: Copyright (c) 2013-2014 Chef Software, Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,7 @@ require "chef/knife/cloud/service"
 
 describe Chef::Knife::Cloud::Service do
 
-  let (:instance) { Chef::Knife::Cloud::Service.new }
+  let (:instance) { Chef::Knife::Cloud::Service.new(config: {}) }
 
   it { expect { instance }.to_not raise_error }
 
@@ -40,6 +40,6 @@ describe Chef::Knife::Cloud::Service do
 
   it { expect { instance.list_resource_configurations }.to raise_error(Chef::Exceptions::Override, "You must override list_resource_configurations in #{instance}") }
 
-  it { expect { Chef::Knife::Cloud::Service.new({ auth_params: { provider: "Any Cloud Provider" } }) }.to_not raise_error }
+  it { expect { Chef::Knife::Cloud::Service.new(auth_params: { provider: "Any Cloud Provider" }, config: {}) }.to_not raise_error }
 
 end

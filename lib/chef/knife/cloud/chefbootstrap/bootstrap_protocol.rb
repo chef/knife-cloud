@@ -1,7 +1,7 @@
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
 # Author:: Prabhu Das (<prabhu.das@clogeny.com>)
 #
-# Copyright:: Copyright (c) 2013-2016 Chef Software, Inc.
+# Copyright:: Copyright (c) Chef Software Inc.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,36 +46,36 @@ class Chef
 
         def init_bootstrap_options
           # set the command bootstrap options.
-          bootstrap.name_args << locate_config_value(:bootstrap_ip_address)
-          bootstrap.config[:chef_node_name] = locate_config_value(:chef_node_name)
-          bootstrap.config[:run_list] = locate_config_value(:run_list)
-          bootstrap.config[:prerelease] = locate_config_value(:prerelease)
-          bootstrap.config[:bootstrap_version] = locate_config_value(:bootstrap_version)
-          bootstrap.config[:bootstrap_proxy] = locate_config_value(:bootstrap_proxy)
-          bootstrap.config[:environment] = locate_config_value(:environment)
+          bootstrap.name_args << config[:bootstrap_ip_address]
+          bootstrap.config[:chef_node_name] = config[:chef_node_name]
+          bootstrap.config[:run_list] = config[:run_list]
+          bootstrap.config[:prerelease] = config[:prerelease]
+          bootstrap.config[:bootstrap_version] = config[:bootstrap_version]
+          bootstrap.config[:bootstrap_proxy] = config[:bootstrap_proxy]
+          bootstrap.config[:environment] = config[:environment]
           # see chef/knife/bootstrap.rb #warn_chef_config_secret_key.
-          bootstrap.config[:encrypted_data_bag_secret] = locate_config_value(:encrypted_data_bag_secret)
-          bootstrap.config[:encrypted_data_bag_secret_file] = locate_config_value(:encrypted_data_bag_secret_file)
-          bootstrap.config[:first_boot_attributes] = locate_config_value(:first_boot_attributes)
-          bootstrap.config[:secret] = locate_config_value(:secret)
-          bootstrap.config[:secret_file] = locate_config_value(:secret_file)
-          bootstrap.config[:bootstrap_template] = locate_config_value(:bootstrap_template)
-          bootstrap.config[:node_ssl_verify_mode] = locate_config_value(:node_ssl_verify_mode)
-          bootstrap.config[:node_verify_api_cert] = locate_config_value(:node_verify_api_cert)
-          bootstrap.config[:bootstrap_no_proxy] = locate_config_value(:bootstrap_no_proxy)
-          bootstrap.config[:bootstrap_url] = locate_config_value(:bootstrap_url)
-          bootstrap.config[:bootstrap_install_command] = locate_config_value(:bootstrap_install_command)
-          bootstrap.config[:bootstrap_wget_options] = locate_config_value(:bootstrap_wget_options)
-          bootstrap.config[:bootstrap_curl_options] = locate_config_value(:bootstrap_curl_options)
-          bootstrap.config[:bootstrap_vault_file] = locate_config_value(:bootstrap_vault_file)
-          bootstrap.config[:bootstrap_vault_json] = locate_config_value(:bootstrap_vault_json)
-          bootstrap.config[:bootstrap_vault_item] = locate_config_value(:bootstrap_vault_item)
-          bootstrap.config[:use_sudo_password] = locate_config_value(:use_sudo_password)
-          bootstrap.config[:msi_url] = locate_config_value(:msi_url)
-          bootstrap.config[:install_as_service] = locate_config_value(:install_as_service)
-          bootstrap.config[:session_timeout] = locate_config_value(:session_timeout)
-          bootstrap.config[:channel] = locate_config_value(:channel)
-          bootstrap.config[:bootstrap_product] = locate_config_value(:bootstrap_product)
+          bootstrap.config[:encrypted_data_bag_secret] = config[:encrypted_data_bag_secret]
+          bootstrap.config[:encrypted_data_bag_secret_file] = config[:encrypted_data_bag_secret_file]
+          bootstrap.config[:first_boot_attributes] = config[:first_boot_attributes]
+          bootstrap.config[:secret] = config[:secret]
+          bootstrap.config[:secret_file] = config[:secret_file]
+          bootstrap.config[:bootstrap_template] = config[:bootstrap_template]
+          bootstrap.config[:node_ssl_verify_mode] = config[:node_ssl_verify_mode]
+          bootstrap.config[:node_verify_api_cert] = config[:node_verify_api_cert]
+          bootstrap.config[:bootstrap_no_proxy] = config[:bootstrap_no_proxy]
+          bootstrap.config[:bootstrap_url] = config[:bootstrap_url]
+          bootstrap.config[:bootstrap_install_command] = config[:bootstrap_install_command]
+          bootstrap.config[:bootstrap_wget_options] = config[:bootstrap_wget_options]
+          bootstrap.config[:bootstrap_curl_options] = config[:bootstrap_curl_options]
+          bootstrap.config[:bootstrap_vault_file] = config[:bootstrap_vault_file]
+          bootstrap.config[:bootstrap_vault_json] = config[:bootstrap_vault_json]
+          bootstrap.config[:bootstrap_vault_item] = config[:bootstrap_vault_item]
+          bootstrap.config[:use_sudo_password] = config[:use_sudo_password]
+          bootstrap.config[:msi_url] = config[:msi_url]
+          bootstrap.config[:install_as_service] = config[:install_as_service]
+          bootstrap.config[:session_timeout] = config[:session_timeout]
+          bootstrap.config[:channel] = config[:channel]
+          bootstrap.config[:bootstrap_product] = config[:bootstrap_product]
         end
 
       end
