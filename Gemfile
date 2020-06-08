@@ -14,9 +14,9 @@ group :test do
   gem "rspec-core"
   if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("2.7")
     gem "chef-zero", "~> 15"
-    gem "chef", "~> 15"
+    gem "chef", "~> 16"
   else
-    gem "chef", ">= 16.0"
+    gem "chef", "~> 16"
   end
   gem "rspec-expectations"
   gem "rspec-mocks"
