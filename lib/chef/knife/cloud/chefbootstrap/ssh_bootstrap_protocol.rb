@@ -32,12 +32,12 @@ class Chef
         end
 
         def init_bootstrap_options
-          bootstrap.config[:connection_user] = @config[:connection_user]
-          bootstrap.config[:connection_password] = @config[:connection_password]
+          bootstrap.config[:connection_user] = config[:connection_user]
+          bootstrap.config[:connection_password] = config[:connection_password]
           bootstrap.config[:connection_port] = config[:connection_port]
-          bootstrap.config[:ssh_identity_file] = @config[:ssh_identity_file]
-          bootstrap.config[:ssh_verify_host_key] = @config[:ssh_verify_host_key]
-          bootstrap.config[:use_sudo] = true unless @config[:connection_user] == "root"
+          bootstrap.config[:ssh_identity_file] = config[:ssh_identity_file]
+          bootstrap.config[:ssh_verify_host_key] = config[:ssh_verify_host_key]
+          bootstrap.config[:use_sudo] = true unless config[:connection_user] == "root"
           bootstrap.config[:ssh_gateway] = config[:ssh_gateway]
           bootstrap.config[:forward_agent] = config[:forward_agent]
           bootstrap.config[:use_sudo_password] = config[:use_sudo_password]
@@ -45,19 +45,19 @@ class Chef
         end
 
         def wait_for_server_ready
-          print "\n#{ui.color("Waiting for sshd to host (#{@config[:bootstrap_ip_address]})", :magenta)}"
+          print "\n#{ui.color("Waiting for sshd to host (#{config[:bootstrap_ip_address]})", :magenta)}"
 
-          ssh_gateway = get_ssh_gateway_for(@config[:bootstrap_ip_address])
+          ssh_gateway = get_ssh_gateway_for(config[:bootstrap_ip_address])
 
           # The ssh_gateway & subnet_id are currently supported only in EC2.
           if ssh_gateway
-            print(".") until tunnel_test_ssh(ssh_gateway, @config[:bootstrap_ip_address]) do
+            print(".") until tunnel_test_ssh(ssh_gateway, config[:bootstrap_ip_address]) do
               @initial_sleep_delay = !!config[:subnet_id] ? 40 : 10
               sleep @initial_sleep_delay
               puts("done")
             end
           else
-            print(".") until tcp_test_ssh(@config[:bootstrap_ip_address], config[:connection_port] || config[:ssh_port] ) do
+            print(".") until tcp_test_ssh(config[:bootstrap_ip_address], config[:connection_port] || config[:ssh_port] ) do
               @initial_sleep_delay = !!config[:subnet_id] ? 40 : 10
               sleep @initial_sleep_delay
               puts("done")
