@@ -130,7 +130,8 @@ class Chef
         def tunnel_test_ssh(ssh_gateway, hostname, &block)
           status = false
           gateway = configure_ssh_gateway(ssh_gateway)
-          gateway.open(hostname, config[:ssh_port]) do |local_tunnel_port|
+          remote_ssh_port = config[:connection_port] || config[:ssh_port] || 22
+          gateway.open(hostname, remote_ssh_port) do |local_tunnel_port|
             status = tcp_test_ssh("localhost", local_tunnel_port, &block)
           end
           status

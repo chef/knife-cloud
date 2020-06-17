@@ -67,6 +67,59 @@ describe Chef::Knife::Cloud::SshBootstrapProtocol do
     end
   end
 
+  describe "#tunnel_test_ssh" do
+    [SocketError,
+     Errno::ECONNREFUSED,
+     Errno::EHOSTUNREACH,
+     Errno::ENETUNREACH,
+     IOError,
+     Errno::EPERM,
+     Errno::ETIMEDOUT,
+    ].each do |error|
+      it "returns false on #{error} error" do
+        gateway = double
+        allow(gateway).to receive(:open).and_raise(error)
+        allow(@instance).to receive(:configure_ssh_gateway).and_return(gateway)
+        expect(@instance.tunnel_test_ssh("localhost", "chef.io")).to be(false)
+      end
+    end
+
+    it "defaults to remote port 22" do
+      gateway = double
+      allow(@instance).to receive(:configure_ssh_gateway).and_return(gateway)
+      expect(gateway).to receive(:open).with("chef.io", 22)
+      @instance.tunnel_test_ssh("localhost", "chef.io")
+    end
+
+    it "uses connection_port when set" do
+      @config[:connection_port] = 2200
+      ssh_bootstrap_protocol = Chef::Knife::Cloud::SshBootstrapProtocol.new(@config)
+      gateway = double
+      allow(ssh_bootstrap_protocol).to receive(:configure_ssh_gateway).and_return(gateway)
+      expect(gateway).to receive(:open).with("chef.io", 2200)
+      ssh_bootstrap_protocol.tunnel_test_ssh("localhost", "chef.io")
+    end
+
+    it "uses ssh_port when set" do
+      @config[:ssh_port] = 2222
+      ssh_bootstrap_protocol = Chef::Knife::Cloud::SshBootstrapProtocol.new(@config)
+      gateway = double
+      allow(ssh_bootstrap_protocol).to receive(:configure_ssh_gateway).and_return(gateway)
+      expect(gateway).to receive(:open).with("chef.io", 2222)
+      ssh_bootstrap_protocol.tunnel_test_ssh("localhost", "chef.io")
+    end
+
+    it "prefers connection_port over ssh_port when both are set" do
+      @config[:connection_port] = 2200
+      @config[:ssh_port] = 2222
+      ssh_bootstrap_protocol = Chef::Knife::Cloud::SshBootstrapProtocol.new(@config)
+      gateway = double
+      allow(ssh_bootstrap_protocol).to receive(:configure_ssh_gateway).and_return(gateway)
+      expect(gateway).to receive(:open).with("chef.io", 2200)
+      ssh_bootstrap_protocol.tunnel_test_ssh("localhost", "chef.io")
+    end
+  end
+
   describe "#tcp_test_ssh" do
 
     it "return true" do
