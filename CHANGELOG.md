@@ -1,26 +1,23 @@
 # knife-cloud Change Log
 
-<!-- latest_release 4.0.2 -->
-## [v4.0.2](https://github.com/chef/knife-cloud/tree/v4.0.2) (2020-07-15)
-
-#### Merged Pull Requests
-- Remove redundant encoding comment [#136](https://github.com/chef/knife-cloud/pull/136) ([tas50](https://github.com/tas50))
+<!-- latest_release -->
 <!-- latest_release -->
 
-<!-- release_rollup since=4.0.0 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- Remove redundant encoding comment [#136](https://github.com/chef/knife-cloud/pull/136) ([tas50](https://github.com/tas50)) <!-- 4.0.2 -->
-- Fixes SSH gateway remote SSH port option handling [#135](https://github.com/chef/knife-cloud/pull/135) ([mikemar10](https://github.com/mikemar10)) <!-- 4.0.1 -->
+<!-- release_rollup -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
+## [v4.0.2](https://github.com/chef/knife-cloud/tree/v4.0.2) (2020-07-15)
+
+#### Merged Pull Requests
+- Fixes SSH gateway remote SSH port option handling [#135](https://github.com/chef/knife-cloud/pull/135) ([mikemar10](https://github.com/mikemar10))
+- Remove redundant encoding comment [#136](https://github.com/chef/knife-cloud/pull/136) ([tas50](https://github.com/tas50))
+<!-- latest_stable_release -->
+
 ## [v4.0.0](https://github.com/chef/knife-cloud/tree/v4.0.0) (2020-06-05)
 
 #### Merged Pull Requests
 - Chef-16 fixes. [#132](https://github.com/chef/knife-cloud/pull/132) ([lamont-granquist](https://github.com/lamont-granquist))
-<!-- latest_stable_release -->
 
 ## [v3.0.4](https://github.com/chef/knife-cloud/tree/v3.0.4) (2020-05-22)
 
