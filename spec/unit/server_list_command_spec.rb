@@ -83,7 +83,7 @@ describe Chef::Knife::Cloud::ServerListCommand do
       expect(@derived_instance.get_resource_col_val(resources.first)).to eq(%w{server-1 _default debian})
     end
 
-    it "raise error on invalide chef_node_attribute" do
+    it "raise error on invalid chef_node_attribute" do
       allow(@derived_instance.ui).to receive(:error)
       expect(@derived_instance.node).to receive(:attribute?).with("platform_family").and_return(false)
       expect { @derived_instance.get_resource_col_val(resources.first) }.to raise_error(Chef::Knife::Cloud::CloudExceptions::CloudAPIException, "The Node does not have a platform_family attribute.")

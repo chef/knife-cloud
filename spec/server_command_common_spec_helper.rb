@@ -17,7 +17,7 @@
 
 $:.unshift File.expand_path("../../lib", __FILE__)
 
-# Common helper methods used accrossed knife plugin during Integration testing.
+# Common helper methods used across knife plugins during Integration testing.
 #
 # run_cmd_check_status_and_output: It checks knife plugin command exitstatus(i.e '0' = succeed and '1' = fails)
 # and also checks command output(i.e stdout or stderr)

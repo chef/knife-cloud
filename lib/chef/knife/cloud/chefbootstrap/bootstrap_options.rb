@@ -22,7 +22,7 @@ require "net/ssh/multi"
 class Chef
   class Knife
     class Cloud
-      # Ideally chef/knife/bootstap should expose this as module.
+      # Ideally chef/knife/bootstrap should expose this as module.
       module BootstrapOptions
 
         def self.included(includer)

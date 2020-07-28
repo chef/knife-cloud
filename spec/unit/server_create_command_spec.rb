@@ -35,7 +35,7 @@ describe Chef::Knife::Cloud::ServerCreateCommand do
       @instance.config[:chef_node_name] = "chef_node_name"
     end
 
-    it "run sucessfully on all params exist" do
+    it "run successfully on all params exist" do
       expect { @instance.validate_params! }.to_not raise_error
     end
 

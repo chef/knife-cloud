@@ -29,7 +29,7 @@ class Chef
         attr_accessor :service, :custom_arguments
 
         def run
-          # Set dafult config
+          # Set dafault config
           set_default_config
 
           # validate compulsory params

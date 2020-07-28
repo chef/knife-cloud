@@ -157,7 +157,7 @@ class Chef
           # Always use the gateway keys from the SSH Config
           gateway_keys = ssh_gateway_config[:keys]
 
-          # Use the keys specificed on the command line if available (overrides SSH Config)
+          # Use the keys specified on the command line if available (overrides SSH Config)
           if config[:ssh_gateway_identity]
             gateway_keys = Array(config[:ssh_gateway_identity])
           end

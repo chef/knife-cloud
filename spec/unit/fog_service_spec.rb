@@ -148,7 +148,7 @@ describe Chef::Knife::Cloud::FogService do
                                             { "instance_id" => nil,
                                               "ip" => "127.0.0.1",
                                               "fixed_ip" => nil,
-                                              "id" => "test-addres-id",
+                                              "id" => "test-address-id",
                                               "pool" => "public-110",
                                             },
                                           })

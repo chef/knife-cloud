@@ -22,7 +22,7 @@ describe Chef::Knife::Cloud::ServerShowCommand do
   it_behaves_like Chef::Knife::Cloud::Command, Chef::Knife::Cloud::ServerShowCommand.new
 
   describe "#validate_params!" do
-    it "run sucessfully on all params exist" do
+    it "run successfully on all params exist" do
       @instance = Chef::Knife::Cloud::ServerShowCommand.new([ "instance_id" ])
       allow(@instance.ui).to receive(:error)
       expect { @instance.validate_params! }.to_not raise_error
