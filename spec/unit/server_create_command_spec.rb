@@ -18,7 +18,7 @@
 
 require "support/shared_examples_for_command_bootstrap"
 require "support/shared_examples_for_servercreatecommand"
-require "net/ssh"
+require "net/ssh" unless defined?(Net::SSH)
 require "chef/knife/cloud/server/create_options"
 
 describe Chef::Knife::Cloud::ServerCreateCommand do

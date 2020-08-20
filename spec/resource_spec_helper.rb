@@ -16,7 +16,7 @@
 # limitations under the License.
 
 $:.unshift File.expand_path("../../lib", __FILE__)
-require "json"
+require "json" unless defined?(JSON)
 
 # Creates a resource class that can dynamically add attributes to
 # instances and set the values

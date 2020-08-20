@@ -1,6 +1,6 @@
-require "securerandom"
-require "tmpdir"
-require "fileutils"
+require "securerandom" unless defined?(SecureRandom)
+require "tmpdir" unless defined?(Dir.mktmpdir)
+require "fileutils" unless defined?(FileUtils)
 require File.expand_path(File.dirname(__FILE__) + "/knife_test_utils")
 require File.expand_path(File.dirname(__FILE__) + "/matchers")
 
