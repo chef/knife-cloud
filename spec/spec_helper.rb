@@ -17,7 +17,7 @@
 # limitations under the License.
 
 $:.unshift File.expand_path("../../lib", __FILE__)
-require "json"
+require "json" unless defined?(JSON)
 require "chef/knife/cloud/exceptions"
 require "chef/exceptions"
 require "chef/config"

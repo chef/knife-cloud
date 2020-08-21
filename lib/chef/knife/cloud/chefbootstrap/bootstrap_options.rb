@@ -30,8 +30,8 @@ class Chef
 
             deps do
               require "chef/json_compat"
-              require "tempfile"
-              require "net/ssh"
+              require "tempfile" unless defined?(Tempfile)
+              require "net/ssh" unless defined?(Net::SSH)
               require "chef/knife/ssh"
               Chef::Knife::Ssh.load_deps
             end

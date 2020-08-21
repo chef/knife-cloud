@@ -4,7 +4,7 @@
 require "bundler"
 Bundler::GemHelper.install_tasks
 
-require "rubygems"
+require "rubygems" unless defined?(Gem)
 require "rubygems/package_task"
 
 # Packaging
@@ -45,7 +45,7 @@ rescue LoadError
 end
 
 begin
-  require "yard"
+  require "yard" unless defined?(YARD)
   YARD::Rake::YardocTask.new(:docs)
 rescue LoadError
   puts "yard is not available. bundle install first to make sure all dependencies are installed."

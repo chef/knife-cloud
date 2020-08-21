@@ -31,7 +31,7 @@ class Chef
         end
 
         def load_winrm_deps
-          require "winrm"
+          require "winrm" unless defined?(WinRM::Connection)
           require "chef/knife/core/windows_bootstrap_context"
         end
 
