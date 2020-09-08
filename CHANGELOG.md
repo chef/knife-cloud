@@ -1,27 +1,24 @@
 # knife-cloud Change Log
 
-<!-- latest_release 4.0.6 -->
-## [v4.0.6](https://github.com/chef/knife-cloud/tree/v4.0.6) (2020-09-08)
-
-#### Merged Pull Requests
-- move ssh/multi require into deps do [#140](https://github.com/chef/knife-cloud/pull/140) ([mwrock](https://github.com/mwrock))
+<!-- latest_release -->
 <!-- latest_release -->
 
-<!-- release_rollup since=4.0.4 -->
-### Changes not yet released to rubygems.org
-
-#### Merged Pull Requests
-- move ssh/multi require into deps do [#140](https://github.com/chef/knife-cloud/pull/140) ([mwrock](https://github.com/mwrock)) <!-- 4.0.6 -->
-- Update chefstyle requirement from 1.2.1 to 1.3.2 [#139](https://github.com/chef/knife-cloud/pull/139) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot])) <!-- 4.0.5 -->
+<!-- release_rollup -->
 <!-- release_rollup -->
 
 <!-- latest_stable_release -->
+## [v4.0.6](https://github.com/chef/knife-cloud/tree/v4.0.6) (2020-09-08)
+
+#### Merged Pull Requests
+- Update chefstyle requirement from 1.2.1 to 1.3.2 [#139](https://github.com/chef/knife-cloud/pull/139) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot]))
+- move ssh/multi require into deps do [#140](https://github.com/chef/knife-cloud/pull/140) ([mwrock](https://github.com/mwrock))
+<!-- latest_stable_release -->
+
 ## [v4.0.4](https://github.com/chef/knife-cloud/tree/v4.0.4) (2020-08-21)
 
 #### Merged Pull Requests
 - Update chefstyle requirement from 1.2.0 to 1.2.1 [#137](https://github.com/chef/knife-cloud/pull/137) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot]))
 - Optimize our requires [#138](https://github.com/chef/knife-cloud/pull/138) ([tas50](https://github.com/tas50))
-<!-- latest_stable_release -->
 
 ## [v4.0.2](https://github.com/chef/knife-cloud/tree/v4.0.2) (2020-07-15)
 
