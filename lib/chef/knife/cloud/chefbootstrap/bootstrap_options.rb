@@ -17,7 +17,6 @@
 # limitations under the License.
 
 require "chef/knife/core/bootstrap_context"
-require "net/ssh/multi"
 
 class Chef
   class Knife
@@ -32,6 +31,7 @@ class Chef
               require "chef/json_compat"
               require "tempfile" unless defined?(Tempfile)
               require "net/ssh" unless defined?(Net::SSH)
+              require "net/ssh/multi"
               require "chef/knife/ssh"
               Chef::Knife::Ssh.load_deps
             end
