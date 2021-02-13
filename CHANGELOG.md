@@ -1,16 +1,17 @@
 # knife-cloud Change Log
 
-<!-- latest_release 4.0.14 -->
-## [v4.0.14](https://github.com/chef/knife-cloud/tree/v4.0.14) (2021-02-01)
+<!-- latest_release 4.0.15 -->
+## [v4.0.15](https://github.com/chef/knife-cloud/tree/v4.0.15) (2021-02-13)
 
 #### Merged Pull Requests
-- Update chefstyle requirement from 1.5.8 to 1.6.2 [#154](https://github.com/chef/knife-cloud/pull/154) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot]))
+- Add license to the gemspec [#155](https://github.com/chef/knife-cloud/pull/155) ([tas50](https://github.com/tas50))
 <!-- latest_release -->
 
 <!-- release_rollup since=4.0.6 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Add license to the gemspec [#155](https://github.com/chef/knife-cloud/pull/155) ([tas50](https://github.com/tas50)) <!-- 4.0.15 -->
 - Update chefstyle requirement from 1.5.8 to 1.6.2 [#154](https://github.com/chef/knife-cloud/pull/154) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot])) <!-- 4.0.14 -->
 - Update chefstyle requirement from 1.5.1 to 1.5.8 [#151](https://github.com/chef/knife-cloud/pull/151) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot])) <!-- 4.0.13 -->
 - Update chefstyle requirement from 1.5.0 to 1.5.1 [#147](https://github.com/chef/knife-cloud/pull/147) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot])) <!-- 4.0.12 -->
