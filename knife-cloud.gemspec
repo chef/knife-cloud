@@ -6,6 +6,7 @@ Gem::Specification.new do |s|
   s.version     = Knife::Cloud::VERSION
   s.authors     = ["Kaustubh Deorukhkar", "Ameya Varade"]
   s.email       = ["dev@chef.io"]
+  s.license     = "Apache-2.0"
   s.homepage    = "https://github.com/chef/knife-cloud"
   s.summary     = "knife-cloud plugin"
   s.description = s.summary
