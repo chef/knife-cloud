@@ -22,5 +22,5 @@ group :test do
   gem "rspec-mocks"
   gem "rspec_junit_formatter"
   gem "fog-core"
-  gem "chefstyle", "1.7.1"
+  gem "chefstyle", "1.7.4"
 end
