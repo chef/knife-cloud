@@ -16,7 +16,7 @@ group :test do
     gem "chef-zero", "~> 15"
     gem "chef", "~> 15"
   else
-    gem "chef", ">= 16.0"
+    gem "chef", ">= 18.0"
   end
   gem "rspec-expectations"
   gem "rspec-mocks"
