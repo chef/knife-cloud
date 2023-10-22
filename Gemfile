@@ -11,7 +11,7 @@ end
 
 group :test do
   gem "rake"
-  gem "rspec-core", '~> 3.9'
+  gem "rspec-core", "~> 3.9"
   if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("2.7")
     gem "chef-zero", "~> 15"
     gem "chef", "~> 15"
