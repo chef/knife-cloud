@@ -11,10 +11,14 @@ end
 
 group :test do
   gem "rake"
-  gem "rspec-core"
+  gem "rspec-core", '~> 3.9'
   if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("2.7")
     gem "chef-zero", "~> 15"
     gem "chef", "~> 15"
+  elsif Gem::Version.new(RUBY_VERSION) > Gem::Version.new("3.1")
+    gem "chef-zero", "~> 15"
+    gem "chef", "~> 18"
+    gem "knife"
   else
     gem "chef", ">= 18.0"
     gem "knife"
