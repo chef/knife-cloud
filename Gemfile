@@ -15,12 +15,13 @@ group :test do
   if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("2.7")
     gem "chef-zero", "~> 15"
     gem "chef", "~> 15"
-  elsif Gem::Version.new(RUBY_VERSION) > Gem::Version.new("3.1")
+  elsif Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.1")
     gem "chef-zero", "~> 15"
-    gem "chef", "~> 18"
+    gem "chef", ">= 17.0"
     gem "knife"
   else
-    gem "chef", ">= 18.0"
+    gem "chef-zero", "~> 15"
+    gem "chef", "~> 18"
     gem "knife"
   end
   gem "rspec-expectations"
