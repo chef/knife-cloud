@@ -108,16 +108,16 @@ class Chef
 
         %w{servers images networks}.each do |resource_type|
           define_method("list_#{resource_type}") do
-            begin
-              case resource_type
-              when "networks"
-                network.method(resource_type).call.all
-              else
-                connection.method(resource_type).call.all
-              end
-            rescue Excon::Error::BadRequest => e
-              handle_excon_exception(CloudExceptions::CloudAPIException, e)
+
+            case resource_type
+            when "networks"
+              network.method(resource_type).call.all
+            else
+              connection.method(resource_type).call.all
             end
+          rescue Excon::Error::BadRequest => e
+            handle_excon_exception(CloudExceptions::CloudAPIException, e)
+
           end
         end
 
