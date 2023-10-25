@@ -25,7 +25,7 @@ group :test do
     gem "knife"
   end
   gem "rspec-expectations"
-  gem "rspec-mocks", "3.9.0"
+  gem "rspec-mocks", "3.11.2"
   gem "rspec_junit_formatter"
   gem "fog-core"
   gem "chefstyle", "2.2.2"
