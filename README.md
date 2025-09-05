@@ -3,7 +3,7 @@
 [![Build status](https://badge.buildkite.com/a6a306c5d54ceb3becb5772f8423c708408af4fea9c58805a5.svg?branch=master)](https://buildkite.com/chef-oss/chef-knife-cloud-master-verify)
 [![Gem Version](https://badge.fury.io/rb/knife-cloud.svg)](https://rubygems.org/gems/knife-cloud)
 
-* **Umbrella Project: [Knife](https://github.com/chef/chef-oss-practices/blob/master/projects/knife.md)**
+
 
 ## Description
 
