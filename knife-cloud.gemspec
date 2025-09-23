@@ -16,7 +16,6 @@ Gem::Specification.new do |s|
   s.require_paths = %w{lib}
   s.required_ruby_version = ">= 3.1"
 
-  s.add_dependency "chef", ">= 18.0"
   s.add_dependency "mixlib-shellout"
   s.add_dependency "excon", ">=  0.50" # excon 0.50 renamed the errors class and required updating rescues
 end
