@@ -1,6 +1,6 @@
 #
 # Author:: Prabhu Das (<prabhu.das@clogeny.com>)
-# Copyright:: Copyright (c) 2013-14 Chef, Inc.
+# Copyright:: Copyright ©  2013-2023 Progress Software Corporation and/or its subsidiaries or affiliates. All rights reserved.
 # License:: Apache License, Version 2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
