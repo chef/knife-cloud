@@ -49,6 +49,7 @@ describe Chef::Knife::Cloud::Bootstrapper do
     end
 
     it "executes with correct method calls with winrm" do
+      allow_any_instance_of(Chef::Knife::Cloud::WinrmBootstrapProtocol).to receive(:load_winrm_deps)
       winrm_bootstrap_protocol = Chef::Knife::Cloud::WinrmBootstrapProtocol.new(@config)
       allow(@instance).to receive(:create_bootstrap_protocol).and_return(winrm_bootstrap_protocol)
       expect(@instance).to receive(:create_bootstrap_protocol).ordered
@@ -118,6 +119,7 @@ describe Chef::Knife::Cloud::Bootstrapper do
     context "when connection_protocol set to winrm" do
       before(:each) do
         @config[:connection_protocol] = "winrm"
+        allow_any_instance_of(Chef::Knife::Cloud::WinrmBootstrapProtocol).to receive(:load_winrm_deps)
       end
 
       it "instantiates WinrmBootstrapProtocol class." do
