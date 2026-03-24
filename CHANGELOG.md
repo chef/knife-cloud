@@ -1,16 +1,17 @@
 # knife-cloud Change Log
 
-<!-- latest_release 4.0.19 -->
-## [v4.0.19](https://github.com/chef/knife-cloud/tree/v4.0.19) (2021-10-25)
+<!-- latest_release 4.0.20 -->
+## [v4.0.20](https://github.com/chef/knife-cloud/tree/v4.0.20) (2026-03-24)
 
 #### Merged Pull Requests
-- Update chefstyle requirement from 1.7.5 to 2.1.1 [#172](https://github.com/chef/knife-cloud/pull/172) ([dependabot[bot]](https://github.com/dependabot[bot]))
+- Fix Ruby 3.1 winrm test failures [#189](https://github.com/chef/knife-cloud/pull/189) ([sanjain-progress](https://github.com/sanjain-progress))
 <!-- latest_release -->
 
 <!-- release_rollup since=4.0.15 -->
 ### Changes not yet released to rubygems.org
 
 #### Merged Pull Requests
+- Fix Ruby 3.1 winrm test failures [#189](https://github.com/chef/knife-cloud/pull/189) ([sanjain-progress](https://github.com/sanjain-progress)) <!-- 4.0.20 -->
 - Update chefstyle requirement from 1.7.5 to 2.1.1 [#172](https://github.com/chef/knife-cloud/pull/172) ([dependabot[bot]](https://github.com/dependabot[bot])) <!-- 4.0.19 -->
 - Upgrade to GitHub-native Dependabot [#160](https://github.com/chef/knife-cloud/pull/160) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot])) <!-- 4.0.18 -->
 - Update chefstyle requirement from 1.7.1 to 1.7.5 [#159](https://github.com/chef/knife-cloud/pull/159) ([dependabot-preview[bot]](https://github.com/dependabot-preview[bot])) <!-- 4.0.17 -->
