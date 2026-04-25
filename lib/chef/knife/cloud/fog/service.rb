@@ -1,7 +1,7 @@
 #
 # Author:: Kaustubh Deorukhkar (<kaustubh@clogeny.com>)
 # Author:: Prabhu Das (<prabhu.das@clogeny.com>)
-# Copyright:: Copyright (c) Chef Software Inc.
+# Copyright:: Copyright (c) 2013-2023 Progress Software Corporation and/or its subsidiaries or affiliates. All Rights Reserved.
 #
 
 require_relative "../service"
